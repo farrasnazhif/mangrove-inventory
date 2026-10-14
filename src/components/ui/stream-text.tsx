@@ -1,6 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const motionQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotion(onChange: () => void) {
+  const media = window.matchMedia(motionQuery);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+function getReducedMotion() {
+  return window.matchMedia(motionQuery).matches;
+}
+function getServerReducedMotion() {
+  return false;
+}
 /* ─────────────────────────────────────────────────────────
  * STREAM TEXT — reusable streaming primitive
  * Reveals characters quickly (fast, like a real token stream);
@@ -35,6 +48,7 @@ export function StreamText({
   onDone?: () => void;
 }) {
   const [count, setCount] = useState(0);
+  const reducedMotion = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerReducedMotion);
   const onProgressRef = useRef(onProgress);
   const onDoneRef = useRef(onDone);
   useEffect(() => {
@@ -47,6 +61,11 @@ export function StreamText({
     setCount(0);
   }
   useEffect(() => {
+    if (reducedMotion) {
+      onProgressRef.current?.();
+      onDoneRef.current?.();
+      return;
+    }
     let i = 0;
     const id = setInterval(() => {
       i = Math.min(i + charsPerTick, text.length);
@@ -58,9 +77,9 @@ export function StreamText({
       }
     }, tickMs);
     return () => clearInterval(id);
-  }, [text, charsPerTick, tickMs]);
-  const streaming = count < text.length;
-  const shown = text.slice(0, count);
+  }, [text, charsPerTick, tickMs, reducedMotion]);
+  const streaming = !reducedMotion && count < text.length;
+  const shown = reducedMotion ? text : text.slice(0, count);
   const split = streaming ? Math.max(0, shown.length - blurTail) : shown.length;
 
   return (

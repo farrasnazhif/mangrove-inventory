@@ -21,14 +21,16 @@ Both chatbots and report export belong to the brief; do not silently defer them 
 FAQ. Import, review/publishing, offline sync, satellite-derived analysis, repeat-survey comparison,
 and photo attachments remain conditional proposals. Realtime is outside the recorded brief.
 Preserve starter decisions DEC-01–DEC-11 until an explicit accepted requirement changes them.
+DEC-12 accepts the supplied dashboard screenshots as Figma content preferences; equations,
+aggregate definitions, CO₂ conversion, routes and a working dashboard remain unresolved.
 
 ## Repository Structure
 
 - `.github/`: GitHub Actions validation and issue/pull-request templates.
 - `docs/`: Team workflow/prompts and design references under `docs/design/`.
 - `PRD.md`: Product requirements, MVP scope, ownership, and open decisions.
-- `DESIGN.md`: Currently a Clay marketing reference; accepted product layouts and shared-control
-  mappings still require confirmation (Q-14).
+- `DESIGN.md`: Accepted neutral presentation and existing-control mappings, with Clay for
+  composition and supplied mangrove screenshots for dashboard content (DES-11).
 - `BACKLOG.md`: Canonical ticket format, dependencies, acceptance criteria, and implementation
   prompts; no product implementation tickets are defined yet.
 - `scripts/`: The live two-user Supabase isolation check, `check-rls.mjs`.
@@ -363,7 +365,7 @@ TODOs identify implementation blockers without assigning a release, owner, or an
 | Q-08/Q-09 | TODO: Set chatbot questions, language, approved sources and verification rules; settle CSV/XLSX/report columns, selections and template/format. |
 | Q-10/Q-16 | TODO: Approve product navigation, screen grouping, filters/aggregates and coexistence or replacement of project examples. `/dashboard` currently shows projects, not carbon. |
 | Q-11/Q-12/Q-13 | TODO: Set scale/performance/recovery targets, assessment/sign-off evidence, external services, hosting, budgets, quotas and privacy rules. Monday review cadence is not a fixed delivery schedule. |
-| Q-14 | TODO: Reconcile DESIGN.md sections 3–4 and 9 proposing alternate fonts, 44 px pill buttons and branded navigation with normal Inter, the 32 px medium `rounded-control` Button and pages without shared branded headers. Public education entry must preserve the centered `/sandbox` landing link unless explicitly changed. The reference's “implementation-ready” label does not resolve these conflicts. |
+| Q-14 | TODO: Decide the public education entry while preserving the centered `/sandbox` landing link. DESIGN.md now confirms neutral tokens, normal Inter, existing Button sizes and pages without shared branded headers; the earlier font/pill/branding conflict is resolved. |
 | Q-15 | TODO: Set correction/deletion, account deletion, draft/audit/result history, recalculation, conflict and retention rules; do not inherit project deletion behavior for field data. |
 
 The earlier PRD's separate-backend/PostGIS suggestion and delayed authentication priority were

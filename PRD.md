@@ -166,8 +166,9 @@ Q-01, Q-03, Q-08, Q-13.
 ## 6. Screens and navigation
 
 Screen IDs describe required experiences, not an approved sitemap or promise of separate pages.
-New product routes, grouping, filters, summary metrics, and dashboard-wide aggregation require
-Q-10. Public entry routing also depends on Q-14.
+The supplied dashboard references select prototype content groups (DEC-12 / DESIGN DES-11).
+New product routes, grouping in the working app, filters, summary metric definitions and
+dashboard-wide aggregation still require Q-10. Public entry routing also depends on Q-14.
 
 | Screen ID | Experience | Essential content and states | Requirements |
 | --- | --- | --- | --- |
@@ -289,6 +290,7 @@ to replace or remove an example. No implementation is authorized by this documen
 | DEC-09 | AI/chat UI demos and shared Axios client; no live AI integration | **Keep** demos as samples. FR-12/FR-13 are planned with unresolved provider/content/budget choices; an FAQ cannot silently substitute for requested chatbots |
 | DEC-10 | Table/search/filter controls; no application plot search/filter data flow | **Reuse** controls if product search/filter scope is approved. Their presence does not approve filters or backend query behavior (Q-10) |
 | DEC-11 | No product realtime or offline sync implementation | **Leave unimplemented**. Realtime is not in the recorded brief; offline/import/history/attachments need separate scope decisions (FR-15/FR-17/FR-19/FR-20) |
+| DEC-12 | Dashboard content references supplied 2026-10-14 | **Use for Figma content composition**: summary metrics, plot composition/detail, tree/sediment entry, AGB/BGB detail, bulk-density/SOC detail and total-stock recap/report entry. Keep neutral styling. Reference equations, numerical values, branding, identities and sites are not approved product/science contracts (FR-01/FR-02/FR-05–FR-07/FR-10/FR-14; Q-04/Q-05/Q-09/Q-10; DESIGN DES-11) |
 
 No example feature is approved for removal. The inspected starter contains no mangrove plot,
 tree/soil model, carbon engine, plot map, product export, role matrix, or live chatbot.
@@ -298,7 +300,9 @@ tree/soil model, carbon engine, plot map, product export, role matrix, or live c
 The following have no implementation authorization or established requirement in the recorded
 brief: automatic DBH measurement/species identification from ordinary photos, SOC inferred only
 from species/DBH or imagery, carbon-credit certification/trading/formal MRV accreditation,
-nationwide automated monitoring, billing, realtime collaboration, and CO₂-equivalent reporting.
+nationwide automated monitoring, billing, realtime collaboration, and live CO₂-equivalent reporting.
+The latest reference permits a CO₂-equivalent prototype placeholder; it does not approve a
+conversion method or working reporting requirement (DEC-12, Q-04/Q-10).
 Public disclosure of restricted raw field data is prohibited.
 
 The earlier draft's bulk import, review/publishing workflow, offline sync, satellite-derived
@@ -341,9 +345,10 @@ No decision owner is invented; PIC and the team must name accountable approvers.
 The earlier draft treated authentication as later work while proposing private field workflows;
 FR-11/FR-21/NFR-01 now make access control a dependency of any working restricted-data release.
 Its public-information landing conflicts with the instruction to preserve `/`'s centered sandbox
-button. DESIGN.md is a Clay marketing reference with proposed pill buttons, alternate fonts and
-branded navigation that conflict with current shared UI conventions. These are recorded under
-Q-14; this revision does not choose between them or change those files.
+button. The user subsequently accepted neutral shared UI with Clay composition; DESIGN.md now
+preserves normal Inter, existing Button sizes and shared tokens. The prior font/pill/branding
+conflict is resolved; public education entry remains Q-14. Supplied dashboard screenshots
+select prototype content under DEC-12, without accepting their scientific methods or figures.
 
 The earlier generic architecture and suggested implementation backlog are superseded by the
 inspected starter baseline and BACKLOG.md's canonical planning process. No stack replacement,

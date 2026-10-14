@@ -34,6 +34,75 @@ const demos = load(resolve(root, "src/features/sandbox/components/extended-demo"
 const SharedDemo = load(resolve(root, "src/features/sandbox/components/shared-demo")).SharedDemo as ComponentType<{ id: string; onOpenDialog: () => void }>;
 const render = (child: ReactNode, theme: "light" | "dark" = "light") => renderToStaticMarkup(createElement(ThemeProvider, { initialTheme: theme }, child));
 
+test("table aligns numeric measurements without treating string identifiers as numbers", () => {
+  const Table = load(resolve(root, "src/components/ui/table")).Table as ComponentType<{
+    rows: { id: string; dbh: number }[];
+    columns: { id: string; label: string; value: (row: { id: string; dbh: number }) => string | number; render?: (row: { id: string; dbh: number }) => ReactNode }[];
+    caption: string; getRowId: (row: { id: string }) => string;
+  }>;
+  const markup = render(createElement(Table, {
+    rows: [{ id: "001", dbh: 0 }, { id: "002", dbh: -1.5 }],
+    columns: [
+      { id: "id", label: "Tree", value: (row) => row.id },
+      { id: "dbh", label: "DBH (cm)", value: (row) => row.dbh, render: (row) => `${row.dbh} cm` },
+    ],
+    caption: "Tree measurements", getRowId: (row) => row.id,
+  }));
+  assert.match(markup, /<td>001<\/td>/);
+  assert.match(markup, /<td class="text-right tabular-nums">0 cm<\/td>/);
+  assert.match(markup, /<td class="text-right tabular-nums">-1.5 cm<\/td>/);
+  assert.match(markup, /scope="col"[^>]*>DBH \(cm\)/);
+  assert.match(markup, /aria-label="Tree measurements"/);
+});
+
+test("StreamText shows complete text without timers when reduced motion is enabled", () => {
+  const filename = resolve(root, "src/components/ui/stream-text.tsx");
+  const compiled = ts.transpileModule(readFileSync(filename, "utf8"), { compilerOptions: {
+    target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX,
+  } }).outputText;
+  const effects: (() => unknown)[] = [];
+  let matches = true;
+  let timerCount = 0;
+  let done = 0;
+  let subscribed: (() => void) | undefined;
+  let unsubscribed = false;
+  let unsubscribe: (() => void) | undefined;
+  const exports: Record<string, unknown> = {};
+  const require = createRequire(filename);
+  new Function("require", "exports", "window", "setInterval", compiled)(
+    (id: string) => id === "react" ? {
+      useState: (value: unknown) => [value, () => {}],
+      useRef: (value: unknown) => ({ current: value }),
+      useEffect: (effect: () => unknown) => effects.push(effect),
+      useSyncExternalStore: (subscribe: (callback: () => void) => () => void, snapshot: () => boolean, serverSnapshot: () => boolean) => {
+        assert.equal(serverSnapshot(), false);
+        unsubscribe = subscribe(() => {});
+        return snapshot();
+      },
+    } : require(id), exports,
+    { matchMedia: (query: string) => {
+      assert.equal(query, "(prefers-reduced-motion: reduce)");
+      return { matches, addEventListener: (_: string, fn: () => void) => { subscribed = fn; }, removeEventListener: (_: string, fn: () => void) => { unsubscribed = fn === subscribed; } };
+    } },
+    () => { timerCount++; return 1; },
+  );
+  const StreamText = exports.StreamText as (props: { text: string; onDone?: () => void }) => ReactNode;
+  let markup = renderToStaticMarkup(StreamText({ text: "Soil carbon unavailable", onDone: () => { done++; } }));
+  effects.splice(0).forEach((effect) => effect());
+  assert.match(markup, /Soil carbon unavailable/);
+  assert.doesNotMatch(markup, /stream-tail|is-streaming/);
+  assert.equal(timerCount, 0);
+  assert.equal(done, 1);
+  unsubscribe?.();
+  assert.equal(unsubscribed, true);
+  matches = false;
+  markup = renderToStaticMarkup(StreamText({ text: "Normal animation" }));
+  effects.splice(0).forEach((effect) => effect());
+  assert.match(markup, /is-streaming/);
+  assert.equal(timerCount, 1);
+  unsubscribe?.();
+});
+
 test("every additional catalog entry has a real demo that renders in both themes", () => {
   assert.deepEqual(Object.keys(demos).sort(), EXTENDED_COMPONENTS.map((entry) => entry.id).sort());
   for (const theme of ["light", "dark"] as const) {

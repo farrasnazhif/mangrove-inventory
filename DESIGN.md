@@ -3,10 +3,10 @@
 | Attribute | Decision |
 | --- | --- |
 | Status | Product presentation specification; feature scope and content contracts remain subject to PRD decisions |
-| Primary reference | Clay, as requested by the user |
+| Primary reference | Clay for composition; supplied mangrove screenshots for dashboard content (DES-11) |
 | Confirmed direction | Keep the current neutral UI; borrow clarity and spacing from the references |
 | Foundation | Existing Beautiful UI controls, Base UI behavior, normal Inter, Lucide, shared Button and theme tokens |
-| Implementation status | Documentation only; product screens below are planned, not implemented |
+| Implementation status | Editable Figma prototype and shared Table/StreamText adjustments; live mangrove features remain planned |
 
 ## 1. Direction and source boundaries — DES-01
 
@@ -257,10 +257,11 @@ is implied by the sandbox's chat demos. Final input/send conventions and support
 DQ-04; expose only approved actions.
 
 Preserve the existing reduced-motion CSS. No decorative lifts, parallax, animated 3D artwork
-or required entrance animation. StreamText reveals text on a JavaScript timer; CSS reduced
-motion alone does not make that reveal immediate. If answer streaming is later approved,
-provide a complete-text reduced-motion mode and accessible announcements; do not claim the
-current helper already handles this. Static answer text is sufficient for this specification.
+or required entrance animation. StreamText now displays complete text immediately when
+reduced motion is enabled and reacts to preference changes. If answer streaming is later
+approved, add accessible completed-answer announcements in the feature; the shared helper
+does not establish service or conversation behavior. Static answer text is sufficient for
+this specification.
 
 ## 7. Justified gaps and reuse limits — DES-07
 
@@ -350,3 +351,44 @@ neutral-UI/Clay composition direction; it does not edit those other documents. A
 alignment should refresh their description and old section references while retaining their
 rules. Q-14's public-entry/content decisions and other product blockers remain unresolved.
 No feature tickets, code, tokens, providers, dependencies, routes or services change here.
+
+## 11. Supplied dashboard content preference — DES-11
+
+Accepted 2026-10-14: the user supplied three mangrove dashboard screenshots and requested
+“use this as the dashboard content preference.” Retain the neutral visual direction, current
+UI library, Inter and tokens from DES-01–DES-04. The green sidebar, gradients, brand/logo,
+researcher identity, exact site, study dates and example figures in those images are not
+adopted. This decision specifies prototype content grouping; it does not approve scientific
+methods, persisted fields, a live aggregate, role changes or replacement of starter routes.
+
+Sources: [summary and entry](docs/design/mangrove-dashboard-reference/overview-and-field-input.png),
+[biomass and soil](docs/design/mangrove-dashboard-reference/biomass-and-soil.png),
+[total carbon](docs/design/mangrove-dashboard-reference/total-carbon.png).
+
+| Content ID | Preferred content and screen mapping | Existing UI / concrete composition | Remaining contract |
+| --- | --- | --- | --- |
+| CNT-01 | Ringkasan: study context, mean stock, CO₂ equivalent, site, measured plot count; carbon composition and selectable plot detail (SCR-03 / FR-07) | Neutral Card introduction, four metric Cards with 16 px gaps; desktop composition and plot list in approximately 60/40 columns with 24 px gap; mobile stack in reading order | Q-04/Q-10: mean weighting, included plots, incomplete plots, CO₂ conversion and period definition. Use unavailable values until settled |
+| CNT-02 | Input data lapangan: active plot context, repeatable tree measurements, sediment layers (SCR-04/SCR-05 / FR-01/FR-02/FR-06) | Plot context Card, tree section and soil section separated by 24 px; shared Select/NumberInput and semantic Table; neutral Add tree/Add layer Buttons. Desktop table, mobile labeled controls or horizontal read-only Table | Q-04/Q-05/Q-15: height, wood density, depth, LOI, ranges and required versus optional fields. Prototype columns are illustrative, not a schema |
+| CNT-03 | Perhitungan AGB & BGB: method context, per-tree breakdown, distinct biomass/carbon and plot subtotals (SCR-06 / FR-05/FR-07) | Two method Cards at 50/50 width with 24 px gap, stacked on mobile; Table beneath; three result Cards for AGB carbon, BGB carbon and combined biomass carbon when approved | Q-04/Q-05: equations, wood-density source, conversion factors, units and precision. Display “method awaiting approval” instead of selecting the pictured equations |
+| CNT-04 | Bulk density & SOC: method context, layer profile and summed SOC (SCR-05/SCR-06 / FR-06/FR-07) | Two neutral method Cards, semantic layer Table, input-completeness Notice and profile result. Right-aligned numeric columns with visible units | Q-04/Q-05: layer definitions, dry mass/volume calculation, LOI-to-carbon conversion and summation. Missing laboratory inputs cannot become zero |
+| CNT-05 | Stok karbon total: selected plot total, component breakdown, CO₂ equivalent, cross-plot recap and report entry (SCR-06/SCR-08 / FR-07/FR-14) | Prominent neutral result Card plus component Table, desktop 60/40 columns and mobile stack; full-width recap beneath; shared report Button | Q-04/Q-09/Q-10: totals/CO₂ method, report contract and selection. Missing SOC keeps total incomplete; no successful real download in the static prototype |
+
+Prototype labels use Indonesian to echo these supplied content references. Final product
+language and decimal localization remain DQ-04/Q-08; this is not a localization commitment.
+The five content panels are a navigable Figma proposal, not accepted separate URLs. Plot tabs,
+period selection, notifications, user profile and sidebar destinations still require Q-10;
+do not add those interactions solely because they appear in the reference.
+
+Composition charts use labels and an accessible table containing the same data. The prototype
+shows an incomplete track when SOC is missing, rather than drawing a complete stacked bar.
+If a later complete chart uses component colors, supply labels/patterns as well; exact chart
+colors remain undecided. Destructive removal retains semantic danger controls and confirmation
+once permissions/deletion consequences are accepted.
+
+Figma additions appear on `Dashboard content · supplied references`: five content panels at
+1440 px and 360 px, light and dark (20 editable frames). The existing 12-screen prototype is
+retained. A Figma frame cannot establish calculation accuracy, persisted entry, authentication,
+keyboard behavior or accessibility conformance.
+
+DQ-07 is partially resolved by CNT-01–CNT-05: preferred metrics and content groups are now
+known. Aggregate definitions, filters, scale, routes and device verification remain open.
