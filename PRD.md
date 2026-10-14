@@ -3,571 +3,369 @@
 ## Web-Based Information System for Mangrove Carbon Stock Inventory
 
 | Attribute | Detail |
-|---|---|
-| Document | Product Requirements Document |
-| Version | 1.0 (initial draft) |
-| Status | Draft for PIC validation |
+| --- | --- |
+| Version | 1.1 — brief organized against the inspected starter |
+| Status | Draft for PIC validation; unresolved requirements are not ready for implementation |
 | Product | Mangrove Carbon Stock Inventory |
 | Platform | Responsive web application |
-| Target context | Mangrove conservation and field inventory, with initial context of East Surabaya |
-| Project cadence | Weekly progress review, every Monday at MCI Lab |
-| Primary deliverable | Figma prototype, followed by a functional prototype as agreed with PIC |
-
-> **Source boundaries:** Core scope is based on the supplied project description and meeting notes. Scientific field workflow is informed by the provided 2026 ITS community-service proposal *Pengukuran Biomassa dan Stok Karbon Mangrove di Atas dan di Bawah Permukaan Air (Pantai Surabaya Timur)*. Specific implementation choices, user roles, thresholds, and proposed enhancements below are **assumptions/recommendations**, not confirmed PIC requirements. They must be validated before implementation.
-
-## 1. Executive Summary
-
-The product is a web-based system for collecting mangrove field plot measurements, calculating biomass-derived carbon and soil organic carbon, visualizing results by plot on an interactive map, exporting datasets and reports, and providing a chatbot for conservation education and authorized data queries.
-
-The project addresses a fragmented workflow in which field measurements (e.g., species, diameter at breast height or DBH, plot coordinates) are collected manually, laboratory soil measurements are processed separately, and data is later compiled for carbon-stock calculations and reporting.
-
-The system should make **field recording easier**, reduce re-entry errors, support satellite imagery as a map baselayer, preserve calculation provenance, and connect georeferenced observations to a plot/species atlas-style interface.
-
-## 2. Background and Problem
-
-### 2.1 Problems
-
-1. Field data collection is manual, including species, DBH, and geographic coordinates.
-2. Plot observations, tree measurements, and soil laboratory results may be stored separately.
-3. Calculating AGB, BGB, SOC, and carbon stock requires consistent scientific methods and units.
-4. Managers need location-aware summaries and exportable reports, not just raw records.
-5. Ecotourism visitors need accessible educational information about mangroves.
-6. Existing mangrove map/atlas tools do not necessarily provide this project's complete inventory-to-carbon workflow.
-
-### 2.2 Proposed Solution
-
-A single responsive web application connecting:
-
-**Field capture → Data validation → Biomass and soil carbon calculations → Geospatial visualization → Dashboard and export → Manager queries and public education.**
-
-### 2.3 Product Goals
-
-- Enable structured, plot-based mangrove inventory entry in the field.
-- Associate observations with GPS coordinates and satellite basemap context.
-- Calculate AGB, BGB, and SOC using PIC-approved methods and source data.
-- Present carbon stock per plot, with standardized units (Mg C/ha).
-- Support CSV/Excel export and summary report generation.
-- Provide role-appropriate chatbot interactions.
-- Produce a testable Figma prototype and demonstrate progress every Monday.
-
-### 2.4 Non-Goals for Initial MVP
-
-- Automatically measuring DBH accurately from a single ordinary phone photograph.
-- Automatically deriving SOC from species/DBH or satellite imagery alone.
-- Claiming satellite imagery itself validates field measurements.
-- Carbon-credit certification, trading, or formal MRV accreditation.
-- Nationwide monitoring or fully automated remote-sensing carbon estimates.
-- Public chatbot access to confidential raw field data.
-
-## 3. Existing Systems and Differentiation
-
-### 3.1 Reference and Competitor Landscape
-
-| Reference | Relevant capabilities | Opportunity for this product |
-|---|---|---|
-| [Atlas Sebaran Spesies — Kebun Raya Mangrove Kota Surabaya](https://realharyotpg-sketch.github.io/spesiesmangrovekrm/) | Interactive species-point map, zone/Vak filtering, species search, zone boundaries/labels, satellite/natural basemap switch; the page describes shapefile-based field data and Esri basemap | Add authenticated field capture, plot measurements, carbon calculations, and export linked to map features |
-| [Global Mangrove Watch](https://www.globalmangrovewatch.org/) | Broad-scale mangrove mapping and monitoring | Focus on ground-truth field measurements and plot-level scientific calculation |
-| [SI-PPEM](https://www.mangroves.app/) | Mangrove information and geospatial management in Indonesia | Focus on local inventory workflow, measurements, and calculations |
-| Carbon estimation spreadsheets/scripts | Calculation-oriented workflows may exist | Connect calculations to structured records, coordinates, history, and reports |
-
-**Important:** The references above are not evidence that this product is the first carbon-stock system. Feature-level competitor claims beyond the inspected reference site require further verification during research. Differentiation is a **proposed product positioning**, not a proven novelty claim.
-
-### 3.2 Proposed Differentiators
-
-1. **Field-first experience:** quick plot/tree forms, GPS capture, measurement validation, and draft saving.
-2. **Map-linked records:** each observation belongs to a plot and appears on a satellite-backed interactive map.
-3. **End-to-end carbon workflow:** AGB/BGB and sediment-based SOC in a unified per-plot carbon summary.
-4. **Traceable science:** formula references, coefficients, inputs, units, and calculation versions retained.
-5. **Operational exports:** raw records and calculated outputs in CSV/XLSX plus report summaries.
-6. **Two chatbot experiences:** public education and permission-controlled manager data querying.
-
-## 4. Stakeholders and Users
-
-| Persona | Primary needs | Proposed permissions |
-|---|---|---|
-| Field Surveyor | Record plots, species, DBH, height, coordinates, and observations | Create/edit own drafts and submitted field records |
-| Researcher / Carbon Analyst | Review measurements, enter lab results, verify formulas, inspect calculations | Review data, manage lab measurements, run calculations |
-| Site Manager | See plots, carbon summaries, maps, trends, and exports | Read verified data, export, ask plot-data questions |
-| Administrator | Maintain users, reference species, formula settings, and audit trail | Manage access and system configuration |
-| Ecotourism Visitor | Learn about mangrove species and carbon conservation | Public map/educational chatbot only |
-
-**To confirm:** Actual roles, data approval chain, and whether all these personas are needed for the semester prototype.
-
-## 5. User Journeys
-
-### 5.1 Field Surveyor
-
-1. Sign in (if access is required).
-2. Select existing site/station/plot or create a new plot.
-3. Capture device GPS position or manually enter/edit coordinates.
-4. Inspect location against map/satellite basemap.
-5. Record species, DBH, optional height, wood density source, and notes for each tree.
-6. Save as draft, review validation warnings, and submit.
-7. Later correct a record with change history.
-
-### 5.2 Carbon Analyst
-
-1. Open a plot and review tree records.
-2. Import or enter soil core layers and laboratory results (dry mass, core volume, layer thickness/depth, LOI-derived carbon fraction or directly measured %C).
-3. Select or confirm the approved equation set.
-4. Run calculations; inspect missing inputs and provenance.
-5. Verify results and publish the plot carbon summary.
-
-### 5.3 Site Manager
-
-1. Open dashboard and map.
-2. Filter by location, species, survey date, and status.
-3. Select a plot to see AGB-carbon, BGB-carbon, SOC, and total carbon stock.
-4. Export filtered raw and calculated data to CSV/XLSX; export a formatted report if included in scope.
-5. Ask chatbot questions such as “Which verified plots have the highest carbon stock?”
-
-### 5.4 Ecotourism Visitor
-
-1. Open public education page or permitted public map.
-2. Explore species and conservation facts.
-3. Ask chatbot general questions about mangrove ecosystems and blue carbon.
-4. Receive educational responses without access to restricted records.
-
-## 6. Functional Requirements
-
-Priorities: **P0 = essential MVP**, **P1 = next iteration**, **P2 = optional/stretch**.
-
-| ID | Feature | Priority | Requirements | Acceptance criteria |
-|---|---|---|---|---|
-| FR-01 | Plot management | P0 | Create, view, edit plot with site/station, plot ID, area, date, coordinates | Unique plot ID; required fields validated; plot displayed in list |
-| FR-02 | Tree inventory | P0 | Add multiple tree records per plot: species, DBH (cm), optional height (m), notes | Invalid/nonpositive DBH rejected; records remain linked to plot |
-| FR-03 | GPS-assisted field capture | P0 | Use browser geolocation with permission; allow manual coordinates and correction | User can save coordinates manually if GPS unavailable; accuracy shown when available |
-| FR-04 | Interactive map | P0 | Show plot markers with plot details; switch normal/satellite basemap | Selecting marker opens correct plot; basemap switch works |
-| FR-05 | Carbon calculation: AGB/BGB | P0 | Apply PIC-approved allometric formulas, species/wood density rules, carbon fractions, plot-area conversion | Verified test dataset reproduces expected values within agreed tolerance |
-| FR-06 | Soil measurements and SOC | P0 | Store soil layers, core volume, dry mass, depth/thickness, LOI or %C, and calculate SOC | SOC not reported as calculated if mandatory lab inputs are missing |
-| FR-07 | Per-plot dashboard | P0 | Display plot details, species count, AGB carbon, BGB carbon, SOC, total Mg C/ha | Figures match stored calculation results; missing values labeled clearly |
-| FR-08 | CSV/XLSX export | P0 | Export field inventory and calculation results with columns and units | Download opens in spreadsheet app; filters and units preserved |
-| FR-09 | Data validation | P0 | Required-field, numeric-range, coordinate, duplicate and completeness checks | Errors identify field; no silent calculation with invalid data |
-| FR-10 | Figma prototype | P0 | Clickable flows for field entry, plot map, dashboard, exports, chatbot | Team can demo all principal user journeys in Figma |
-| FR-11 | Authentication and roles | P1 | Separate surveyor, analyst, manager, admin, public access | Restricted data not accessible to public or unauthorized roles |
-| FR-12 | Manager chatbot | P1 | Answer questions about authorized plot data using structured retrieval | Answers reflect current verified dataset and show plot IDs/filters |
-| FR-13 | Visitor education chatbot | P1 | Answer mangrove/ecotourism educational questions | No access to private plot records; unknown questions handled safely |
-| FR-14 | PDF/report export | P1 | Formatted report with plot info, methodology, tables, figures, and dates | Generated report is readable and includes units and equation sources |
-| FR-15 | Import CSV/XLSX | P1 | Bulk import historical tree and soil data | Preview mapping, validate rows, show import errors before commit |
-| FR-16 | Review/approval workflow | P1 | Draft → submitted → verified/rejected → published | Only verified results marked publishable; changes logged |
-| FR-17 | Field offline drafts | P1 | Save temporary records during intermittent connectivity and sync later | No loss of draft during supported offline flow; conflicts surfaced |
-| FR-18 | Satellite data overlay | P2 | Overlay additional imagery-derived layers (e.g., land cover) if a source is available | Layer provenance, dates, and legend shown |
-| FR-19 | Longitudinal monitoring | P2 | Compare repeat measurements across dates | Historical surveys remain separate; change calculations are reproducible |
-| FR-20 | Photo attachments | P2 | Attach geotagged field photographs | Files linked to plot/tree and access controlled |
-
-### 6.1 Field Entry Requirements
-
-**Plot fields:** site, station, plot code, plot area (m²), latitude, longitude, survey date, surveyor, habitat/zone (optional), notes.
-
-**Tree fields:** tree code, species (scientific name), DBH (cm), height (m, if needed by chosen equation), wood density (g/cm³, sourced from reference or approved manual input), condition, notes.
-
-**Soil sample fields:** sample/core code, plot, sampling date, layer start/end depth (cm), dry mass (g), core volume (cm³), LOI (% organic matter) or carbon fraction (%C), laboratory source, analyst.
-
-**Field assistance:** GPS capture, satellite basemap, species dropdown/autocomplete, duplicate warnings, save draft, visible units, data completeness indicator. Any camera-assisted species identification or DBH estimation is a separate research feature, not assumed reliable for MVP.
-
-### 6.2 Map Requirements
-
-- Plot coordinates as markers; clicking a marker opens plot details.
-- Satellite and normal basemap selection.
-- Search/filter by plot ID, species, station/zone, survey date.
-- Display plot status and summarized carbon values where available.
-- Preserve GPS coordinate reference convention (WGS84 latitude/longitude unless PIC specifies otherwise).
-- Clearly distinguish **satellite imagery basemap** from **satellite-derived scientific measurements**. Using an Esri/other satellite basemap does not automatically import or estimate carbon data.
-- Optional GeoJSON/shapefile layer import for site boundaries and zone/Vak polygons, subject to available source data and licensing.
-
-### 6.3 Chatbot Requirements
-
-**Visitor chatbot:** species information, mangrove ecology, carbon sequestration basics, conservation guidance; content from approved reference material. No private database access.
-
-**Manager chatbot:** authorized, read-only questions about verified plots, species distributions, measurement dates, carbon values, and data completeness. Use constrained database queries/retrieval rather than allowing arbitrary SQL execution. Show source plot IDs and state when data is incomplete.
-
-**MVP decision:** If delivery time is limited, prototype both chatbot interfaces in Figma; implement educational FAQ first and manager data querying in a later iteration.
-
-## 7. Carbon Calculation Requirements
-
-### 7.1 Scientific Constraints
-
-- **AGB:** estimated with an appropriate species/condition-specific allometric equation using DBH, wood density, and/or height as required.
-- **BGB:** estimated using an approved root biomass equation, often based on DBH and wood density or related biomass variables.
-- **SOC:** **cannot be calculated solely from species and DBH**. Requires soil depth/layer thickness, bulk density, and organic carbon concentration (measured or estimated from validated LOI conversion).
-- **Biomass ≠ carbon.** Convert AGB and BGB biomass into carbon with the appropriate validated carbon fractions before adding SOC.
-- **Units:** report component carbon stocks and total in **Mg C/ha** (numerically equivalent to metric tonnes of carbon per hectare).
-- **CO₂ equivalent (optional):** Mg CO₂e/ha = Mg C/ha × (44/12), if required in reports.
-
-### 7.2 Calculation Pipeline
-
-1. Validate tree and soil inputs.
-2. Choose applicable allometric equation by species, condition, and method version.
-3. Estimate biomass per tree; sum biomass within the plot.
-4. Convert biomass to carbon using the agreed component-specific carbon fractions.
-5. Normalize biomass carbon to plot area in hectares.
-6. Calculate soil bulk density = oven-dry mass / core volume (with consistent units).
-7. Convert LOI organic matter into %C only using an approved conversion, or use laboratory-measured %C.
-8. Calculate SOC by soil layer using bulk density, %C, and layer thickness; sum layers and normalize to Mg C/ha.
-9. Total carbon = aboveground carbon + belowground root carbon + soil organic carbon.
-10. Save input snapshot, formula identifiers, constants, timestamp, and calculated outputs.
-
-### 7.3 Formula Configuration and Verification
-
-The supplied proposal cites Komiyama et al. (2005), Kauffman & Donato (2012), Malik et al. (2023), and IPCC guidance. Its method table mentions carbon fractions **0.47 for AGB** and **0.39 for BGB**, and CO₂ conversion factor **3.67**. These values should be treated as **proposal-specified defaults requiring PIC/scientific validation**, not universally correct constants for all methods or species.
-
-**Required PIC inputs:** exact equation forms and coefficients, species lookup/wood density source, LOI-to-carbon conversion, sample validated calculations, missing-data handling, and acceptable numerical tolerance.
-
-**Never silently substitute SOC = 0 or present an incomplete sum as total ecosystem carbon.** If SOC is unavailable, display “biomass carbon only” and indicate total ecosystem carbon is incomplete.
-
-## 8. Data Model (Initial Proposal)
-
-```mermaid
-erDiagram
-    USERS ||--o{ SURVEYS : conducts
-    SITES ||--o{ STATIONS : contains
-    STATIONS ||--o{ PLOTS : contains
-    PLOTS ||--o{ SURVEYS : measured_in
-    SURVEYS ||--o{ TREE_MEASUREMENTS : records
-    SPECIES ||--o{ TREE_MEASUREMENTS : identifies
-    SURVEYS ||--o{ SOIL_CORES : samples
-    SOIL_CORES ||--o{ SOIL_LAYERS : contains
-    EQUATION_SETS ||--o{ CALCULATION_RUNS : used_by
-    SURVEYS ||--o{ CALCULATION_RUNS : calculated_for
-    USERS ||--o{ CALCULATION_RUNS : initiated_by
-    CALCULATION_RUNS ||--o{ CARBON_COMPONENTS : produces
-    USERS ||--o{ AUDIT_LOGS : triggers
-
-    USERS {
-      uuid id PK
-      string name
-      string email
-      string role
-    }
-    SITES {
-      uuid id PK
-      string name
-    }
-    STATIONS {
-      uuid id PK
-      uuid site_id FK
-      string name
-    }
-    PLOTS {
-      uuid id PK
-      uuid station_id FK
-      string plot_code
-      decimal area_m2
-      decimal latitude
-      decimal longitude
-    }
-    SURVEYS {
-      uuid id PK
-      uuid plot_id FK
-      uuid surveyor_id FK
-      date survey_date
-      string status
-    }
-    SPECIES {
-      uuid id PK
-      string scientific_name
-      decimal default_wood_density
-      string density_source
-    }
-    TREE_MEASUREMENTS {
-      uuid id PK
-      uuid survey_id FK
-      uuid species_id FK
-      string tree_code
-      decimal dbh_cm
-      decimal height_m
-    }
-    SOIL_CORES {
-      uuid id PK
-      uuid survey_id FK
-      string core_code
-      date sampled_at
-    }
-    SOIL_LAYERS {
-      uuid id PK
-      uuid soil_core_id FK
-      decimal depth_start_cm
-      decimal depth_end_cm
-      decimal dry_mass_g
-      decimal core_volume_cm3
-      decimal loi_percent
-      decimal carbon_percent
-    }
-    EQUATION_SETS {
-      uuid id PK
-      string name
-      string version
-      string reference
-    }
-    CALCULATION_RUNS {
-      uuid id PK
-      uuid survey_id FK
-      uuid equation_set_id FK
-      uuid initiated_by FK
-      datetime calculated_at
-      string status
-    }
-    CARBON_COMPONENTS {
-      uuid id PK
-      uuid calculation_run_id FK
-      string component
-      decimal mg_c_per_ha
-    }
-    AUDIT_LOGS {
-      uuid id PK
-      uuid user_id FK
-      string action
-      datetime created_at
-    }
-```
-
-**Modeling note:** A plot can be surveyed multiple times; results should attach to a **survey** rather than overwriting plot history. Soil layers belong to a core sample. Species and equation references should be versioned or sourced.
-
-## 9. Proposed Business Process
-
-### 9.1 As-Is (To Validate with PIC)
-
-```mermaid
-flowchart TD
-    A[Prepare survey and plots] --> B[Record species, DBH, and coordinates manually]
-    B --> C[Collect sediment samples]
-    C --> D[Analyze sediment in laboratory]
-    D --> E[Compile field and laboratory files]
-    E --> F[Calculate carbon stock using separate tools]
-    F --> G[Prepare reports and share results]
-```
-
-This is an **inferred workflow** based on the notes and proposal, not a verified observation of the partner's actual process.
-
-### 9.2 To-Be (Proposed)
-
-```mermaid
-flowchart TD
-    A[Create survey and plot] --> B[Capture GPS and tree measurements in web form]
-    B --> C[Attach or enter sediment laboratory measurements]
-    C --> D{Data complete and valid?}
-    D -- No --> E[Show missing inputs and request correction]
-    E --> B
-    D -- Yes --> F[Run approved AGB BGB and SOC calculations]
-    F --> G[Researcher review and verification]
-    G --> H{Approved?}
-    H -- No --> E
-    H -- Yes --> I[Publish plot dashboard and map summary]
-    I --> J[Export CSV XLSX and reports]
-    I --> K[Authorized manager chatbot queries]
-```
-
-## 10. UI/UX and Figma Prototype
-
-### 10.1 Required Screens
-
-| Screen | Essential elements |
-|---|---|
-| Landing / public information | Project overview, educational entry point, optional public map |
-| Login | Authentication for internal roles (if confirmed) |
-| Dashboard | Total plots, species, carbon components, chart, recent surveys |
-| Plot list | Search, filters, statuses, create plot |
-| Create/edit plot | Plot ID, site/station, area, GPS, satellite map pin |
-| Tree measurements | Repeatable species/DBH/height entries, units, validation, draft save |
-| Soil samples | Core/layer table, dry mass, volume, depth, LOI/%C |
-| Carbon results | AGB/BGB/SOC breakdown, total Mg C/ha, methods and missing data |
-| Interactive map | Plot markers, species/zone filters, satellite/natural basemap, plot drawer |
-| Export center | CSV/XLSX options, selected fields, date/plot filters |
-| Manager chatbot | Natural-language plot queries with cited plot IDs |
-| Visitor chatbot | Mangrove education and conservation FAQs |
-
-### 10.2 Prototype Priorities
-
-**First Figma milestone:** Dashboard, plot list, create plot with GPS/satellite map, tree data entry, plot detail/carbon result, map, and export flow. Include chatbot screens if the agreed milestone covers the complete feature list.
-
-**Interaction requirements:** clickable navigation, field validation states, empty/loading/error states, incomplete SOC state, and export confirmation. Show both desktop manager views and mobile field-entry views.
-
-### 10.3 Visual Reference
-
-The supplied reference [Atlas Sebaran Spesies](https://realharyotpg-sketch.github.io/spesiesmangrovekrm/) provides a useful model for a species map with search, zone filters, zone boundaries, and a **Satelit/Natural** basemap toggle. Use it as interaction inspiration; do not assume access to its data or reuse its code/assets without checking permissions.
-
-## 11. Suggested Technical Architecture (Not Yet Approved)
-
-```mermaid
-flowchart LR
-    A[Mobile field browser] --> B[Web frontend]
-    C[Desktop manager browser] --> B
-    B --> D[Application API and authorization]
-    D --> E[(Relational database with geospatial support)]
-    D --> F[Carbon calculation service]
-    D --> G[CSV XLSX report generation]
-    D --> H[Chatbot retrieval layer]
-    H --> E
-    B --> I[Map tiles and satellite basemap provider]
-    J[Laboratory data entry or import] --> D
-```
-
-**Suggested options, subject to team decision:** Next.js/React frontend, a relational database such as PostgreSQL with PostGIS, a backend API or secured server endpoints, Leaflet/MapLibre for maps, and a licensed imagery basemap. Choose stack only after reviewing team skills, hosting constraints, and data security.
-
-**Integration considerations:** GPS via browser permission; satellite map tiles via provider; optional GeoJSON/shapefile imports; optional CSV/XLSX lab-data import; chatbot read-only access through an authorized retrieval API. No existing institutional API is confirmed.
-
-## 12. Non-Functional Requirements
-
-| Category | Requirement |
-|---|---|
-| Usability | Mobile-first field form, clear measurement units, minimal taps |
-| Accuracy | Deterministic calculations, explicit precision and rounding, verified test fixtures |
-| Data integrity | Input validation, database constraints, referential integrity, audit history |
-| Security | Authenticated editing, role-based access, server-side authorization |
-| Privacy | Public education cannot expose unpublished or sensitive coordinates/records |
-| Performance | Typical plot list/map interaction should remain usable at expected dataset scale; quantify with PIC |
-| Reliability | Error recovery, saved drafts, backups, failed-export feedback |
-| Accessibility | Labeled inputs, keyboard navigation, readable contrast |
-| Provenance | Preserve equation version, source references, survey timestamp, lab source |
-| Interoperability | CSV/XLSX export with stable headers, units, UTF-8 CSV, and optional GeoJSON |
-| Satellite maps | Attribution and usage comply with basemap provider licensing |
-
-## 13. Export Specifications
-
-### 13.1 Dataset Export
-
-At minimum provide:
-
-- **Plots:** plot ID, site, station, area, latitude, longitude.
-- **Trees:** plot/survey ID, tree ID, species, DBH cm, height m, wood density and source.
-- **Soil layers:** plot/survey ID, core ID, depth interval, dry mass, core volume, LOI/%C, bulk density.
-- **Carbon results:** plot/survey ID, AGB carbon, BGB carbon, SOC, total Mg C/ha, equation version, calculation date, verification status.
-
-For XLSX, prefer separate sheets for Plots, Trees, Soil, Results, and Metadata. For CSV, provide separate files or a documented flattened export. Dates and decimals should be unambiguous.
-
-### 13.2 Report Export (P1)
-
-Include site/plot metadata, survey date, method citations, input completeness, carbon breakdown, total Mg C/ha, map snapshot where licensed, and report generation date.
-
-## 14. Backlog and Delivery Plan
-
-This is a **suggested sequence**, not a commitment to fixed calendar dates.
-
-| ID | Epic / Task | Priority | Deliverable | Dependencies |
-|---|---|---|---|---|
-| B-01 | Review proposal, PIC interview, confirm scope | P0 | Approved requirements and open-issues log | PIC access |
-| B-02 | Research existing mangrove systems and novelty | P0 | Comparison matrix and positioning | Reference research |
-| B-03 | Define personas, workflows, As-Is/To-Be | P0 | User flows and process diagrams | B-01 |
-| B-04 | Create low-fidelity wireframes | P0 | Figma wireframes | B-01, B-03 |
-| B-05 | Create interactive high-fidelity prototype | P0 | Clickable Figma prototype | B-04 |
-| B-06 | Define field dataset and validation rules | P0 | Data dictionary | PIC/scientific input |
-| B-07 | Confirm equations and validated example dataset | P0 | Calculation specification and test fixtures | PIC/scientific input |
-| B-08 | Implement plots and tree records | P0 | Working CRUD flow | B-06 |
-| B-09 | Implement GPS and satellite map | P0 | Interactive georeferenced plots | B-08, map provider |
-| B-10 | Implement soil samples and carbon engine | P0 | Reproducible AGB/BGB/SOC calculations | B-07, B-08 |
-| B-11 | Implement dashboard and plot detail | P0 | Carbon summaries and visualizations | B-10 |
-| B-12 | Implement CSV/XLSX export | P0 | Downloadable datasets | B-08, B-10 |
-| B-13 | Implement authentication and review status | P1 | Secure internal workflow | Roles confirmed |
-| B-14 | Build educational chatbot | P1 | Public chatbot with approved content | Content sources |
-| B-15 | Build manager data-query chatbot | P1 | Authorized plot Q&A | B-10, B-13 |
-| B-16 | Implement import and offline drafts | P1 | Data migration / field resilience | B-08 |
-| B-17 | User testing, scientific validation, bug fixes | P0 | UAT report and corrected prototype | Core flows |
-| B-18 | Deploy and prepare demonstration | P0 | Demo URL and user guide | B-17 |
-
-### 14.1 Suggested Initial Weekly Milestones
-
-| Week | Monday MCI Lab progress target |
-|---|---|
-| 1 | Requirements summary, existing-system comparison, initial sitemap/user flows |
-| 2 | Figma low-fidelity flows, field data dictionary, PIC questions |
-| 3 | Clickable Figma prototype: plot entry, map, dashboard, export, chatbot |
-| 4 | Prototype review feedback, updated PRD, approved calculation specification |
-| 5+ | Implementation and validation in priority order, if required by the course/PIC |
-
-If the current assignment is **Figma-only**, weeks 1–4 are the immediate commitment; implementation milestones are conditional.
-
-### 14.2 Monday Progress Report Template
-
-```markdown
-# Weekly Progress — Mangrove Carbon Stock Inventory
-
-**Week:**
-**Date:**
-**Team members:**
-
-## Completed this week
--
-
-## Demo / Figma links
--
-
-## Decisions confirmed with PIC
--
-
-## Blockers and risks
--
-
-## Plan for next week
--
-
-## Questions requiring PIC input
--
-```
-
-## 15. Success Metrics and Acceptance
-
-Proposed metrics; set targets with PIC:
-
-- Surveyor can create a plot and enter multiple tree measurements using a phone.
-- Plot GPS point appears at the expected location on satellite/normal map.
-- AGB/BGB/SOC calculations match PIC-approved reference examples.
-- Incomplete soil data is flagged and not misrepresented as complete carbon stock.
-- Manager can filter plots and export CSV/XLSX with correct units and records.
-- Figma prototype supports an end-to-end demonstration without dead-end navigation.
-- Public chatbot does not disclose restricted data; manager chatbot can explain where a numeric answer came from.
-- Weekly Monday demo includes visible completed work, blockers, and next actions.
-
-## 16. Risks and Mitigations
-
-| Risk | Impact | Mitigation |
-|---|---|---|
-| No validated field/lab dataset | Cannot validate calculations | Request anonymized sample and expected outputs early |
-| Formula selection differs by species | Incorrect carbon values | PIC-approved equation catalog, versioning, tests |
-| SOC missing from field-only records | Incomplete ecosystem carbon | Explicit incomplete status and lab-data workflow |
-| Poor field connectivity | Data loss | Draft saving; offline mode as P1 |
-| Inaccurate device GPS | Wrong plot location | Show accuracy and allow manual correction |
-| Basemap API cost/licensing | Deployment limitations | Verify provider terms and free-tier limits |
-| Chatbot hallucinations | Misleading environmental information | Approved sources, constrained retrieval, uncertainty statements |
-| Scope too broad | Missed prototype deadline | Deliver P0 Figma flows first, stage P1/P2 |
-| Unclear novelty | Weak project justification | Compare end-to-end workflows, not just feature labels |
-
-## 17. Open Questions for PIC
-
-1. Is the immediate expected deliverable **Figma prototype only**, or also a working website? What is the deadline?
-2. Who are the actual users and who validates/approves measurements?
-3. Can we obtain a sample field dataset, soil laboratory results, plot coordinates, and an expected carbon calculation?
-4. Which exact allometric equations, wood density sources, carbon fractions, and LOI-to-%C method are approved?
-5. Is satellite imagery intended **only as a map baselayer**, or must the system process satellite-derived vegetation data?
-6. Should the system use or import the existing Kebun Raya Mangrove atlas shapefiles/zone data? Is permission/access available?
-7. Is offline field entry essential? Are there existing GIS, Excel, or institutional databases to integrate with?
-8. Which chatbot features must work in the prototype, and which plot records may be public?
-9. What is the required export format and report template?
-10. Which criteria will be used to assess weekly MCI Lab progress and the final submission?
-
-## 18. Source Notes
-
-### User-supplied project brief and meeting notes
-
-- Field plot input (species, DBH); automatic AGB/BGB/SOC to Mg C/ha.
-- Per-plot dashboard and map; report export.
-- Educational visitor chatbot and plot-data manager chatbot.
-- Figma prototype, existing-system research and differentiation.
-- Improved manual field capture including DBH and coordinates.
-- Satellite-connected map experience.
-- CSV/Excel export and weekly Monday MCI Lab updates.
-
-### Provided 2026 ITS proposal
-
-- Integrated measurement of aboveground biomass, belowground root biomass, and soil organic carbon in East Surabaya.
-- Plot/station field inventory; DBH, species, height, wood density; sediment cores and laboratory LOI.
-- Automatic calculation, database, dashboard, and reports.
-- Scientific references: Komiyama et al. (2005), Kauffman & Donato (2012), Malik et al. (2023), and IPCC guidance.
-- Proposal mockups: dashboard, field entry, AGB/BGB calculation, bulk density/SOC, carbon summary.
-
-### Inspected reference website
-
-- [Atlas Sebaran Spesies — Kebun Raya Mangrove Kota Surabaya](https://realharyotpg-sketch.github.io/spesiesmangrovekrm/): species map, zone filters, zone boundaries, and satellite/natural basemap options. Live data availability was not established from the inspected page.
-
----
-
-**Document control:** Update priorities, formula rules, role permissions, and acceptance criteria after the first PIC review. Track decisions explicitly instead of treating draft assumptions as confirmed requirements.
+| Initial context | Mangrove conservation and field inventory in East Surabaya |
+| Deliverable stated in brief | Figma prototype; working website scope and deadline require PIC confirmation |
+| Review cadence stated in brief | Weekly progress review, every Monday at MCI Lab |
+
+## 1. Sources and decision status
+
+This revision uses the product brief and meeting-note summary already recorded in the previous
+PRD. No separate new brief accompanies this request. The original meeting notes and 2026 ITS
+proposal are not present in the inspected repository; their summaries are retained as source
+notes, not independently verified scientific specifications.
+
+The recorded brief asks for field plot input including species and diameter at breast height
+(DBH), automatic AGB/BGB/SOC calculations reported in Mg C/ha, a per-plot dashboard and map,
+report and CSV/Excel exports, a visitor education chatbot, a manager plot-data chatbot, a Figma
+prototype, existing-system research, improved manual field recording including coordinates,
+satellite-connected mapping, and Monday progress reviews.
+
+Requirement status means:
+
+- **Brief:** requested in the recorded brief. Inclusion in a particular release still depends
+  on the MVP decision in Q-01.
+- **Dependency:** necessary for a brief requirement or inherited from repository guardrails.
+  Missing details remain blocked by their listed questions.
+- **Proposed:** introduced by the earlier draft rather than established by the brief. No
+  implementation commitment exists until PIC decides.
+
+Existing functional IDs **FR-01 through FR-20 retain their meanings**. Added functional,
+non-functional, starter-decision, journey, screen, and question IDs are stable references;
+retired IDs must not be reassigned. Acceptance criteria below specify what must be demonstrated
+once the affected decisions are settled; they are not claims of current functionality.
+
+## 2. Problem, outcome, and MVP boundary
+
+Field tree measurements, coordinates, and soil laboratory results are recorded separately and
+then compiled for carbon calculations and reporting. The intended outcome is one traceable
+workflow connecting plot observations, approved calculations, spatial results, and exports,
+with separate educational and authorized operational chatbot experiences.
+
+The **MVP candidate** is an end-to-end plot workflow: enter plot and tree measurements, provide
+soil inputs required by the approved method, calculate carbon components, inspect a plot on the
+dashboard/map, and export results. Both chatbot journeys belong to the brief and remain in
+planning; their functional versus Figma-only delivery is unresolved. This PRD does not silently
+move either chatbot or report export to a later release.
+
+The immediate brief deliverable is a clickable Figma prototype. Whether the first assessed
+release also includes a working website, which flows must work, and the deadline are **Q-01**.
+There is no approved P0/P1/P2 release allocation. A working release with restricted field data
+must include authorization and ownership controls; security cannot be postponed merely because
+the earlier draft labeled roles P1.
+
+Success must be demonstrated through the journeys and requirement criteria below. Numeric
+targets for entry time, error reduction, scientific tolerance, performance, and final assessment
+have not been supplied (Q-04, Q-11, Q-12).
+
+## 3. Users and access needs
+
+These are user needs, not an approved role or permission matrix.
+
+| User ID | User | Need and source status | Unresolved permissions |
+| --- | --- | --- | --- |
+| USR-01 | Person recording field measurements | Enter plots, species, DBH, and coordinates; field capture is in the brief | Who may create, edit, correct, or delete which records; individual versus shared ownership (Q-02, Q-03, Q-15) |
+| USR-02 | Researcher / carbon analyst | Supply soil/lab inputs and validate calculation methods; proposed operational persona supporting the scientific workflow | Whether this is a separate role; access to other surveyors' records; authority over formulas and results (Q-02, Q-04, Q-05) |
+| USR-03 | Site manager | Inspect plot results and use the plot-data chatbot; named in the brief | Site/team read access, export rights, approval authority (Q-02, Q-03, Q-08) |
+| USR-04 | Ecotourism visitor | Receive mangrove and conservation education through the visitor chatbot; named in the brief | Whether any map, coordinates, or results are public (Q-03, Q-08) |
+| USR-05 | Administrator | Manage accounts, reference data, and configuration; proposed in the earlier draft | Whether an admin interface is needed and who operates it (Q-02, Q-04) |
+
+## 4. User journeys
+
+### JRN-01 — Record a field plot
+
+1. Enter through the approved access path; the starter's existing sign-in remains available.
+2. Open or create a plot and enter its agreed identifier, survey information, and coordinates.
+3. Enter species and DBH for multiple trees, plus inputs required by the approved equations.
+4. Check the plot position on the satellite-connected map.
+5. Correct validation errors and save; reopen measurements to check persistence.
+
+Invalid inputs identify the affected field. Failed saves retain values and show failure;
+pending submission prevents duplicate saves. Manual coordinate entry, GPS assistance, draft
+states, and offline persistence require their respective decisions. If map tiles fail, the
+measurement form must remain usable. References: FR-01–FR-04, FR-09, FR-21; Q-02–Q-07, Q-15.
+
+### JRN-02 — Produce a carbon result
+
+1. Open a plot's tree measurements and associated soil laboratory inputs.
+2. Confirm that all inputs required by the approved method are available and valid.
+3. Calculate AGB and BGB biomass, convert biomass to carbon, and calculate SOC.
+4. Inspect the component breakdown, units, method reference, and input completeness.
+5. Open the same result from the plot dashboard.
+
+Missing soil data must leave total ecosystem carbon incomplete, rather than silently treating
+SOC as zero. No approval/publishing state is assumed. References: FR-05–FR-07, FR-09, NFR-02,
+NFR-03; Q-03–Q-05.
+
+### JRN-03 — Inspect and export plot information
+
+1. Open the plot dashboard or map and select an accessible plot.
+2. Inspect tree information, carbon components, and missing-data indicators.
+3. Request the agreed dataset or report export.
+4. Open the downloaded file and reconcile its records, units, and results with the plot view.
+
+Empty datasets, inaccessible plots, and failed downloads have explicit states. Search/filter
+choices and whether multiple plots may be aggregated remain unresolved. References: FR-04,
+FR-07, FR-08, FR-14, FR-21; Q-03, Q-06, Q-09, Q-10.
+
+### JRN-04 — Ask a manager data question
+
+1. Authenticate and open the manager chatbot through the approved access path.
+2. Ask about accessible plot data, such as a plot's carbon result.
+3. Receive an answer traceable to the relevant plot/result and its completeness.
+
+No accessible data, incomplete results, unavailable service, and unanswerable questions need
+explicit responses. The chatbot obeys the same access rules as direct data access and exports.
+Supported question types and verification requirements remain open. References: FR-11, FR-12,
+FR-21, NFR-01; Q-01–Q-04, Q-08, Q-13.
+
+### JRN-05 — Learn about mangrove conservation
+
+1. Open the visitor education experience without access to internal field records.
+2. Ask an educational question about mangroves, ecology, or conservation.
+3. Receive an answer supported by approved material, or an explicit indication that the
+   material does not support an answer.
+
+The visitor chatbot must never retrieve restricted plots or precise unpublished coordinates.
+Public map access is a separate unresolved decision. References: FR-13, FR-21, NFR-01;
+Q-01, Q-03, Q-08, Q-13.
+
+## 5. Functional requirements and acceptance criteria
+
+| ID | Requirement | Status | Acceptance criteria | Open decisions |
+| --- | --- | --- | --- | --- |
+| FR-01 | Create, view, and edit plot records linked to field measurements | Brief | An authorized user can save and reopen a plot using the agreed identifier and fields; invalid required values are rejected; uniqueness follows the agreed scope | Q-01, Q-02, Q-03, Q-05, Q-15 |
+| FR-02 | Record multiple trees per plot, including species and DBH in cm | Brief | Saved trees remain linked to the correct plot/survey; nonpositive DBH is rejected; inputs required by the selected method are validated and retain their units | Q-01, Q-03, Q-04, Q-05 |
+| FR-03 | Assist coordinate entry with browser GPS and manual correction | Proposed | If selected, denied/unavailable GPS still allows valid manual coordinates; available accuracy is shown; no location capture occurs without browser permission | Q-01, Q-06, Q-07 |
+| FR-04 | Provide an interactive plot map with satellite-connected context | Brief | Selecting a visible plot opens its matching details; failed map loading has an explicit state and does not discard measurements; imagery/source attribution follows approved terms | Q-01, Q-03, Q-06, Q-10, Q-13 |
+| FR-05 | Calculate AGB/BGB biomass and corresponding carbon with approved methods | Brief | Approved reference inputs reproduce expected component results within the agreed tolerance; formulas, inputs, units, and versions are identifiable; unsupported/missing inputs cannot produce a successful result | Q-01, Q-04, Q-05 |
+| FR-06 | Capture required soil/lab measurements and calculate SOC | Brief | Approved layer/sample inputs reproduce expected SOC; missing mandatory inputs are identified and never substituted with zero; LOI conversion uses only an approved method | Q-01, Q-04, Q-05 |
+| FR-07 | Show a per-plot dashboard with carbon components in Mg C/ha | Brief | Displayed results match the selected plot and calculation; biomass and carbon are distinguished; total ecosystem carbon is complete only when all required components are available | Q-01, Q-03, Q-04, Q-05, Q-10, Q-16 |
+| FR-08 | Export datasets in CSV/Excel formats | Brief | Agreed CSV and Excel outputs open successfully, identify records and units, match the authorized selection and displayed calculation, and distinguish missing values from zero; failure never reports a successful download | Q-01, Q-03, Q-09, Q-10 |
+| FR-09 | Validate field inputs and calculation completeness | Dependency | Errors name the field and required correction; invalid coordinates, nonpositive measurements, and missing method inputs are rejected; validation also occurs at trusted data boundaries; failed save retains input | Q-04, Q-05, Q-06 |
+| FR-10 | Deliver a clickable Figma prototype | Brief | Agreed mobile field and desktop management journeys can be demonstrated without dead ends; validation, missing SOC, empty/error states, exports, and chatbot scope are represented; simulated results are labeled | Q-01, Q-10, Q-12, Q-14 |
+| FR-11 | Preserve authentication and define product access roles | Dependency | Existing email/password, confirmation retry, session refresh, safe return destinations, and logout remain; every implemented restricted operation enforces approved access rules, including direct requests | Q-02, Q-03 |
+| FR-12 | Provide a manager chatbot for authorized plot-data questions | Brief | Supported answers identify source plots/results and missing data; unauthorized plots cannot be retrieved or inferred through answers; unsupported questions and service failures are explicit; queries do not mutate records | Q-01, Q-02, Q-03, Q-04, Q-08, Q-13 |
+| FR-13 | Provide a visitor education chatbot | Brief | Supported answers use approved educational material; unsupported questions and service failures are explicit; testing confirms no access to restricted field records | Q-01, Q-03, Q-08, Q-13, Q-14 |
+| FR-14 | Export a readable summary report | Brief | Approved report includes selected plot identity, carbon units/results, input completeness, and method references; content agrees with the dataset; format/template and any licensed map imagery are approved | Q-01, Q-03, Q-04, Q-09 |
+| FR-15 | Import historical CSV/XLSX data | Proposed | If selected, users preview mapping and row errors before writing; ownership rules apply; invalid rows cannot be silently accepted; partial-import behavior follows the agreed contract | Q-01, Q-03, Q-05, Q-07 |
+| FR-16 | Review, approve, reject, and publish data/results | Proposed | If selected, only approved actors perform agreed transitions; changed inputs cannot retain an invalid verification label; review history follows the agreed policy | Q-01, Q-02, Q-03, Q-15 |
+| FR-17 | Preserve field drafts offline and synchronize later | Proposed | If selected, drafts survive agreed offline conditions and sync failures; conflicts are visible; no promised offline workflow silently loses measurements | Q-01, Q-07, Q-15 |
+| FR-18 | Display additional satellite-derived data layers | Proposed | If selected, layers show source, date, legend, and permitted use; no imagery-derived carbon result is presented without an approved method | Q-01, Q-04, Q-06 |
+| FR-19 | Compare repeated surveys over time | Proposed | If selected, observations from different dates remain distinguishable and comparisons use compatible methods/units; earlier results are not overwritten | Q-01, Q-04, Q-05, Q-15 |
+| FR-20 | Attach field photographs | Proposed | If selected, files link to the correct plot/tree, obey access rules, and receive trusted file validation; failed uploads do not create false success | Q-01, Q-03, Q-13, Q-15 |
+| FR-21 | Define and enforce ownership for all product records | Dependency | Approved matrix covers view/create/edit/delete/export/chatbot access; unauthorized cross-owner access is denied, including direct requests; linked measurements and derived results cannot bypass plot access; public responses expose only permitted fields | Q-02, Q-03, Q-08, Q-15 |
+| FR-22 | Preserve the starter foundation while product adaptation is undecided | Dependency | Starter behavior satisfies the keep decisions in section 9; examples and sandbox samples are not presented as scientific product records or live services | Q-02, Q-10, Q-14, Q-16 |
+| FR-23 | Research existing systems and product differentiation | Brief | Team records dated references, evidenced capabilities, workflow gaps, and unverified claims; no novelty claim relies only on an unverified feature list | Q-12 |
+| FR-24 | Demonstrate weekly progress at Monday MCI Lab reviews | Brief | Each review records completed work, demo/Figma links when available, decisions, blockers, and next actions; assessment targets and participants are confirmed rather than invented | Q-01, Q-12 |
+
+## 6. Screens and navigation
+
+Screen IDs describe required experiences, not an approved sitemap or promise of separate pages.
+New product routes, grouping, filters, summary metrics, and dashboard-wide aggregation require
+Q-10. Public entry routing also depends on Q-14.
+
+| Screen ID | Experience | Essential content and states | Requirements |
+| --- | --- | --- | --- |
+| SCR-01 | Existing starter landing `/` | One centered button to `/sandbox`; no shared branded header | FR-22 |
+| SCR-02 | Existing sign-in, registration, confirmation | `/login`, `/register`, `/auth/confirm`, `/auth/callback`; validation, expired-link retry, unconfigured auth, session failure | FR-11, FR-22 |
+| SCR-03 | Plot list/selection | Accessible plots, entry to create/open a plot, loading/empty/error/unavailable states; search and filters undecided | FR-01, FR-09, FR-21 |
+| SCR-04 | Plot and tree entry | Plot fields, coordinates, repeatable species/DBH inputs, visible units, validation, save/pending/failure states | FR-01–FR-03, FR-09 |
+| SCR-05 | Soil/laboratory input | Required soil measurements with units and plot/survey links; invalid and incomplete input states | FR-06, FR-09 |
+| SCR-06 | Plot detail/carbon dashboard | Tree context, AGB/BGB carbon, SOC, complete/incomplete total, method/provenance and calculation errors; additional metrics/charts undecided | FR-05–FR-07 |
+| SCR-07 | Interactive map | Plot selection, satellite context, accessible plot details, map loading/failure; basemap toggle, boundaries and filters undecided | FR-04 |
+| SCR-08 | Export interaction | Authorized selection, agreed CSV/Excel/report choices, progress, empty selection, download and failure states; separate export center undecided | FR-08, FR-14 |
+| SCR-09 | Manager chatbot | Supported plot question, source results, incomplete/unavailable answer and service error | FR-11, FR-12, FR-21 |
+| SCR-10 | Visitor education chatbot | Approved educational content, unsupported-answer/service-error states; no private data | FR-13, FR-21 |
+| SCR-11 | Existing public sandbox `/sandbox` | All 81 demos, searchable alphabetical catalog, local sample state, theme control | FR-22 |
+| SCR-12 | Existing project examples | `/dashboard`, `/projects`, `/projects/[id]`; protected project overview and private CRUD remain while adaptation is undecided | FR-11, FR-22 |
+
+Admin, review/publishing, import, historical comparison, and attachment screens are conditional
+on approval of their proposed requirements. This PRD does not add a marketing homepage,
+customization page, workspace preview, or instructional design panel.
+
+## 7. Data, science, and ownership
+
+### 7.1 Minimum conceptual data
+
+This is a data inventory for decision-making, not an approved database schema. The recorded
+proposal summary mentions stations/plots, DBH, species, height, wood density, sediment cores,
+and laboratory LOI. Required versus optional fields, allowed ranges, identifiers, survey
+repetition, and scientific input rules must be settled through Q-04 and Q-05.
+
+| Record | Needed information or method-dependent inputs | Relationship / decision |
+| --- | --- | --- |
+| Plot | Identifier, coordinates, area for hectare conversion; site/station and survey date as applicable | Identifier uniqueness and site hierarchy undecided |
+| Tree measurement | Species, DBH (cm); height (m), wood density (g/cm³) and source where the method requires them | Linked to plot and, if adopted, a survey; tree identity rules undecided |
+| Soil sample/layer | Sample identity, depth/thickness, dry mass, core volume or approved bulk density, measured %C or LOI with approved conversion, lab source | Linked to plot/survey; layers linked to a core if that model is approved |
+| Method/reference | Equation form, coefficients, applicability, wood-density source, carbon fractions, LOI conversion, units and version | Scientific approver and configuration interface undecided |
+| Calculation result | Source plot/survey and inputs, method/version, calculation date, carbon components, completeness and total when valid | Snapshot/history and recalculation policy undecided; result must remain traceable |
+| Account/access | Authenticated identity and approved ownership/access relationship | Existing accounts have no product role or site membership model |
+| Educational material | Approved mangrove/conservation content and source attribution | Content approver, language, update process and chatbot storage undecided |
+
+Notes, conditions, zones, approval states, audit events, photos, and chat history are not mandatory
+fields merely because they appeared in the earlier proposed schema.
+
+### 7.2 Scientific contract
+
+FR-05, FR-06, FR-07, FR-09, and NFR-02/NFR-03 require:
+
+- Approved AGB and BGB equations with required species/DBH/height/wood-density inputs.
+- Conversion from biomass to carbon before combining it with SOC.
+- Soil inputs sufficient for the approved SOC method; species and DBH alone are insufficient.
+- Consistent plot-area and layer-unit conversions, with results in **Mg C/ha**.
+- Traceable input values, method references/versions, constants, and calculation date.
+- Explicit incomplete results: unavailable SOC is never silently zero and a biomass-only result
+  is never labeled complete ecosystem carbon.
+- Approved reference examples, precision, rounding, and numeric tolerance before acceptance.
+
+The previous PRD's proposal summary cites Komiyama et al. (2005), Kauffman & Donato (2012),
+Malik et al. (2023), and IPCC guidance. Its listed AGB/BGB carbon fractions and CO₂ conversion
+values are unvalidated proposal inputs, not implementation defaults. Exact equations, constants,
+LOI conversion and applicability remain Q-04. CO₂-equivalent reporting is outside the current
+brief scope unless explicitly selected.
+
+### 7.3 Current ownership versus product ownership
+
+The only application data table currently defined is `public.projects`. Each project has
+`user_id` defaulting to `auth.uid()`; RLS restricts select/insert/update/delete to that user.
+The trigger prevents ownership changes and preserves identity/creation time. Deleting an auth
+user cascades deletion of that user's projects. Private query caches are scoped to user identity
+and cleared on account changes/logout. No team membership, institutional owner, site permissions,
+product roles, or public plot policy exists.
+
+This is **example project ownership**, not an approved ownership policy for mangrove records.
+Do not infer that a manager may read all surveyors' data or that creator-only ownership meets
+the brief. The data steward, access boundary (individual/site/team/institution), record creator
+versus owner, permitted edits, exports, publication, and retention remain Q-02/Q-03/Q-15.
+
+Until those decisions are approved, restricted product records must not be made public. Public
+education and sandbox demos use approved public content/sample state. Coordinates, lab data,
+tree records, calculation results, exports, and chatbot retrieval obey the same approved access
+boundary. New product entities must not inherit the example's account-deletion cascade without
+an explicit decision. Retention/deletion of field data, results, uploads and conversations also
+require confirmation.
+
+### 7.4 Export contract to settle
+
+The brief includes CSV/Excel datasets and reports. Proposed output content is plot identifiers
+and locations, tree species/measurements, soil inputs where included, carbon components and
+completeness, units, method/version and calculation date. Exact headers, required columns,
+selection/filter behavior, CSV structure, Excel workbook sheets, and report format/template are
+Q-09. Verification labels cannot be exported unless FR-16's workflow is approved.
+
+## 8. Non-functional requirements
+
+| ID | Requirement | Acceptance criteria / pending decision |
+| --- | --- | --- |
+| NFR-01 | Security and privacy | Authorization protects direct reads/writes, exports, and chatbot retrieval; no cross-owner leak; no privileged credentials in browser config or source; anonymous users cannot obtain restricted coordinates/results (Q-02, Q-03, Q-08, Q-13) |
+| NFR-02 | Calculation accuracy | Deterministic outputs pass approved reference examples within agreed tolerance and rounding rules; invalid or unsupported data cannot pass as a valid result (Q-04) |
+| NFR-03 | Integrity and provenance | Records retain correct parent links; trusted validation and constraints prevent invalid inputs; displayed/exported results identify methods and source inputs; revision/history rules remain Q-04/Q-05/Q-15 |
+| NFR-04 | Recoverable failures | Failed submissions retain input, pending operations prevent duplicates, and failed reads/calculations/exports/services have explicit recovery states; offline guarantees and backup targets remain Q-07/Q-11/Q-15 |
+| NFR-05 | Accessibility and responsive use | Agreed field/manager flows work at 360 px and desktop in both themes, with labeled errors, keyboard access, visible focus, dialog focus return and reduced motion; prototype/platform coverage remains Q-01/Q-10/Q-14 |
+| NFR-06 | Theme persistence | Retain the year-long site-wide theme cookie and server-applied theme; navigation, sandbox reset, and portaled overlays keep the saved theme; visual conflict remains Q-14 |
+| NFR-07 | Dataset and performance limits | Agree plot/tree/sample counts, concurrent users, supported devices/networks, list/map/export response targets and reliability expectations before judging performance (Q-11) |
+| NFR-08 | External-source use | Maps/content use approved sources with attribution and permitted access; source dates and limitations are documented; service budgets, quotas and retention are confirmed (Q-06, Q-08, Q-13) |
+
+## 9. Explicit decisions about the starter
+
+These decisions preserve current repository guardrails. A pending adaptation is not permission
+to replace or remove an example. No implementation is authorized by this documentation update.
+
+| Decision ID | Starter feature and inspected behavior | Disposition and requirement impact |
+| --- | --- | --- |
+| DEC-01 | Email/password auth, registration, email confirmation/retry, cookie sessions and logout | **Keep** the existing foundation. Product onboarding, role allocation and open signup versus invitations are unresolved; registration does not grant access to other users' records (FR-11, Q-02/Q-03) |
+| DEC-02 | Protected `/dashboard` showing project counts and recent projects | **Keep** the protected route and existing example for now. Carbon dashboard is planned under FR-07; replacing this example or adding a separate product dashboard needs an explicit route decision (Q-10/Q-16) |
+| DEC-03 | Private project list/detail/create/edit/delete, `projects` schema and RLS | **Keep** the example and its data. It is not a plot/survey model. No rename, table reuse, deletion, migration of existing records, or replacement is approved (FR-21/FR-22, Q-03/Q-16) |
+| DEC-04 | Public `/sandbox`, 81 component demos and sample ProjectForm | **Keep** all demos publicly available and isolated from private data. Search here searches the component catalog; it does not satisfy product plot search (FR-22) |
+| DEC-05 | Landing `/` with one centered button linking to `/sandbox` | **Keep** this entry and pages without shared branded headers. Earlier proposed public-information landing conflicts with AGENTS.md; public education entry must be decided explicitly (FR-13/FR-22, Q-14) |
+| DEC-06 | Beautiful UI/Base UI controls, Lucide icons and persistent light/dark themes | **Reuse** existing controls and tokens; preserve MIT attribution, shared Button behavior and accessibility. No second UI library or customization screens (FR-22, NFR-05/NFR-06) |
+| DEC-07 | Next.js App Router, TypeScript, Supabase SSR, TanStack Query, RHF and Zod | **Keep** existing architecture. New product data follows feature components → hooks → API modules → shared Supabase SDK; earlier separate-backend/PostGIS suggestion is not an approved change |
+| DEC-08 | Upload/dropzone controls and upload demos; local Supabase storage disabled | **Keep** sample controls. They do not provide persisted attachments; FR-20 remains proposed and storage/security/retention require approval |
+| DEC-09 | AI/chat UI demos and shared Axios client; no live AI integration | **Keep** demos as samples. FR-12/FR-13 are planned with unresolved provider/content/budget choices; an FAQ cannot silently substitute for requested chatbots |
+| DEC-10 | Table/search/filter controls; no application plot search/filter data flow | **Reuse** controls if product search/filter scope is approved. Their presence does not approve filters or backend query behavior (Q-10) |
+| DEC-11 | No product realtime or offline sync implementation | **Leave unimplemented**. Realtime is not in the recorded brief; offline/import/history/attachments need separate scope decisions (FR-15/FR-17/FR-19/FR-20) |
+
+No example feature is approved for removal. The inspected starter contains no mangrove plot,
+tree/soil model, carbon engine, plot map, product export, role matrix, or live chatbot.
+
+## 10. Out-of-scope and conditional work
+
+The following have no implementation authorization or established requirement in the recorded
+brief: automatic DBH measurement/species identification from ordinary photos, SOC inferred only
+from species/DBH or imagery, carbon-credit certification/trading/formal MRV accreditation,
+nationwide automated monitoring, billing, realtime collaboration, and CO₂-equivalent reporting.
+Public disclosure of restricted raw field data is prohibited.
+
+The earlier draft's bulk import, review/publishing workflow, offline sync, satellite-derived
+analysis layers, longitudinal comparison, photo attachments, admin screens, and GeoJSON/shapefile
+integration remain **conditional proposals**, not an accepted next-release commitment. GPS
+capture, normal/satellite toggles, map filters, extra charts, and public maps also require explicit
+decisions. CSV/Excel export, report export and both chatbot experiences remain brief requirements;
+their release timing is unresolved rather than presumed out of scope.
+
+This task updates only PRD.md. It does not implement features, create tickets, change design or
+agent instructions, select dependencies/providers, apply migrations, configure accounts, or
+deploy. BACKLOG.md remains the canonical ticket source and currently has no product tickets.
+
+## 11. Unresolved questions and affected requirements
+
+Questions are grouped so PIC/team can resolve a decision once and unblock affected work.
+No decision owner is invented; PIC and the team must name accountable approvers.
+
+| ID | Decision needed | Affected requirements |
+| --- | --- | --- |
+| Q-01 | Is the first deliverable Figma-only or a working website? What are deadline, accepted MVP flows, chatbot/report delivery level, and release allocation? Which proposed features, if any, are selected? | FR-01–FR-20, FR-24; NFR-05 |
+| Q-02 | Who records, analyzes, manages, and administers data? Which roles are distinct? Who may invite/register users, assign roles, edit others' records, configure formulas, and approve results? | FR-01, FR-11, FR-12, FR-16, FR-21, FR-22; NFR-01 |
+| Q-03 | Who owns/stewards the dataset: individual, site, team, or institution? What is the exact read/create/edit/delete/export matrix? Which records/fields/coordinates can be public, and who approves publication? | FR-01, FR-02, FR-04, FR-07, FR-08, FR-11–FR-16, FR-20–FR-22; NFR-01 |
+| Q-04 | Which equations, coefficients, applicability rules, density sources, carbon fractions, LOI conversion, depth conventions, missing-data behavior, precision/rounding and tolerance are approved? Can PIC supply reference inputs and expected results? | FR-02, FR-05–FR-07, FR-09, FR-12, FR-14, FR-18, FR-19; NFR-02/NFR-03 |
+| Q-05 | Can we obtain a permitted sample field/lab dataset? What are required fields, numeric limits, duplicate/identifier scopes, site/station hierarchy, survey/tree/core identities and repeat-survey model? | FR-01, FR-02, FR-05–FR-07, FR-09, FR-15, FR-19; NFR-03 |
+| Q-06 | Does satellite-connected mean basemap context, imagery analysis, or both? Which provider/terms, coordinate convention, GPS accuracy behavior, basemap toggle and boundary datasets are approved? May atlas data be reused/imported? | FR-03, FR-04, FR-09, FR-18; NFR-08 |
+| Q-07 | Is connectivity reliable enough for online entry? Is browser GPS mandatory? Are drafts/offline sync or bulk imports required, and what are supported devices, conflict and partial-failure rules? | FR-03, FR-15, FR-17; NFR-04 |
+| Q-08 | Which questions must each chatbot answer, in which language, from which approved sources? Must manager answers use verified data? Is public map access required? Who maintains educational content? | FR-12, FR-13, FR-21; NFR-01/NFR-08 |
+| Q-09 | Are both CSV and XLSX required? What are exact columns, sheets/files, selection rules, date/decimal conventions and report format/template? Are PDF and map snapshots required? | FR-08, FR-14 |
+| Q-10 | What is the product sitemap and entry navigation? Which screens are separate or combined? Which list/map filters, charts, counts and multi-plot aggregates are required? Where does the product dashboard live? | FR-04, FR-07, FR-08, FR-10, FR-22; NFR-05 |
+| Q-11 | What dataset scale, concurrent use, supported browsers/devices, response targets, uptime, backups and recovery targets should the working release satisfy? | NFR-04/NFR-07 |
+| Q-12 | What evidence and assessment criteria are needed for Figma usability, scientific correctness, reference research, Monday reviews and final acceptance? Who signs off? | FR-10, FR-23, FR-24 |
+| Q-13 | Which map/AI/storage services, hosting environment, funding, quotas/rate limits and secret-management arrangements are approved? What privacy and conversation/file retention rules apply? | FR-04, FR-12, FR-13, FR-20; NFR-01/NFR-08 |
+| Q-14 | How should visitors reach education while preserving the centered sandbox landing? Is the Clay reference an accepted product design, and how will its pills, fonts and branded navigation be reconciled with AGENTS.md's shared UI rules? | FR-10, FR-13, FR-22; NFR-05/NFR-06 |
+| Q-15 | What may be corrected/deleted, by whom and for how long? Are online draft states, audit trail, result snapshots and invalidation/recalculation required? What happens on account deletion or conflicting updates? | FR-01, FR-16, FR-17, FR-19–FR-21; NFR-03/NFR-04 |
+| Q-16 | Should product screens coexist with, adapt, or replace project examples? If replacement is requested, what happens to `/dashboard`, `/projects`, existing project data and sandbox's ProjectForm dependency? | FR-07, FR-22 |
+
+## 12. Conflicts, acceptance gate, and source references
+
+The earlier draft treated authentication as later work while proposing private field workflows;
+FR-11/FR-21/NFR-01 now make access control a dependency of any working restricted-data release.
+Its public-information landing conflicts with the instruction to preserve `/`'s centered sandbox
+button. DESIGN.md is a Clay marketing reference with proposed pill buttons, alternate fonts and
+branded navigation that conflict with current shared UI conventions. These are recorded under
+Q-14; this revision does not choose between them or change those files.
+
+The earlier generic architecture and suggested implementation backlog are superseded by the
+inspected starter baseline and BACKLOG.md's canonical planning process. No stack replacement,
+new backend, database extension, feature removal or delivery date is decided here.
+
+Before implementation tickets can be Ready, settle their referenced questions, approve their
+contracts and acceptance criteria, and align affected design/agent instructions. Working-feature
+acceptance requires current typecheck, lint, tests and build results; relevant browser checks in
+both themes, keyboard/reduced-motion/360 px checks; and disposable-environment isolation checks
+for ownership/schema work. Scientific results require approved calculation fixtures. Prototype
+navigation and mocked data do not prove live authentication, isolation, calculations or deployment.
+No such runtime checks or acceptance evidence are claimed by this documentation revision.
+
+Reference leads retained from the previous draft for FR-23: [Atlas Sebaran Spesies — Kebun Raya
+Mangrove Kota Surabaya](https://realharyotpg-sketch.github.io/spesiesmangrovekrm/),
+[Global Mangrove Watch](https://www.globalmangrovewatch.org/), and
+[SI-PPEM](https://www.mangroves.app/). Their current capabilities, data access and licensing have
+not been checked in this task; no verified novelty claim is made.
+
+Repository evidence inspected: [AGENTS.md](AGENTS.md), [README.md](README.md),
+[DESIGN.md](DESIGN.md), [BACKLOG.md](BACKLOG.md), [package.json](package.json),
+[routes](src/app/), [auth](src/features/auth/), [project APIs and validation](src/features/projects/),
+[ownership migration](supabase/migrations/20261011000000_projects.sql),
+[sandbox](src/features/sandbox/), [providers](src/providers/),
+[Supabase configuration](supabase/config.toml), and existing contract/catalog tests.
