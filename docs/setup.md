@@ -12,46 +12,9 @@ pnpm install
 pnpm run dev
 ```
 
-Open http://localhost:3000/sandbox. No environment variables or Supabase account are needed for the landing page and sandbox. Browse one searchable sidebar containing all 81 component demos, with a shared preview and variant/replay controls. Direct previews: [Accordion](http://localhost:3000/sandbox?component=accordion) and [Dropdown](http://localhost:3000/sandbox?component=dropdown-menu). Component search stays visible while the sidebar list scrolls. Light/dark mode persists in a cookie across refreshes and navigation; the sandbox makes no Supabase requests.
+Open http://localhost:3000/sandbox. No environment variables are needed. Browse one searchable sidebar containing all 81 component demos, with a shared preview and variant/replay controls. Direct previews: [Accordion](http://localhost:3000/sandbox?component=accordion) and [Dropdown](http://localhost:3000/sandbox?component=dropdown-menu). Component search stays visible while the sidebar list scrolls. Light/dark mode persists in a cookie across refreshes and navigation.
 
 Dependencies and `pnpm-lock.yaml` are installed. Use `pnpm install --frozen-lockfile` for reproducible team and CI installs.
-
-## Connect Supabase
-
-```sh
-cp .env.example .env.local
-```
-
-Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from your project’s Connect dialog. These are public browser credentials. Never use a service-role/secret key here.
-
-Choose one database setup:
-
-- **Hosted project:** create a development Supabase project, run `supabase login`, `supabase link --project-ref YOUR_PROJECT_REF`, and `supabase db push`. Confirm the linked project before pushing. Alternatively apply the migration from `supabase/migrations/` through the SQL editor.
-- **Local project:** install the Supabase CLI and Docker, run `supabase start`, then `supabase db reset` against the disposable local database. Read the local URL and publishable/anon key using `supabase status`, and put them in `.env.local`. Local email messages are available at http://localhost:54324.
-
-Regenerate the bootstrapped database types after applying the migration:
-
-```sh
-# Local database
-pnpm run db:types
-
-# Hosted development database
-supabase gen types typescript --linked > src/types/database.ts
-```
-
-Restart `pnpm run dev` after environment changes. Public environment variables are baked into the browser bundle; set them before building deployments.
-
-In Supabase Auth URL Configuration, set the Site URL to `http://localhost:3000` and add `http://localhost:3000/auth/callback` to allowed redirect URLs. Keep email confirmation enabled and test it early.
-
-The callback supports PKCE `code` exchange. To make confirmation work across devices, set the **Confirm signup** email template’s link to:
-
-```html
-<a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email"
-  >Confirm email</a
->
-```
-
-For deployments, update the Site URL and allowed callback origins to the deployed URL. Invalid/expired links offer a new confirmation email from `/auth/confirm`. The cross-device template uses the Site URL, so use a designated development origin for previews.
 
 ## Commands
 
@@ -62,10 +25,6 @@ For deployments, update the Site URL and allowed callback origins to the deploye
 | `pnpm run typecheck`            | Strict TypeScript check                                    |
 | `pnpm run lint`                 | ESLint                                                     |
 | `pnpm test`                     | Node tests for contracts, theme persistence, chart scaling |
-| `pnpm run test:rls`             | Real two-user database isolation check                     |
-| `pnpm run db:types`             | Generate types from the local Supabase schema              |
-
-The RLS check needs two different, disposable, confirmed users and the `RLS_TEST_*` values in `.env.local`. It creates temporary rows, verifies direct SDK read/write/delete isolation, constraints, owner CRUD, and timestamps, and attempts cleanup. Never run against production. Register test users through the app; no passwords are seeded or committed.
 
 ## UI components and styles
 
@@ -76,7 +35,7 @@ All reusable components live in `src/components/ui/`. The button demo shows stan
 - `src/components/ui/`: one flat component library containing the 21 catalog components, shared controls and feedback, tokens, and source license; see [design rules](../DESIGN.md).
 - `src/app/sandbox/page.tsx`: thin public gallery route.
 - `src/features/sandbox/`: gallery demos in `components/`, catalog data in `constants/`, and component-selection checks in `validations/`.
-- `src/features/projects/components/`: feature forms and cards; the sandbox reuses the project form.
+- `src/features/projects/`: only the project form and its schema, which the sandbox reuses.
 
 Change shared colors and radii in the design token files. The sandbox contains component previews and a theme toggle; it has no customization page or live accent/radius controls. The UI uses the neutral primary color for highlights and actions in both themes. Light/dark mode is a saved preference; the root layout reads the cookie and renders the correct theme before hydration. Reading this cookie makes pages render at request time. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
 
@@ -89,10 +48,8 @@ requirement changes them.
 
 Group feature files by purpose: `components/`, `hooks/`, `api/`, `validations/`, `constants/`, and `types/`. Create only the folders a feature needs; import their files directly.
 
-Axios is installed and a shared client is provided in `src/lib/axios.ts` for future Route Handler integrations. Ordinary CRUD uses Supabase directly. The optional AI flow has no placeholder endpoint; specify authorization, quota, origin validation, provider behavior, and failures in the product PRD before implementing it.
+Axios is installed and a shared client is provided in `src/lib/axios.ts` for future Route Handler integrations. The optional AI flow has no placeholder endpoint; specify authorization, quota, origin validation, provider behavior, and failures in the product PRD before implementing it.
 
 ## Deploy
 
-Import this repository into Vercel, choose Node 22, configure public Supabase environment variables, apply reviewed migrations to the intended database, and deploy. Use an isolated development database for previews. Update Supabase Auth URLs and complete the backlog's Definition of Done before calling it ready.
-
-Deployment and live Supabase flows require your infrastructure configuration; neither was provisioned by this source implementation.
+Import this repository into Vercel, choose Node 22, and deploy. Deployment requires your own infrastructure configuration; none was provisioned by this source implementation.

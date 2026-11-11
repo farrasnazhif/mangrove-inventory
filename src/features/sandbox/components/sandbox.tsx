@@ -108,7 +108,7 @@ export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: s
                 variant="secondary"
                 nativeButton={false}
                 role="link"
-                render={<Link href="/dashboard" />}
+                render={<Link href="/ringkasan" />}
               >
                 Open app
               </Button>

@@ -3,95 +3,85 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  LayoutDashboard,
-  Folder,
-  FlaskConical,
-  LogOut,
-  ArrowUpRight,
-} from "lucide-react";
-import { useAuth } from "@/providers/auth-provider";
-import { logout } from "@/features/auth/api/auth";
+import { Bell, Folder, FlaskConical, Layers, Map, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
+import { Dialog } from "@/components/ui/dialog";
+import SidebarNav from "@/components/ui/sidebar-nav";
+
+const PRODUCT_NAV = [
+  { key: "/ringkasan", label: "Ringkasan", icon: <Layers size={18} /> },
+  { key: "/data-lapangan", label: "Data Lapangan", icon: <Folder size={18} /> },
+  {
+    key: "/perhitungan-karbon",
+    label: "Perhitungan Karbon",
+    icon: <Layers size={18} />,
+  },
+  {
+    key: "/bulk-density-soc",
+    label: "Bulk density & SOC",
+    icon: <FlaskConical size={18} />,
+  },
+  { key: "/peta-plot", label: "Peta Plot", icon: <Map size={18} /> },
+];
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const user = useAuth();
   const pathname = usePathname();
-  const queryClient = useQueryClient();
   const router = useRouter();
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function go(href: string) {
+    setMenuOpen(false);
+    router.push(href);
+  }
+
+  const sidebar = (
+    <SidebarNav
+      fill
+      className="py-4"
+      header={
+        <Link href="/ringkasan" className="truncate">
+          Mangrove inventory
+        </Link>
+      }
+      newChatLabel={null}
+      navItems={PRODUCT_NAV}
+      activeNav={PRODUCT_NAV.find((i) => pathname.startsWith(i.key))?.key ?? ""}
+      onNavigate={go}
+      listLabel={null}
+      footerLabel={null}
+    />
+  );
+
   return (
-    <div className="app-layout">
-      <aside className="sidebar">
-        <div className="workspace-label">
-          <span className="size-2 rounded-full bg-accent" />
-          Personal workspace
-        </div>
-        <nav aria-label="Main navigation" className="nav-links">
-          {[
-            { href: "/dashboard", label: "Overview", Icon: LayoutDashboard },
-            { href: "/projects", label: "Projects", Icon: Folder },
-            { href: "/sandbox", label: "UI sandbox", Icon: FlaskConical },
-          ].map(({ href, label, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`nav-link ${pathname.startsWith(href) ? "nav-active" : ""}`}
-              aria-current={pathname.startsWith(href) ? "page" : undefined}
-            >
-              <Icon size={18} />
-              {label}
-              {href === "/sandbox" && (
-                <ArrowUpRight size={14} className="ml-auto" />
-              )}
-            </Link>
-          ))}
-        </nav>
-        <div className="sidebar-note">
-          <p className="eyebrow">Built to be replaced</p>
-          <p className="text-xs text-muted leading-relaxed mt-2">
-            The foundation is ready. Make the next great thing yours.
-          </p>
-        </div>
-        <div className="sidebar-account">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="avatar">
-              {user?.email?.[0]?.toUpperCase() ?? "U"}
-            </span>
-            <div className="min-w-0">
-              <p className="text-sm font-medium truncate">{user?.email}</p>
-              <p className="text-xs text-muted mt-0.5">Private workspace</p>
-            </div>
-          </div>
-          <Button
-            className="mt-4 w-full"
-            variant="ghost"
-            loading={busy}
-            onClick={async () => {
-              setBusy(true);
-              setError(false);
-              try {
-                await logout();
-                queryClient.clear();
-                router.replace("/login");
-                router.refresh();
-              } catch {
-                setError(true);
-                setBusy(false);
+    <div className="min-h-dvh lg:flex">
+      <div className="sticky top-0 hidden h-dvh shrink-0 self-start border-r border-line bg-canvas lg:block">
+        {sidebar}
+      </div>
+      <main id="main-content" className="min-w-0 flex-1">
+        <header className="flex h-14 items-center justify-between gap-3 border-b border-line px-6 lg:justify-end lg:px-10">
+          <div className="lg:hidden">
+            <Dialog
+              title="Navigation"
+              description="Choose a page."
+              open={menuOpen}
+              onOpenChange={setMenuOpen}
+              trigger={
+                <Button size="sm" variant="ghost" aria-label="Open navigation">
+                  <Menu size={16} />
+                </Button>
               }
-            }}
-          >
-            <LogOut size={15} />
-            {busy ? "Signing out…" : "Sign out"}
+            >
+              <div className="h-[min(65dvh,640px)]">{sidebar}</div>
+            </Dialog>
+          </div>
+          {/* inert for now: notifications are a P1 requirement (FR-04) */}
+          <Button size="sm" variant="ghost" aria-label="Notifications">
+            <Bell size={16} />
           </Button>
-          {error && <Notice>Sign out failed. Please try again.</Notice>}
+        </header>
+        <div className="mx-auto max-w-7xl px-6 py-9 lg:px-10 lg:py-12">
+          {children}
         </div>
-      </aside>
-      <main id="main-content" className="app-main">
-        <div className="app-content">{children}</div>
       </main>
     </div>
   );

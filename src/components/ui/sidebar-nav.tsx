@@ -64,7 +64,7 @@ type SidebarNavProps = {
   header?: ReactNode;
   navItems?: SidebarNavItem[];
   newChatLabel?: string | null;
-  listLabel?: string;
+  listLabel?: string | null;
   activeTitle?: string | null;
   className?: string;
   fill?: boolean;
@@ -74,7 +74,7 @@ type SidebarNavProps = {
   activeNav?: string;
   onNavigate?: (key: string) => void;
   /** footer call-to-action — defaults to the demo "Upgrade" button */
-  footerLabel?: string;
+  footerLabel?: string | null;
   footerIcon?: ReactNode;
   onFooterClick?: () => void;
   recents?: SidebarRecent[];
@@ -309,7 +309,7 @@ export default function SidebarNav({
   return (
     <aside
       data-sidebar-collapsed={collapsed}
-      aria-label={`${listLabel} navigation`}
+      aria-label={`${listLabel ?? "Main"} navigation`}
       className={`relative flex shrink-0 overflow-hidden transition-[width] ${fill ? "h-full" : "h-[600px]"} ${className}`}
       style={
         {
@@ -422,128 +422,132 @@ export default function SidebarNav({
             />
           ))}
         </GlideGroup>
-        <div className="mt-3 flex min-h-0 flex-1 flex-col">
-          <div
-            className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"
-            inert={collapsed}
-          >
+        {listLabel !== null && (
+          <div className="mt-3 flex min-h-0 flex-1 flex-col">
             <div
-              aria-hidden={searchOpen}
-              className={`absolute inset-0 flex items-center gap-1.5 px-2 text-[12.5px] font-medium text-ink-3 transition-[opacity,transform] ${searchOpen ? "pointer-events-none -translate-x-1 opacity-0" : "translate-x-0 opacity-100"}`}
-              style={{
-                transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms`,
-                transitionTimingFunction: CHAT_SEARCH_MOTION.easing,
-              }}
+              className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"
+              inert={collapsed}
             >
-              <IconChevronDownSmall size={16} />
-              <span>{listLabel}</span>
-            </div>
-            <button
-              type="button"
-              ref={searchButtonRef}
-              aria-label={`Search ${listLabel.toLowerCase()}`}
-              tabIndex={searchOpen ? -1 : 0}
-              aria-expanded={searchOpen}
-              onClick={() => setSearchOpen(true)}
-              className={`absolute right-0 top-0 z-10 flex size-8 items-center justify-center rounded-[8px] text-ink-3 transition-[opacity,background-color,color,transform] hover:bg-hover-2 hover:text-ink active:scale-[0.96] ${searchOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
-              style={{ transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms` }}
-            >
-              <IconMagnifyingGlass size={16} />
-            </button>
-            <div
-              className={`absolute right-0 top-0 z-20 flex h-8 items-center overflow-hidden rounded-[8px] bg-field text-ink-3 shadow-hairline transition-[width,opacity] focus-within:text-ink-2 ${searchOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
-              style={{
-                width: searchOpen ? "100%" : CHAT_SEARCH_MOTION.closedWidth,
-                transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms`,
-                transitionTimingFunction: CHAT_SEARCH_MOTION.easing,
-              }}
-            >
-              <span className="ml-2 flex shrink-0 items-center justify-center">
-                <IconMagnifyingGlass size={15} />
-              </span>
-              <input
-                ref={searchRef}
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Escape") {
-                    closeSearch();
-                  }
+              <div
+                aria-hidden={searchOpen}
+                className={`absolute inset-0 flex items-center gap-1.5 px-2 text-[12.5px] font-medium text-ink-3 transition-[opacity,transform] ${searchOpen ? "pointer-events-none -translate-x-1 opacity-0" : "translate-x-0 opacity-100"}`}
+                style={{
+                  transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms`,
+                  transitionTimingFunction: CHAT_SEARCH_MOTION.easing,
                 }}
-                placeholder={`Search ${listLabel.toLowerCase()}`}
-                aria-label={`Search ${listLabel.toLowerCase()}`}
-                tabIndex={searchOpen ? 0 : -1}
-                className="ml-1.5 min-w-0 flex-1 bg-transparent text-[13px] font-medium text-ink outline-none placeholder:text-ink-3"
-              />
+              >
+                <IconChevronDownSmall size={16} />
+                <span>{listLabel}</span>
+              </div>
               <button
                 type="button"
-                aria-label={`Close ${listLabel.toLowerCase()} search`}
-                tabIndex={searchOpen ? 0 : -1}
-                onClick={closeSearch}
-                className="flex size-8 shrink-0 items-center justify-center rounded-[8px] text-ink-3 transition-[background-color,color,transform] duration-150 hover:bg-hover-2 hover:text-ink active:scale-[0.96]"
+                ref={searchButtonRef}
+                aria-label={`Search ${listLabel.toLowerCase()}`}
+                tabIndex={searchOpen ? -1 : 0}
+                aria-expanded={searchOpen}
+                onClick={() => setSearchOpen(true)}
+                className={`absolute right-0 top-0 z-10 flex size-8 items-center justify-center rounded-[8px] text-ink-3 transition-[opacity,background-color,color,transform] hover:bg-hover-2 hover:text-ink active:scale-[0.96] ${searchOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
+                style={{ transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms` }}
               >
-                <IconCrossSmall size={16} />
+                <IconMagnifyingGlass size={16} />
               </button>
+              <div
+                className={`absolute right-0 top-0 z-20 flex h-8 items-center overflow-hidden rounded-[8px] bg-field text-ink-3 shadow-hairline transition-[width,opacity] focus-within:text-ink-2 ${searchOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+                style={{
+                  width: searchOpen ? "100%" : CHAT_SEARCH_MOTION.closedWidth,
+                  transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms`,
+                  transitionTimingFunction: CHAT_SEARCH_MOTION.easing,
+                }}
+              >
+                <span className="ml-2 flex shrink-0 items-center justify-center">
+                  <IconMagnifyingGlass size={15} />
+                </span>
+                <input
+                  ref={searchRef}
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      closeSearch();
+                    }
+                  }}
+                  placeholder={`Search ${listLabel.toLowerCase()}`}
+                  aria-label={`Search ${listLabel.toLowerCase()}`}
+                  tabIndex={searchOpen ? 0 : -1}
+                  className="ml-1.5 min-w-0 flex-1 bg-transparent text-[13px] font-medium text-ink outline-none placeholder:text-ink-3"
+                />
+                <button
+                  type="button"
+                  aria-label={`Close ${listLabel.toLowerCase()} search`}
+                  tabIndex={searchOpen ? 0 : -1}
+                  onClick={closeSearch}
+                  className="flex size-8 shrink-0 items-center justify-center rounded-[8px] text-ink-3 transition-[background-color,color,transform] duration-150 hover:bg-hover-2 hover:text-ink active:scale-[0.96]"
+                >
+                  <IconCrossSmall size={16} />
+                </button>
+              </div>
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <GlideGroup>
+                {visibleRecents.map((item) => {
+                  const active = item.label === selectedTitle;
+                  return (
+                    <button
+                      key={item.id}
+                      data-row
+                      type="button"
+                      title={item.label}
+                      aria-label={item.label}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => {
+                        selectNav("chats");
+                        if (activeTitle === undefined)
+                          setDemoActiveTitle(item.label);
+                        onPick?.(item.id, item.label, item.prompt);
+                      }}
+                      className={`sidebar-row relative z-10 mx-2 flex h-8 items-center rounded-[8px] px-2 text-left transition-[width,background-color,color,transform] duration-150 active:scale-[0.98] ${
+                        active ? "bg-hover-2 group-hover/glide:bg-transparent" : ""
+                      }`}
+                    >
+                      {item.icon && (
+                        <span
+                          className={`mr-1.5 flex size-5 shrink-0 items-center justify-center ${active ? "text-ink" : "text-ink-2"}`}
+                        >
+                          {item.icon}
+                        </span>
+                      )}
+                      <span
+                        className={`sidebar-copy min-w-0 flex-1 truncate text-[14px] font-medium ${active ? "text-ink" : "text-ink-2"}`}
+                      >
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
+                {query && visibleRecents.length === 0 && (
+                  <div className="sidebar-copy mx-2 px-2 py-2 text-[12.5px] text-ink-3">
+                    No {listLabel.toLowerCase()} found
+                  </div>
+                )}
+              </GlideGroup>
             </div>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <GlideGroup>
-              {visibleRecents.map((item) => {
-                const active = item.label === selectedTitle;
-                return (
-                  <button
-                    key={item.id}
-                    data-row
-                    type="button"
-                    title={item.label}
-                    aria-label={item.label}
-                    aria-current={active ? "page" : undefined}
-                    onClick={() => {
-                      selectNav("chats");
-                      if (activeTitle === undefined)
-                        setDemoActiveTitle(item.label);
-                      onPick?.(item.id, item.label, item.prompt);
-                    }}
-                    className={`sidebar-row relative z-10 mx-2 flex h-8 items-center rounded-[8px] px-2 text-left transition-[width,background-color,color,transform] duration-150 active:scale-[0.98] ${
-                      active ? "bg-hover-2 group-hover/glide:bg-transparent" : ""
-                    }`}
-                  >
-                    {item.icon && (
-                      <span
-                        className={`mr-1.5 flex size-5 shrink-0 items-center justify-center ${active ? "text-ink" : "text-ink-2"}`}
-                      >
-                        {item.icon}
-                      </span>
-                    )}
-                    <span
-                      className={`sidebar-copy min-w-0 flex-1 truncate text-[14px] font-medium ${active ? "text-ink" : "text-ink-2"}`}
-                    >
-                      {item.label}
-                    </span>
-                  </button>
-                );
-              })}
-              {query && visibleRecents.length === 0 && (
-                <div className="sidebar-copy mx-2 px-2 py-2 text-[12.5px] text-ink-3">
-                  No {listLabel.toLowerCase()} found
-                </div>
-              )}
-            </GlideGroup>
-          </div>
-        </div>
-        <div
-          className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3"
-          inert={collapsed}
-        >
-          <button
-            type="button"
-            onClick={onFooterClick ?? onNewChat}
-            className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
+        )}
+        {footerLabel !== null && (
+          <div
+            className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3"
+            inert={collapsed}
           >
-            {footerIcon}
-            {footerLabel}
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={onFooterClick ?? onNewChat}
+              className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
+            >
+              {footerIcon}
+              {footerLabel}
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );

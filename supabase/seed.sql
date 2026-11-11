@@ -1,1 +1,0 @@
--- No users or passwords are seeded. Use registration and create sample projects through the app.

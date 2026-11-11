@@ -9,10 +9,4 @@ export const projectSchema = z.object({
   description: z.string().max(2000, "Use at most 2,000 characters."),
   status: z.enum(["draft", "active", "completed"]),
 });
-export const projectIdSchema = z.uuid();
 export type ProjectInput = z.infer<typeof projectSchema>;
-export const createProjectSchema = projectSchema.extend({
-  description: projectSchema.shape.description.default(""),
-  status: projectSchema.shape.status.default("draft"),
-});
-export type CreateProjectInput = z.input<typeof createProjectSchema>;

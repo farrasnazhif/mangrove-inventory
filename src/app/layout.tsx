@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s · Fullstack Starter",
   },
   description:
-    "A small, complete foundation for your next hackathon. Next.js, Supabase, and a UI you own.",
+    "Frontend for the Mangrove Carbon Stock Inventory.",
 };
 
 export default async function RootLayout({

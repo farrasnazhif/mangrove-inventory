@@ -14,7 +14,7 @@ Who needs this, and what should they be able to do?
 - DESIGN.md sections:
 - Owner and reviewer:
 - Priority and dependencies:
-- Data path: Supabase SDK or Axios → Route Handler
+- Data path: Axios → API
 
 ## Scope and contracts
 
