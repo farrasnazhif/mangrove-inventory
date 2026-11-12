@@ -1,3 +1,5 @@
+import { RingkasanOverview } from "@/features/ringkasan/components/ringkasan-overview";
+
 export default function DashboardPage() {
-  return <p>this is Ringkasan</p>;
+  return <RingkasanOverview />;
 }

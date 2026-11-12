@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import SidebarNav from "@/components/ui/sidebar-nav";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const DUMMY_USER = { name: "Dummy User", email: "user@example.com" };
 
@@ -84,8 +85,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           }
           items={[
             // inert for now: dummy user, no profile page or auth yet
-            { id: "profile", label: "Profile", icon: <User size={14} />, onSelect: () => {} },
-            { id: "sign-out", label: "Sign out", icon: <LogOut size={14} />, danger: true, onSelect: () => {} },
+            {
+              id: "profile",
+              label: "Profile",
+              icon: <User size={14} />,
+              onSelect: () => {},
+            },
+            {
+              id: "sign-out",
+              label: "Sign out",
+              icon: <LogOut size={14} />,
+              danger: true,
+              onSelect: () => {},
+            },
           ]}
         />
       }
@@ -114,12 +126,15 @@ export function AppShell({ children }: { children: ReactNode }) {
               <div className="h-[min(65dvh,640px)]">{sidebar}</div>
             </Dialog>
           </div>
-          {/* inert for now: notifications are a P1 requirement (FR-04) */}
-          <Button size="sm" variant="quiet" aria-label="Notifications">
-            <Bell size={16} />
-          </Button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            {/* inert for now: notifications are a P1 requirement (FR-04) */}
+            <Button size="sm" variant="quiet" aria-label="Notifications">
+              <Bell size={16} />
+            </Button>
+          </div>
         </header>
-        <div className="mx-auto max-w-7xl px-6 py-9 lg:px-10 lg:py-12">
+        <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10 lg:py-10">
           {children}
         </div>
       </main>

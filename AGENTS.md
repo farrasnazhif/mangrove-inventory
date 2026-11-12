@@ -168,6 +168,27 @@ UI conventions:
 - Toasts use neutral surfaces, status icons, and subtle type tints without colored borders.
 - Preserve accessible labels, errors, focus, keyboard navigation, and reduced-motion behavior.
 
+Page composition (apply to every new page or screen):
+
+- Build from `src/components/ui/` first (Card, Button, Typography, ValuePill, ProgressBar,
+  Badge, tables, lists, and so on). Write custom markup only for what no existing control covers,
+  and keep it inside the feature.
+- Slice every page the same way: the route page only renders one feature overview component;
+  that component holds any shared state (the only `"use client"` boundary needed) and composes one
+  component per visual section, each in its own file under `src/features/<feature>/components/`.
+  Do not build a page as one large file.
+- Dummy or sample data lives in `constants/`, its shape in `types/`; never inline data arrays in
+  JSX. Mark it with `shortcut: dummy sample data, <when to replace>`, and keep it clearly
+  non-scientific (Q-04/Q-05). Missing providers (map, photo storage) get a labelled placeholder
+  panel with a `shortcut:` comment, not a new dependency.
+- Set all visible text with `Typography` (`variant` and `weight`); use theme tokens (`text-ink`,
+  `text-ink-2/3`, `bg-field`, `bg-inset`, `text-green`, `text-orange`, `border-line`), never raw
+  hex or per-page palettes. Dark mode must work through the tokens alone.
+- Layouts are mobile-first grids that stack at 360 px and use `gap-4`/`gap-6`; selectable rows are
+  real `button`s with `aria-pressed`; color-coded visuals repeat every value as text.
+- Anything reusable by a second feature moves to `src/components/ui/` with a sandbox demo and
+  catalog entry instead of staying in the feature.
+
 > TODO: Define a commit-message template and whether Conventional Commits are required.
 > No commit-message enforcement is configured.
 
