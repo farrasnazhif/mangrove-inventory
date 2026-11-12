@@ -126,7 +126,7 @@ export function SharedDemo({
   if (id === "notices")
     return (
       <div className="space-y-3 w-full max-w-lg">
-        <Notice tone="success">Your project was saved successfully.</Notice>
+        <Notice tone="success">Your changes were saved successfully.</Notice>
         <Notice tone="info">You’re viewing sample data in the sandbox.</Notice>
         <Notice>We couldn’t save. Your input is still here.</Notice>
       </div>
@@ -135,7 +135,7 @@ export function SharedDemo({
   if (id === "dialog")
     return (
       <Button variant="secondary" onClick={onOpenDialog}>
-        Open project dialog
+        Open sample dialog
       </Button>
     );
 

@@ -240,8 +240,7 @@ retry; mutations do not automatically retry.
 
 The sandbox is public and uses sample state rather than private records or fake authentication.
 Its SidebarNav shows one alphabetical, searchable catalog. Only the selected demo mounts.
-Invalid or repeated component query parameters default to Buttons. The dialog reuses ProjectForm
-with a sample submit callback.
+Invalid or repeated component query parameters default to Buttons. The dialog uses a sample submit callback.
 
 Theme changes persist a year-long, site-wide `theme` cookie. The root layout validates that cookie
 and applies the theme during server rendering. Preserve this to avoid light-mode flashes.
@@ -362,7 +361,7 @@ Beautiful UI source retains the MIT notice, copyright © 2026 Shane Levine, in
 - Confirm database targets before writes; use disposable data and clean up test records.
 - Keep auth/dashboard/projects unless their removal is explicitly requested.
 - Do not rename/reuse `projects` as plots or remove its example data. Replacement needs an
-  explicit Q-16 decision covering routes, existing records, and sandbox's ProjectForm dependency.
+  explicit Q-16 decision covering routes and existing records.
 - Preserve the centered landing button and pages without shared branded headers.
 - Keep all sandbox demos public and available; do not add customization pages, accent/radius
   controls, workspace previews, instructional design panels, or private data connections.

@@ -28,7 +28,7 @@ export const SANDBOX_COMPONENTS = [
   {
     id: "dialog",
     title: "Dialog",
-    caption: "A focus-managed overlay with the shared project form.",
+    caption: "A focus-managed overlay with confirm and cancel actions.",
   },
   {
     id: "switches",

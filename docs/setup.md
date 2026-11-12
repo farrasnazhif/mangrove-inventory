@@ -35,7 +35,6 @@ All reusable components live in `src/components/ui/`. The button demo shows stan
 - `src/components/ui/`: one flat component library containing the 21 catalog components, shared controls and feedback, tokens, and source license; see [design rules](../DESIGN.md).
 - `src/app/sandbox/page.tsx`: thin public gallery route.
 - `src/features/sandbox/`: gallery demos in `components/`, catalog data in `constants/`, and component-selection checks in `validations/`.
-- `src/features/projects/`: only the project form and its schema, which the sandbox reuses.
 
 Change shared colors and radii in the design token files. The sandbox contains component previews and a theme toggle; it has no customization page or live accent/radius controls. The UI uses the neutral primary color for highlights and actions in both themes. Light/dark mode is a saved preference; the root layout reads the cookie and renders the correct theme before hydration. Reading this cookie makes pages render at request time. Keep focus styles, labels, error associations, and Base UI’s keyboard behavior intact. There is no Storybook or separate app to maintain.
 

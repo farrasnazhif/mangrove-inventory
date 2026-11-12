@@ -7,7 +7,6 @@ import { Command, RotateCcw, Menu, Layers3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Notice } from "@/components/ui/notice";
-import { ProjectForm } from "@/features/projects/components/project-form";
 import { ComponentPreview } from "@/components/ui/gallery";
 import SidebarNav from "@/components/ui/sidebar-nav";
 import { REGISTRY } from "@/components/ui/registry";
@@ -138,18 +137,19 @@ export function Sandbox({ initialComponent = "buttons" }: { initialComponent?: s
         </div>
       </main>
       <Dialog
-        title="Create sample project"
-        description="This is a form preview. No data is saved."
+        title="Sample dialog"
+        description="This is a preview. No data is saved."
         open={open}
         onOpenChange={setOpen}
       >
-        {open && (
-          <ProjectForm
-            onSubmit={save}
-            submitLabel="Submit sample"
-            onCancel={() => setOpen(false)}
-          />
-        )}
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={save}>
+            Submit sample
+          </Button>
+        </div>
       </Dialog>
     </div>
   );
