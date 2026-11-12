@@ -7,8 +7,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Fullstack Starter",
-    template: "%s · Fullstack Starter",
+    default: "Mangrove Inventory",
+    template: "%s · Mangrove Inventory",
   },
   description:
     "Frontend for the Mangrove Carbon Stock Inventory.",

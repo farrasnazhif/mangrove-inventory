@@ -1,4 +1,4 @@
-# Starter setup and reference
+# Mangrove Inventory setup and reference
 
 For the product/team process, follow [the README](../README.md).
 
