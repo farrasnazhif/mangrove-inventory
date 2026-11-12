@@ -11,6 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/ui/notice";
 import { DataState } from "@/components/ui/data-state";
+import {
+  Typography,
+  TYPOGRAPHY_VARIANTS,
+  TYPOGRAPHY_WEIGHTS,
+  type TypographyVariant,
+  type TypographyWeight,
+} from "@/components/ui/typography";
 
 export function SharedDemo({
   id,
@@ -185,6 +192,29 @@ export function SharedDemo({
             ) : undefined
           }
         />
+      </div>
+    );
+
+  if (id === "typography")
+    return (
+      <div className="w-full max-w-2xl space-y-4">
+        {(Object.keys(TYPOGRAPHY_VARIANTS) as TypographyVariant[]).map((variant) => (
+          <div key={variant} className="flex items-baseline gap-4">
+            <Typography as="span" variant="c" className="w-8 shrink-0 text-ink-3">
+              {variant}
+            </Typography>
+            <Typography variant={variant} weight={variant.startsWith("h") ? "semibold" : "regular"}>
+              Mangrove carbon stock
+            </Typography>
+          </div>
+        ))}
+        <div className="flex flex-wrap gap-x-6 gap-y-1 border-t border-line pt-4">
+          {(Object.keys(TYPOGRAPHY_WEIGHTS) as TypographyWeight[]).map((weight) => (
+            <Typography key={weight} as="span" variant="bl" weight={weight}>
+              {weight}
+            </Typography>
+          ))}
+        </div>
       </div>
     );
 

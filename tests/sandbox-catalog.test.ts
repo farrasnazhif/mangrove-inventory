@@ -19,6 +19,7 @@ test("one searchable sandbox list contains every imported and shared demo", () =
     "dialog",
     "switches",
     "tabs",
+    "typography",
     "data-states",
   ]) {
     assert.ok(ids.includes(id), `Missing sandbox entry: ${id}`);

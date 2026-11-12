@@ -41,6 +41,11 @@ export const SANDBOX_COMPONENTS = [
     caption: "Keyboard navigation between related views.",
   },
   {
+    id: "typography",
+    title: "Typography",
+    caption: "Heading, title, body, and caption styles with weight options.",
+  },
+  {
     id: "data-states",
     title: "Data States",
     caption: "Loading, empty, unavailable, and retry states.",
