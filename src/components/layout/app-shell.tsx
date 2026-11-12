@@ -3,10 +3,24 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Folder, FlaskConical, Layers, Map, Menu } from "lucide-react";
+import {
+  Bell,
+  ChevronsUpDown,
+  Folder,
+  FlaskConical,
+  Layers,
+  LogOut,
+  Map,
+  Menu,
+  User,
+} from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import SidebarNav from "@/components/ui/sidebar-nav";
+
+const DUMMY_USER = { name: "Dummy User", email: "user@example.com" };
 
 const PRODUCT_NAV = [
   { key: "/ringkasan", label: "Ringkasan", icon: <Layers size={18} /> },
@@ -49,6 +63,32 @@ export function AppShell({ children }: { children: ReactNode }) {
       onNavigate={go}
       listLabel={null}
       footerLabel={null}
+      footer={
+        <DropdownMenu
+          trigger={
+            <button
+              type="button"
+              className="flex h-10 w-full items-center gap-2 rounded-control px-2 text-left transition-[background-color,transform] duration-150 hover:bg-hover-2 active:scale-[0.98]"
+            >
+              <Avatar name={DUMMY_USER.name} size="sm" />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-medium text-ink">
+                  {DUMMY_USER.name}
+                </span>
+                <span className="block truncate text-[11.5px] text-ink-3">
+                  {DUMMY_USER.email}
+                </span>
+              </span>
+              <ChevronsUpDown size={14} className="shrink-0 text-ink-3" />
+            </button>
+          }
+          items={[
+            // inert for now: dummy user, no profile page or auth yet
+            { id: "profile", label: "Profile", icon: <User size={14} />, onSelect: () => {} },
+            { id: "sign-out", label: "Sign out", icon: <LogOut size={14} />, danger: true, onSelect: () => {} },
+          ]}
+        />
+      }
     />
   );
 
@@ -75,7 +115,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Dialog>
           </div>
           {/* inert for now: notifications are a P1 requirement (FR-04) */}
-          <Button size="sm" variant="ghost" aria-label="Notifications">
+          <Button size="sm" variant="quiet" aria-label="Notifications">
             <Bell size={16} />
           </Button>
         </header>

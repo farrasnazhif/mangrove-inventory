@@ -77,6 +77,8 @@ type SidebarNavProps = {
   footerLabel?: string | null;
   footerIcon?: ReactNode;
   onFooterClick?: () => void;
+  /** custom footer content; replaces the call-to-action button */
+  footer?: ReactNode;
   recents?: SidebarRecent[];
   variant?: string;
 };
@@ -105,7 +107,7 @@ function GlideGroup({ children }: { children: ReactNode }) {
     <GlideMenu
       rowSelector="[data-row]"
       highlightClassName="sidebar-glide-highlight rounded-[7px] bg-hover-2"
-      className="group/glide flex flex-col gap-px"
+      className="group/glide mt-2 flex flex-col gap-2"
     >
       {children}
     </GlideMenu>
@@ -249,6 +251,7 @@ export default function SidebarNav({
   footerLabel = "Upgrade",
   footerIcon,
   onFooterClick,
+  footer,
   recents = DEFAULT_RECENTS,
 }: SidebarNavProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -423,7 +426,7 @@ export default function SidebarNav({
           ))}
         </GlideGroup>
         {listLabel !== null && (
-          <div className="mt-3 flex min-h-0 flex-1 flex-col">
+          <div className="mb-3 mt-3 flex min-h-0 flex-1 flex-col">
             <div
               className="sidebar-copy relative mx-2 mb-1 h-8 shrink-0"
               inert={collapsed}
@@ -447,7 +450,9 @@ export default function SidebarNav({
                 aria-expanded={searchOpen}
                 onClick={() => setSearchOpen(true)}
                 className={`absolute right-0 top-0 z-10 flex size-8 items-center justify-center rounded-[8px] text-ink-3 transition-[opacity,background-color,color,transform] hover:bg-hover-2 hover:text-ink active:scale-[0.96] ${searchOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
-                style={{ transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms` }}
+                style={{
+                  transitionDuration: `${CHAT_SEARCH_MOTION.duration}ms`,
+                }}
               >
                 <IconMagnifyingGlass size={16} />
               </button>
@@ -506,7 +511,9 @@ export default function SidebarNav({
                         onPick?.(item.id, item.label, item.prompt);
                       }}
                       className={`sidebar-row relative z-10 mx-2 flex h-8 items-center rounded-[8px] px-2 text-left transition-[width,background-color,color,transform] duration-150 active:scale-[0.98] ${
-                        active ? "bg-hover-2 group-hover/glide:bg-transparent" : ""
+                        active
+                          ? "bg-hover-2 group-hover/glide:bg-transparent"
+                          : ""
                       }`}
                     >
                       {item.icon && (
@@ -533,19 +540,19 @@ export default function SidebarNav({
             </div>
           </div>
         )}
-        {footerLabel !== null && (
+        {(footer || footerLabel !== null) && (
           <div
-            className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3"
+            className="sidebar-copy mx-2 mt-auto w-[208px] border-t border-line pt-3"
             inert={collapsed}
           >
-            <button
+            {footer ?? <button
               type="button"
               onClick={onFooterClick ?? onNewChat}
               className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
             >
               {footerIcon}
               {footerLabel}
-            </button>
+            </button>}
           </div>
         )}
       </div>
