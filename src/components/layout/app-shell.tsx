@@ -6,13 +6,14 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Bell,
   ChevronsUpDown,
-  Folder,
   FlaskConical,
-  Layers,
   LogOut,
   Map,
   Menu,
   User,
+  Inbox,
+  FolderOpen,
+  Calculator,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -24,12 +25,16 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 const DUMMY_USER = { name: "Dummy User", email: "user@example.com" };
 
 const PRODUCT_NAV = [
-  { key: "/ringkasan", label: "Ringkasan", icon: <Layers size={18} /> },
-  { key: "/data-lapangan", label: "Data Lapangan", icon: <Folder size={18} /> },
+  { key: "/ringkasan", label: "Ringkasan", icon: <Inbox size={18} /> },
+  {
+    key: "/data-lapangan",
+    label: "Data Lapangan",
+    icon: <FolderOpen size={18} />,
+  },
   {
     key: "/perhitungan-karbon",
     label: "Perhitungan Karbon",
-    icon: <Layers size={18} />,
+    icon: <Calculator size={18} />,
   },
   {
     key: "/bulk-density-soc",
