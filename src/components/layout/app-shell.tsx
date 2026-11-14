@@ -21,6 +21,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import SidebarNav from "@/components/ui/sidebar-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
 
 const DUMMY_USER = { name: "Dummy User", email: "user@example.com" };
 
@@ -139,9 +140,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Button>
           </div>
         </header>
-        <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10 lg:py-10">
-          {children}
-        </div>
+        {/* the map page fills the whole area under the top bar */}
+        {pathname.startsWith("/peta-plot") ? (
+          children
+        ) : (
+          <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10 lg:py-10">
+            {children}
+          </div>
+        )}
+        <ChatbotWidget />
       </main>
     </div>
   );

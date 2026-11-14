@@ -5,6 +5,8 @@ export type PlotSummary = {
   code: string;
   site: string;
   coordinates: string;
+  /** [latitude, longitude] in decimal degrees — dummy sample position */
+  position: [number, number];
   /** Mg C/ha per compartment — dummy values, not an approved calculation (Q-04) */
   agb: number;
   bgb: number;
