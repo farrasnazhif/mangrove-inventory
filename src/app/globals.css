@@ -94,8 +94,8 @@
   margin-bottom: 4px;
   border: 0;
   border-radius: 4px;
-  background: var(--map-forest);
-  color: oklch(1 0 0);
+  background: var(--color-canvas);
+  color: var(--accent);
   font-size: 22px;
   line-height: 30px;
 }
