@@ -145,7 +145,7 @@
 
   /* type */
   --font-sans: var(--font-ui);
-  --font-mono: var(--font-mono-face), ui-monospace, "SF Mono", monospace;
+  --font-mono: var(--font-ui); /* Inter everywhere, no monospace face */
   /* radii — chips 6, controls 8, cards 10, windows 14, pills 999 */
   --radius-chip: calc(var(--radius) - 4px);
   --radius-control: calc(var(--radius) - 2px);

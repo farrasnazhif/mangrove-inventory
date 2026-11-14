@@ -11,7 +11,7 @@ export function PlotNumber({ code, active = false }: { code: string; active?: bo
     <span
       className={`flex size-10 shrink-0 items-center justify-center rounded-control text-[14px] font-semibold ${active ? "bg-ink text-surface" : "bg-field text-ink-2"}`}
     >
-      {code.slice(-2)}
+      {code.replace("Vak ", "")}
     </span>
   );
 }
