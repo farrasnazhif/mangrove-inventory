@@ -1,10 +1,12 @@
+"use client";
+
 import type { ReactNode } from "react";
-import { BadgeCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Typography } from "@/components/ui/typography";
 import { ValuePill } from "@/components/ui/value-pill";
-import { SUMMARY } from "../constants/ringkasan-data";
+import { UNAVAILABLE, formatNumber } from "@/features/inventory/api/format";
+import { usePlotSelection } from "@/features/inventory/components/plot-provider";
 
 function MetricCard({ label, aside, children }: { label: string; aside?: ReactNode; children: ReactNode }) {
   return (
@@ -38,29 +40,31 @@ function Footnote({ label, value, tone }: { label: string; value: string; tone?:
 }
 
 export function SummaryMetrics() {
-  const { meanStock, co2e, coverage, dominantSpecies } = SUMMARY;
-  const percent = Math.round((coverage.measured / coverage.total) * 100);
+  const { all, total } = usePlotSelection();
+  const measured = all.filter((stats) => stats.treeCount > 0).length;
+  const percent = Math.round((measured / all.length) * 100);
+  const dominant = total.dominant;
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      <MetricCard label="Rata-rata cadangan">
-        <Stat value={meanStock.value} unit="Mg C/ha" />
-        <div className="flex justify-between border-t border-line pt-3 text-ink-2">
-          {[["AGB", meanStock.agb], ["BGB", meanStock.bgb], ["SOC", meanStock.soc]].map(([name, value]) => (
+      <MetricCard label="Total stok karbon">
+        <Stat value={formatNumber(total.carbon, 1)} unit="ton C" />
+        <div className="flex flex-wrap justify-between gap-x-3 border-t border-line pt-3 text-ink-2">
+          {[["AGC", formatNumber(total.agc, 1)], ["BGC", formatNumber(total.bgc, 1)], ["SOC", "-"]].map(([name, value]) => (
             <Typography key={name} as="span" variant="bs">{name} {value}</Typography>
           ))}
         </div>
       </MetricCard>
-      <MetricCard label="Serapan CO₂e" aside={<BadgeCheck size={16} className="text-green" aria-hidden />}>
-        <Stat value={co2e.value} unit="Mg/ha" />
-        <Footnote label="Ekuivalen Gas" value={co2e.method} tone="text-green" />
+      <MetricCard label="Setara CO₂e">
+        <Stat value={formatNumber(total.co2e, 1)} unit="ton CO₂e" />
+        <Footnote label="Per hektar" value={UNAVAILABLE} />
       </MetricCard>
       <MetricCard label="Cakupan plot">
-        <Stat value={String(coverage.measured)} unit={`/ ${coverage.total} Plot`} />
-        <ProgressBar label="Plot terukur" value={percent} aria-label="Cakupan plot" />
+        <Stat value={String(measured)} unit={`/ ${all.length} Plot`} />
+        <ProgressBar label="Plot dengan data pohon" value={percent} aria-label="Cakupan plot" />
       </MetricCard>
-      <MetricCard label="Spesies dominan" aside={<ValuePill>{dominantSpecies.inp}</ValuePill>}>
-        <Typography as="p" variant="t" weight="semibold" className="italic">{dominantSpecies.names}</Typography>
-        <Footnote label="Kerapatan" value={dominantSpecies.density} />
+      <MetricCard label="Spesies dominan" aside={dominant && <ValuePill>{formatNumber((dominant.count / total.treeCount) * 100)}%</ValuePill>}>
+        <Typography as="p" variant="t" weight="semibold" className="italic">{dominant?.name ?? UNAVAILABLE}</Typography>
+        <Footnote label="Jumlah pohon" value={dominant ? formatNumber(dominant.count, 0) : "-"} />
       </MetricCard>
     </div>
   );

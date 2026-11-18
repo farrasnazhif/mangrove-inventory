@@ -234,23 +234,27 @@ test("toast types render decorative status icons, readable content, and dismissa
   assert.match(markup, /aria-label="Dismiss notification"/);
 });
 
-test("mangrove feature screens keep demo inputs and unapproved carbon results explicit in both themes", () => {
+test("mangrove feature screens show the tagged plot data and mark missing sediment data in both themes", () => {
+  const PlotProvider = load(resolve(root, "src/features/inventory/components/plot-provider")).PlotProvider as ComponentType<{ children?: ReactNode }>;
+  const inPlot = (component: ComponentType, theme: "light" | "dark") => render(createElement(PlotProvider, null, createElement(component)), theme);
   const DataLapangan = load(resolve(root, "src/features/data-lapangan/components/data-lapangan-overview")).DataLapanganOverview as ComponentType;
   const PerhitunganKarbon = load(resolve(root, "src/features/perhitungan-karbon/components/perhitungan-karbon-overview")).PerhitunganKarbonOverview as ComponentType;
   const BulkDensitySoc = load(resolve(root, "src/features/bulk-density-soc/components/bulk-density-soc-overview")).BulkDensitySocOverview as ComponentType;
 
   for (const theme of ["light", "dark"] as const) {
-    const fieldMarkup = render(createElement(DataLapangan), theme);
-    assert.match(fieldMarkup, /Wonorejo Inertidal/);
-    assert.match(fieldMarkup, /Tambah Pohon/);
-    assert.match(fieldMarkup, /Data Inti Sedimen/);
+    const fieldMarkup = inPlot(DataLapangan, theme);
+    assert.match(fieldMarkup, /VAK 1/);
+    assert.match(fieldMarkup, /Avicennia marina/);
+    assert.match(fieldMarkup, /Zona peta Vak I/);
+    assert.match(fieldMarkup, /Data inti sedimen tidak tersedia/);
 
-    const carbonMarkup = render(createElement(PerhitunganKarbon), theme);
+    const carbonMarkup = inPlot(PerhitunganKarbon, theme);
     assert.match(carbonMarkup, /Rumus Perhitungan/);
-    assert.match(carbonMarkup, /Stok Karbon Total/);
+    assert.match(carbonMarkup, /Data tidak tersedia/);
 
-    const soilMarkup = render(createElement(BulkDensitySoc), theme);
+    const soilMarkup = inPlot(BulkDensitySoc, theme);
     assert.match(soilMarkup, /Rumus Perhitungan/);
     assert.match(soilMarkup, /Total SOC Profil/);
+    assert.match(soilMarkup, /Data inti sedimen tidak tersedia/);
   }
 });

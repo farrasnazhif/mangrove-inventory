@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 
 export type TableColumn<T> = { id: string; label: string; value: (row: T) => string | number; render?: (row: T) => ReactNode };
 
-export function Table<T>({ rows, columns, getRowId, caption, header, sort }: {
+export function Table<T>({ rows, columns, getRowId, caption, header, sort, empty = "No results found." }: {
   rows: T[]; columns: TableColumn<T>[]; getRowId: (row: T) => string; caption: string;
-  header?: (column: TableColumn<T>) => ReactNode; sort?: { id: string; direction: "asc" | "desc" } | null;
+  header?: (column: TableColumn<T>) => ReactNode; sort?: { id: string; direction: "asc" | "desc" } | null; empty?: string;
 }) {
   return <div className="ui-table-scroll" tabIndex={0} role="region" aria-label={caption}><table className="ui-table">
     <caption className="sr-only">{caption}</caption>
@@ -13,7 +13,7 @@ export function Table<T>({ rows, columns, getRowId, caption, header, sort }: {
       const value = column.value(row);
       return <td key={column.id} className={typeof value === "number" ? "text-right tabular-nums" : undefined}>{column.render ? column.render(row) : value}</td>;
     })}</tr>)}
-      {!rows.length && <tr><td colSpan={columns.length} className="!py-8 text-center text-muted">No results found.</td></tr>}
+      {!rows.length && <tr><td colSpan={columns.length} className="!py-8 text-center text-muted">{empty}</td></tr>}
     </tbody>
   </table></div>;
 }

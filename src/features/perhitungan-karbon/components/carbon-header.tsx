@@ -1,6 +1,5 @@
-import { Select } from "@/components/ui/select";
 import { Typography } from "@/components/ui/typography";
-import { PLOT_OPTIONS } from "../constants/perhitungan-karbon-data";
+import { PlotSelect } from "@/features/inventory/components/plot-select";
 
 export function CarbonHeader() {
   return (
@@ -10,7 +9,7 @@ export function CarbonHeader() {
         <Typography as="p" variant="bs" className="mt-1 text-ink-2">AGB, BGB, dan Stok Karbon Total</Typography>
       </div>
       <div>
-        <Select options={PLOT_OPTIONS} defaultValue="PAM-04" triggerProps={{ "aria-label": "Pilih plot" }} />
+        <PlotSelect />
       </div>
     </header>
   );

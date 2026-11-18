@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ThinkingState from "@/components/ui/thinking-state";
-import { PLOTS } from "@/features/ringkasan/constants/ringkasan-data";
+import { usePlotSelection } from "@/features/inventory/components/plot-provider";
 import { dummyAnswer } from "../api/dummy-answer";
 import { PLACEHOLDERS, ROLE_LABELS, ROLE_TABS, SEED_CONVERSATIONS, SUGGESTIONS, THINKING_ROWS } from "../constants/chat-data";
 import type { ChatRole, ChatTurn, Conversation } from "../types/chat";
@@ -17,6 +17,7 @@ const newConversation = (role: ChatRole): Conversation => ({ id: crypto.randomUU
 
 /** `roleTabs` is for managers only; the public visitor chatbot renders it with roleTabs={false}. */
 export function ChatbotOverview({ roleTabs = true }: { roleTabs?: boolean }) {
+  const { all } = usePlotSelection();
   const [conversations, setConversations] = useState<Conversation[]>(() => [
     ...SEED_CONVERSATIONS,
     newConversation(roleTabs ? "manager" : "visitor"),
@@ -52,7 +53,7 @@ export function ChatbotOverview({ roleTabs = true }: { roleTabs?: boolean }) {
     try {
       // shortcut: fake 2.6 s latency (long enough for the thinking steps) over canned answers, swap for the chatbot API call.
       const reply = await new Promise<ReturnType<typeof dummyAnswer>>((resolve) =>
-        setTimeout(() => resolve(dummyAnswer(role, text, PLOTS)), 2600),
+        setTimeout(() => resolve(dummyAnswer(role, text, all)), 2600),
       );
       const replyId = crypto.randomUUID();
       append(id, { id: replyId, role: "assistant", ...reply });

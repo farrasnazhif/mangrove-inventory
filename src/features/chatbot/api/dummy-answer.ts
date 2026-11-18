@@ -1,39 +1,36 @@
-import type { PlotSummary } from "@/features/ringkasan/types/ringkasan";
+import type { PlotStats } from "@/features/inventory/types/inventory";
 import type { ChatRole } from "../types/chat";
 
-// shortcut: keyword matching over the dummy Ringkasan plots, not retrieval or a model; replace with the real chatbot call (FR-12/FR-41).
+// shortcut: keyword matching over the tagging-workbook plot totals, not retrieval or a model; replace with the real chatbot call (FR-12/FR-41).
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII"];
-const CO2E_PER_C = 44 / 12;
 
 const fmt = (value: number) => value.toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const total = (plot: PlotSummary) => plot.agb + plot.bgb + plot.soc;
 
-/** "vak iv", "Vak-4" -> "Vak IV"; null when the question names no plot */
-function plotCode(question: string) {
-  const match = /vak[\s-]*([ivx]+|\d{1,2})\b/i.exec(question);
-  if (!match) return null;
-  const raw = match[1].toUpperCase();
-  const roman = /^\d+$/.test(raw) ? ROMAN[Number(raw) - 1] : raw;
-  return roman ? `Vak ${roman}` : null;
+/** "vak iv", "Vak-4", "zona 2 ma" -> the workbook plot; null when the question names no plot */
+function findPlot(question: string, plots: PlotStats[]) {
+  const vak = /vak[\s-]*([ivx]+|\d{1,2})\b/i.exec(question);
+  const zona = /zona[\s-]*(\d)\b/i.exec(question);
+  if (zona) return { name: `Zona ${zona[1]} MA`, stats: plots.find((item) => item.plot.label === `Zona ${zona[1]} MA`) };
+  if (!vak) return null;
+  const raw = vak[1].toUpperCase();
+  const number = /^\d+$/.test(raw) ? Number(raw) : ROMAN.indexOf(raw) + 1;
+  const name = `VAK ${number}`;
+  // the workbook names Vak XIII "Zona 5 MA = VAK 13"
+  return { name, stats: plots.find((item) => item.plot.label === name || (number === 13 && item.plot.label.endsWith("VAK 13"))) };
 }
 
-function plotBreakdown(plot: PlotSummary) {
-  const sum = total(plot);
-  const agbShare = Math.round((plot.agb / sum) * 1000) / 10;
-  const bgbShare = Math.round((plot.bgb / sum) * 1000) / 10;
-  const socShare = Math.round((1000 - agbShare * 10 - bgbShare * 10)) / 10; // remainder so the shares add to 100%
+function plotBreakdown({ plot, treeCount, speciesCount, agc, bgc, carbon, co2e, soc, area, carbonPerHa }: PlotStats) {
+  const agcShare = Math.round((agc / carbon) * 1000) / 10;
   return [
-    `Berdasarkan data inventarisasi, Plot ${plot.code} di kawasan ${plot.site} memiliki total stok karbon sebesar ${fmt(sum)} Mg C/ha.`,
+    `Berdasarkan data tagging pohon 2026, plot ${plot.label} memiliki ${treeCount} pohon dari ${speciesCount} jenis dengan total stok karbon biomassa ${fmt(carbon)} ton C.`,
     "",
-    "Berikut rincian stok karbonnya:",
-    `- Aboveground Carbon (AGC): ${fmt(plot.agb)} Mg C/ha (${fmt(agbShare)}%)`,
-    `- Belowground Carbon (BGC): ${fmt(plot.bgb)} Mg C/ha (${fmt(bgbShare)}%)`,
-    `- Soil Organic Carbon (SOC): ${fmt(plot.soc)} Mg C/ha (${fmt(socShare)}%)`,
+    "Berikut rinciannya:",
+    `- Aboveground Carbon (AGC): ${fmt(agc)} ton C (${fmt(agcShare)}%)`,
+    `- Belowground Carbon (BGC): ${fmt(bgc)} ton C (${fmt(Math.round((1000 - agcShare * 10)) / 10)}%)`,
+    soc === null ? "- Soil Organic Carbon (SOC): data tidak tersedia (belum ada data inti sedimen)" : `- Soil Organic Carbon (SOC): ${fmt(soc)} Mg C/ha`,
     "",
-    `Total: ${fmt(sum)} Mg C/ha, atau setara dengan sekitar ${fmt(sum * CO2E_PER_C)} Mg CO₂e/ha.`,
-    "",
-    `Kontributor terbesar berasal dari ${agbShare >= socShare && agbShare >= bgbShare ? "biomassa mangrove di atas permukaan tanah (AGC)" : socShare >= bgbShare ? "karbon organik tanah (SOC)" : "biomassa akar (BGC)"}, yang menyumbang ${fmt(Math.max(agbShare, bgbShare, socShare))}% dari total stok karbon.`,
+    `Total AGC + BGC setara dengan sekitar ${fmt(co2e)} ton CO₂e. ${area && carbonPerHa !== null ? `Dengan luas ${fmt(area)} ha, stok biomassa karbon ${fmt(carbonPerHa)} ton C/ha.` : "Nilai per hektar tidak tersedia karena luas plot belum diisi."}`,
   ].join("\n");
 }
 
@@ -48,10 +45,10 @@ const HELP = "Maaf, saya belum paham pertanyaannya. Coba pilih salah satu contoh
 
 export type DummyAnswer = { text: string; sourced: boolean };
 
-export function dummyAnswer(role: ChatRole, question: string, plots: PlotSummary[]): DummyAnswer {
+export function dummyAnswer(role: ChatRole, question: string, allPlots: PlotStats[]): DummyAnswer {
   const q = question.toLowerCase();
-  const code = plotCode(question);
-  const wantsData = code || /rata|rerata|tertinggi|terendah|terbesar|terkecil|semua plot|jumlah plot|daftar plot/.test(q);
+  const named = findPlot(question, allPlots);
+  const wantsData = named || /rata|rerata|tertinggi|terendah|terbesar|terkecil|semua plot|jumlah plot|daftar plot/.test(q);
   const plain = (text: string) => ({ text, sourced: false });
   const sourced = (text: string) => ({ text, sourced: true });
 
@@ -59,22 +56,22 @@ export function dummyAnswer(role: ChatRole, question: string, plots: PlotSummary
     if (role === "visitor") {
       return plain("Data stok karbon per plot belum dipublikasikan untuk pengunjung. Saya bisa menjawab pertanyaan umum tentang mangrove dan stok karbon.");
     }
-    if (code) {
-      const plot = plots.find((item) => item.code === code);
-      if (!plot) return plain(`Data ${code} belum tersedia dalam inventarisasi saat ini.`);
-      if (/pohon|jumlah/.test(q)) return sourced(`Plot ${plot.code} di kawasan ${plot.site} tercatat memiliki ${plot.trees} pohon.`);
-      return sourced(plotBreakdown(plot));
+    if (named) {
+      if (!named.stats?.treeCount) return plain(`Data pohon untuk ${named.name} tidak tersedia dalam inventarisasi saat ini.`);
+      if (/pohon|jumlah/.test(q)) return sourced(`Plot ${named.stats.plot.label} tercatat memiliki ${named.stats.treeCount} pohon dari ${named.stats.speciesCount} jenis.`);
+      return sourced(plotBreakdown(named.stats));
     }
-    const sorted = [...plots].sort((a, b) => total(b) - total(a));
+    const plots = allPlots.filter((item) => item.treeCount > 0);
+    const sorted = [...plots].sort((a, b) => b.carbon - a.carbon);
     const high = sorted[0];
     const low = sorted[sorted.length - 1];
-    if (/terendah|terkecil/.test(q)) return sourced(`Stok karbon terendah ada di Plot ${low.code} (${low.site}) sebesar ${fmt(total(low))} Mg C/ha.`);
-    if (/tertinggi|terbesar/.test(q)) return sourced(`Stok karbon tertinggi ada di Plot ${high.code} (${high.site}) sebesar ${fmt(total(high))} Mg C/ha.`);
+    if (/terendah|terkecil/.test(q)) return sourced(`Stok karbon terendah ada di plot ${low.plot.label} sebesar ${fmt(low.carbon)} ton C.`);
+    if (/tertinggi|terbesar/.test(q)) return sourced(`Stok karbon tertinggi ada di plot ${high.plot.label} sebesar ${fmt(high.carbon)} ton C.`);
     if (/rata|rerata/.test(q)) {
-      const mean = plots.reduce((sum, plot) => sum + total(plot), 0) / plots.length;
-      return sourced(`Rata-rata stok karbon dari ${plots.length} plot adalah ${fmt(mean)} Mg C/ha, atau sekitar ${fmt(mean * CO2E_PER_C)} Mg CO₂e/ha.`);
+      const mean = plots.reduce((sum, item) => sum + item.carbon, 0) / plots.length;
+      return sourced(`Rata-rata stok karbon biomassa dari ${plots.length} plot yang memiliki data pohon adalah ${fmt(mean)} ton C per plot. Nilai per hektar tidak tersedia karena luas plot belum diisi.`);
     }
-    return sourced(`Saat ini ada ${plots.length} plot dengan data: ${plots.map((plot) => plot.code).join(", ")}.`);
+    return sourced(`Saat ini ada ${plots.length} plot dengan data pohon: ${plots.map((item) => item.plot.label).join(", ")}.`);
   }
   return plain(GENERAL.find(([pattern]) => pattern.test(q))?.[1] ?? HELP);
 }

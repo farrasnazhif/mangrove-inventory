@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
+import { PlotMap } from "@/features/peta-plot/components/plot-map";
+import { useZoneSelection } from "@/features/peta-plot/hooks/use-zone-selection";
 
 export function SpatialMap() {
+  const { missingZone, onSelectZone, selectedZones } = useZoneSelection();
   return (
     <Card className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -12,11 +16,12 @@ export function SpatialMap() {
           Peta Penuh
         </Link>
       </div>
-      {/* shortcut: placeholder panel, no map provider chosen (Q-06); swap for the plot map when approved */}
-      <div className="flex h-72 flex-col items-center justify-center gap-2 rounded-card bg-inset text-ink-3 shadow-hairline">
-        <MapPin size={28} aria-hidden />
-        <Typography as="p" variant="bs">Peta plot belum tersedia</Typography>
+      <div className="h-72 overflow-hidden rounded-card shadow-hairline">
+        <PlotMap selectedZones={selectedZones} onSelectZone={onSelectZone} />
       </div>
+      {missingZone && (
+        <Typography as="p" variant="bs" className="text-orange">Zona {missingZone}: data pohon tidak tersedia.</Typography>
+      )}
     </Card>
   );
 }

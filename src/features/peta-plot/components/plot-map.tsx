@@ -12,10 +12,26 @@ import { speciesPopupHtml } from "./tree-popup";
 
 const zoneColor = (name: string) => ZONE_COLORS[name] ?? ZONE_COLOR_FALLBACK;
 
-export function PlotMap() {
+export function PlotMap({ selectedZones = [], onSelectZone }: { selectedZones?: string[]; onSelectZone?: (zone: string) => void }) {
   const container = useRef<HTMLDivElement>(null);
+  const polygons = useRef(new Map<string, L.Polygon>());
+  // refs keep the map from being rebuilt when the parent re-renders
+  const selected = useRef(selectedZones);
+  const onSelect = useRef(onSelectZone);
+  const highlight = () => {
+    for (const [name, polygon] of polygons.current) {
+      polygon.getElement()?.classList.toggle("plot-zone-active", selected.current.includes(name));
+    }
+  };
 
   useEffect(() => {
+    selected.current = selectedZones;
+    onSelect.current = onSelectZone;
+    highlight();
+  });
+
+  useEffect(() => {
+    const zonePolygons = polygons.current;
     let cancelled = false;
     let map: LeafletMap | undefined;
     (async () => {
@@ -35,12 +51,6 @@ export function PlotMap() {
         maxNativeZoom: MAP_ZOOM.nativeMax,
       }).addTo(map);
 
-      const polygons = new Map<string, L.Polygon>();
-      const select = (zoneName: string) => {
-        for (const [id, polygon] of polygons) {
-          polygon.getElement()?.classList.toggle("plot-zone-active", id === zoneName);
-        }
-      };
       for (const zone of ZONES) {
         const color = zoneColor(zone.name);
         const polygon = L.polygon(zone.corners, {
@@ -52,8 +62,8 @@ export function PlotMap() {
           fillOpacity: 0.22,
         }).addTo(map);
         polygon.bindTooltip(zone.name, { permanent: true, direction: "center", className: "zone-label" });
-        polygon.on("click", () => select(zone.name));
-        polygons.set(zone.name, polygon);
+        polygon.on("click", () => onSelect.current?.(zone.name));
+        zonePolygons.set(zone.name, polygon);
       }
 
       const cluster = L.markerClusterGroup({
@@ -79,14 +89,16 @@ export function PlotMap() {
           fillOpacity: 0.95,
         });
         marker.bindPopup(speciesPopupHtml(point), { className: "tree-popup", minWidth: 240, maxWidth: 240, closeButton: false });
-        marker.on("click", () => select(point.zone));
+        marker.on("click", () => onSelect.current?.(point.zone));
         cluster.addLayer(marker);
       }
       map.addLayer(cluster);
       map.fitBounds(L.latLngBounds(ZONES.flatMap((zone) => zone.corners)), { padding: [32, 32] });
+      highlight();
     })();
     return () => {
       cancelled = true;
+      zonePolygons.clear();
       map?.remove();
     };
   }, []);
