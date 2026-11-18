@@ -1,14 +1,19 @@
 import { Typography } from "@/components/ui/typography";
 import { PlotSelect } from "@/features/inventory/components/plot-select";
+import type { CarbonFormula } from "../types/perhitungan-karbon";
+import { FormulaDialog } from "./formula-dialog";
 
-export function CarbonHeader() {
+export function CarbonHeader({ formulas }: { formulas: CarbonFormula[] }) {
   return (
     <header className="flex flex-wrap items-start justify-between gap-4">
       <div>
-        <Typography as="h1" variant="h5" weight="semibold">Perhitungan Karbon</Typography>
-        <Typography as="p" variant="bs" className="mt-1 text-ink-2">AGB, BGB, dan Stok Karbon Total</Typography>
+        <Typography as="h1" variant="h5" weight="semibold">
+          Perhitungan Karbon
+        </Typography>
+        {/* <Typography as="p" variant="bs" className="mt-1 text-ink-2">AGB, BGB, dan Stok Karbon Total</Typography> */}
       </div>
-      <div>
+      <div className="flex items-center gap-2">
+        <FormulaDialog formulas={formulas} />
         <PlotSelect />
       </div>
     </header>

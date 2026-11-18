@@ -7,7 +7,7 @@ import { usePlotSelection } from "@/features/inventory/components/plot-provider"
 import { PlotSelect } from "@/features/inventory/components/plot-select";
 import type { SedimentCore } from "@/features/inventory/types/inventory";
 import { CarbonTableSection } from "@/features/perhitungan-karbon/components/carbon-table-section";
-import { FormulaPanel } from "@/features/perhitungan-karbon/components/formula-panel";
+import { FormulaDialog } from "@/features/perhitungan-karbon/components/formula-dialog";
 import { SOIL_FORMULAS } from "../constants/soil-formulas";
 
 export function BulkDensitySocOverview() {
@@ -19,11 +19,11 @@ export function BulkDensitySocOverview() {
           <Typography as="h1" variant="h5" weight="semibold">Bulk Density &amp; SOC</Typography>
           <Typography as="p" variant="bs" className="mt-1 text-ink-2">Plot {stats.plot.label}</Typography>
         </div>
-        <div>
+        <div className="flex items-center gap-2">
+          <FormulaDialog formulas={SOIL_FORMULAS} />
           <PlotSelect />
         </div>
       </header>
-      <FormulaPanel formulas={SOIL_FORMULAS} />
       {/* layers are entered on the Data Lapangan page; this table only derives PB, %C and SOC */}
       <CarbonTableSection<SedimentCore>
         key={stats.plot.key}
