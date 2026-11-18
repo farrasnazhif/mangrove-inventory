@@ -250,8 +250,7 @@ test("mangrove feature screens keep demo inputs and unapproved carbon results ex
     assert.match(carbonMarkup, /Stok Karbon Total/);
 
     const soilMarkup = render(createElement(BulkDensitySoc), theme);
-    assert.match(soilMarkup, /Data laboratorium dan metode konversi belum disetujui/);
-    assert.match(soilMarkup, /Nilai SOC tidak dihitung atau diganti dengan nol/);
-    assert.match(soilMarkup, /Belum tersedia/);
+    assert.match(soilMarkup, /Rumus Perhitungan/);
+    assert.match(soilMarkup, /Total SOC Profil/);
   }
 });

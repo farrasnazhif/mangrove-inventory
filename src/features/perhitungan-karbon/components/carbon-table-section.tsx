@@ -3,12 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Table, type TableColumn } from "@/components/ui/table";
 import { Typography } from "@/components/ui/typography";
 
-// shortcut: Export and Filter are visual only, wire them when export columns are approved (Q-09).
-export function CarbonTableSection<T extends { id: string }>({ title, caption, rows, columns }: {
+// shortcut: also reused by bulk-density-soc, move to ui/ if a third feature needs it. Export and Filter are visual only, wire them when export columns are approved (Q-09).
+export function CarbonTableSection<T extends { id: string }>({ title, caption, rows, columns, footer }: {
   title: string;
   caption: string;
   rows: T[];
   columns: { id: string; label: string; get: (row: T) => string | null }[];
+  footer?: { label: string; value: string };
 }) {
   const tableColumns: TableColumn<T>[] = columns.map((column) => ({
     id: column.id,
@@ -25,6 +26,12 @@ export function CarbonTableSection<T extends { id: string }>({ title, caption, r
         </div>
       </div>
       <Table rows={rows} columns={tableColumns} getRowId={(row) => row.id} caption={caption} />
+      {footer && (
+        <div className="flex justify-between rounded-control bg-inset px-3 py-3">
+          <Typography as="span" variant="bs" className="text-ink-2">{footer.label}</Typography>
+          <Typography as="span" variant="bs">{footer.value}</Typography>
+        </div>
+      )}
     </Card>
   );
 }
