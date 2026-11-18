@@ -42,7 +42,69 @@ export function PlotMap({ selectedZones = [], onSelectZone }: { selectedZones?: 
       await import("leaflet.markercluster");
       if (cancelled || !container.current) return;
 
-      map = L.map(container.current, { minZoom: MAP_ZOOM.min, maxZoom: MAP_ZOOM.max });
+      // the default zoom control is replaced so the fullscreen button can sit above it in the same corner
+      map = L.map(container.current, { minZoom: MAP_ZOOM.min, maxZoom: MAP_ZOOM.max, zoomControl: false });
+      // "fullscreen" = the whole map frame (map, zoom buttons, zone card, back link) covers the window via CSS,
+      // and the browser's real fullscreen is requested on the page as well; if the browser refuses, the CSS mode still works
+      const frame = container.current.parentElement ?? container.current;
+      const control = new L.Control({ position: "topleft" });
+      control.onAdd = (leafletMap) => {
+        const bar = L.DomUtil.create("div", "leaflet-bar");
+        const button = L.DomUtil.create("a", "", bar);
+        button.href = "#";
+        button.setAttribute("role", "button");
+        button.style.cssText = "display:flex;align-items:center;justify-content:center";
+        let active = false;
+        const paint = () => {
+          button.title = button.ariaLabel = active ? "Keluar dari layar penuh" : "Layar penuh";
+          // lucide maximize / minimize icons
+          button.innerHTML = `<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${
+            active
+              ? "M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"
+              : "M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+          }"/></svg>`;
+        };
+        const set = (next: boolean) => {
+          active = next;
+          if (next) frame.setAttribute("data-map-fullscreen", "");
+          else frame.removeAttribute("data-map-fullscreen");
+          paint();
+          // the frame changed size, so Leaflet has to re-measure after layout
+          requestAnimationFrame(() => leafletMap.invalidateSize());
+        };
+        const leave = () => {
+          set(false);
+          if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        };
+        const onFullscreenChange = () => {
+          // the user left real fullscreen with Esc or the browser UI
+          if (active && !document.fullscreenElement) set(false);
+        };
+        const onKey = (event: KeyboardEvent) => {
+          if (event.key === "Escape" && active) leave();
+        };
+        paint();
+        L.DomEvent.on(button, "click", (event) => {
+          L.DomEvent.preventDefault(event);
+          if (active) {
+            leave();
+          } else {
+            set(true);
+            document.documentElement.requestFullscreen?.().catch(() => {});
+          }
+        });
+        L.DomEvent.disableClickPropagation(bar);
+        document.addEventListener("fullscreenchange", onFullscreenChange);
+        document.addEventListener("keydown", onKey);
+        leafletMap.once("unload", () => {
+          document.removeEventListener("fullscreenchange", onFullscreenChange);
+          document.removeEventListener("keydown", onKey);
+          if (active) leave();
+        });
+        return bar;
+      };
+      control.addTo(map);
+      L.control.zoom({ position: "topleft" }).addTo(map);
       // drops only the "Leaflet" link; keep the Esri credit, imagery terms require it (Q-06)
       map.attributionControl.setPrefix(false).setPosition("bottomleft");
       L.tileLayer(TILE_URL, {

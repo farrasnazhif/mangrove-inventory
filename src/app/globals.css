@@ -951,6 +951,21 @@
   }
 }
 
+/* map "fullscreen": the map frame covers the whole window, above the floating chatbot and theme buttons (z-50),
+ * and shows nothing but the map: the zoom and fullscreen buttons and every overlay (zone card, back link) are hidden.
+ * Esc leaves it. The imagery credit stays, the tile provider's terms require it (Q-06). */
+[data-map-fullscreen] {
+  position: fixed !important;
+  inset: 0;
+  z-index: 60;
+  width: 100% !important;
+  height: 100% !important;
+}
+[data-map-fullscreen] > :not(.leaflet-container),
+[data-map-fullscreen] .leaflet-bar {
+  display: none !important;
+}
+
 /* ── Public landing page ──────────────────────────────────────────────
  * Layout and type modelled on relae.co (serif display face, pill buttons, hairline-joined card grids),
  * painted with the dashboard's own theme tokens so light and dark mode match the app.
