@@ -355,13 +355,6 @@
   .badge {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-medium capitalize rounded-chip whitespace-nowrap;
   }
-  .badge::before {
-    content: "";
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: currentColor;
-  }
   .badge-draft,
   .badge-neutral {
     background: var(--surface-subtle);

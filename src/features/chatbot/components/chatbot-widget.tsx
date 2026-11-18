@@ -42,7 +42,7 @@ export function ChatbotWidget() {
           aria-expanded={open}
           aria-controls="chatbot-panel"
           onClick={() => setOpen((value) => !value)}
-          className="order-2 flex size-12 items-center justify-center rounded-full bg-canvas shadow-2xl dark:bg-line transition-transform duration-150 active:scale-[0.96]"
+          className="order-2 flex size-12 items-center justify-center rounded-full bg-surface text-ink shadow-overlay transition-transform duration-150 active:scale-[0.96]"
         >
           {/* both icons stay mounted and cross-fade together, so there is no gap while they swap */}
           <span className="relative flex size-5 items-center justify-center">
