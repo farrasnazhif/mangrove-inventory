@@ -1,3 +1,5 @@
+import { BulkDensitySocOverview } from "@/features/bulk-density-soc/components/bulk-density-soc-overview";
+
 export default function BulkDensitySocPage() {
-  return <p>this is Bulk density & SOC</p>;
+  return <BulkDensitySocOverview />;
 }
