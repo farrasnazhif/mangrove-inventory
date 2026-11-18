@@ -1,6 +1,8 @@
 "use client";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { FloatingThemeButton } from "@/components/layout/floating-theme-button";
+import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
 import { RoleProvider, useRole } from "@/features/access/components/role-provider";
 import { PlotProvider } from "@/features/inventory/components/plot-provider";
 import { PetaPlotOverview } from "./peta-plot-overview";
@@ -14,7 +16,12 @@ function Screen() {
       <PetaPlotOverview />
     </AppShell>
   ) : (
-    <PetaPlotOverview fullScreen />
+    <>
+      <PetaPlotOverview fullScreen />
+      {/* the visitor map has no top bar, so the theme switch and the public chatbot float over it */}
+      <FloatingThemeButton />
+      <ChatbotWidget />
+    </>
   );
 }
 

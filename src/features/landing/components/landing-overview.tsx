@@ -1,28 +1,38 @@
 "use client";
 
-import Link from "next/link";
+import { FloatingThemeButton } from "@/components/layout/floating-theme-button";
 import { RoleProvider } from "@/features/access/components/role-provider";
 import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
 import { PlotProvider } from "@/features/inventory/components/plot-provider";
-import { SummaryMetrics } from "@/features/ringkasan/components/summary-metrics";
-import { LandingAggregate } from "./landing-aggregate";
+import { LandingBanner } from "./landing-banner";
+import { LandingCta } from "./landing-cta";
+import { LandingFooter } from "./landing-footer";
 import { LandingHeader } from "./landing-header";
 import { LandingHero } from "./landing-hero";
+import { LandingMethod } from "./landing-method";
+import { LandingNumbers } from "./landing-numbers";
+import { LandingSpecies } from "./landing-species";
+import { LandingTicker } from "./landing-ticker";
 
-/** the public page: everything a visitor may see, in one scroll */
+/** the public page: everything a visitor may see, in one scroll. Layout follows relae.co. */
 export function LandingOverview() {
   return (
     <RoleProvider>
       <PlotProvider>
-        <main
-          id="main-content"
-          className="mx-auto flex min-h-dvh max-w-7xl flex-col gap-6 px-6 pb-16 lg:px-10"
-        >
+        <div className="landing min-h-dvh">
+          {/* <LandingBanner /> */}
           <LandingHeader />
-          <LandingHero />
-          <SummaryMetrics />
-          <LandingAggregate />
-        </main>
+          <main id="main-content">
+            <LandingHero />
+            <LandingTicker />
+            <LandingMethod />
+            <LandingNumbers />
+            <LandingSpecies />
+            <LandingCta />
+          </main>
+          <LandingFooter />
+        </div>
+        <FloatingThemeButton />
         <ChatbotWidget />
       </PlotProvider>
     </RoleProvider>

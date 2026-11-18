@@ -2,23 +2,52 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Typography } from "@/components/ui/typography";
 import { useRole } from "@/features/access/components/role-provider";
+
+const LINKS = [
+  { href: "#cara-kerja", label: "Cara kerja" },
+  { href: "#angka", label: "Angka kunci" },
+  { href: "#penghuni", label: "Penghuni" },
+];
 
 export function LandingHeader() {
   const { isManager } = useRole();
   return (
-    <header className="flex h-14 items-center justify-between gap-3">
-      <Typography as="span" variant="bm" weight="semibold">Mangrove Inventory</Typography>
-      <div className="flex items-center gap-1">
-        {/* only a signed-in manager sees this; visitors are never pointed at the login page */}
-        {isManager && (
-          <Button size="sm" variant="secondary" nativeButton={false} role="link" render={<Link href="/ringkasan" />}>
-            Buka dashboard
-          </Button>
-        )}
-        <ThemeToggle />
+    <header className="l-nav">
+      <div className="l-container flex items-center justify-between gap-4">
+        <Link
+          href="/"
+          className="l-serif text-[22px] font-semibold text-[var(--l-head)]"
+        >
+          Mangrove Inventory
+        </Link>
+        {/* the nav and the manager button share the right side, so the logo and the nav sit at opposite ends */}
+        <div className="flex items-center gap-8">
+          <nav
+            aria-label="Navigasi utama"
+            className="hidden items-center gap-8 md:flex"
+          >
+            {LINKS.map((link) => (
+              <a key={link.href} href={link.href}>
+                {link.label}
+              </a>
+            ))}
+            <Link href="/peta-plot">Peta Plot</Link>
+          </nav>
+          {/* only a signed-in manager sees this; visitors are never pointed at the login page */}
+          {isManager && (
+            <Button
+              size="sm"
+              variant="secondary"
+              nativeButton={false}
+              role="link"
+              render={<Link href="/ringkasan" />}
+              className="hidden sm:inline-flex"
+            >
+              Dashboard
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   );

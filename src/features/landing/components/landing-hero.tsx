@@ -1,20 +1,66 @@
 import Link from "next/link";
-import { Map } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Typography } from "@/components/ui/typography";
+
+// decorative flowing lines behind the headline, like the animated lines on relae.co's hero
+function Lines() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 1200 520"
+      preserveAspectRatio="none"
+      className="landing-lines pointer-events-none absolute inset-0 size-full text-[var(--l-accent)] opacity-25"
+    >
+      {[0, 1, 2, 3, 4].map((i) => (
+        <path
+          key={i}
+          d={`M-20 ${120 + i * 70} C 240 ${20 + i * 60}, 420 ${260 + i * 40}, 640 ${150 + i * 55} S 1040 ${60 + i * 70}, 1220 ${170 + i * 50}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+        />
+      ))}
+    </svg>
+  );
+}
 
 export function LandingHero() {
   return (
-    <section className="flex flex-col items-start gap-4 py-8 md:py-12">
-      <Typography as="h1" variant="h5" weight="semibold">Stok Karbon Mangrove Pamurbaya</Typography>
-      <Typography as="p" variant="bm" className="max-w-2xl text-ink-2">
-        Ringkasan terbuka dari inventarisasi karbon mangrove di Surabaya Timur, dihitung dari data tagging pohon 2026.
-        Data lapangan rinci hanya tersedia bagi pengelola.
-      </Typography>
-      <Button variant="primary" nativeButton={false} role="link" render={<Link href="/peta-plot" />}>
-        <Map size={14} aria-hidden />
-        Lihat Peta Plot
-      </Button>
+    <section className="relative overflow-hidden">
+      <Lines />
+      <div className="l-container l-section relative flex flex-col items-center text-center">
+        <p className="l-eyebrow">
+          Data lapangan. Perhitungan ilmiah. Terbuka untuk semua.
+        </p>
+        <h1 className="l-h1 max-w-3xl">
+          Karbon Mangrove Pamurbaya, Dihitung dari Setiap Pohon
+        </h1>
+        <p className="l-lead mt-6 max-w-xl">
+          Kami mengukur ribuan pohon di hutan mangrove Surabaya Timur, lalu
+          menghitung berapa banyak karbon yang tersimpan di dalamnya.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Button
+            size="lg"
+            variant="primary"
+            nativeButton={false}
+            role="link"
+            render={<Link href="/peta-plot" />}
+          >
+            Jelajahi peta
+          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            nativeButton={false}
+            role="link"
+            render={<a href="#cara-kerja" />}
+          >
+            Lihat cara kerjanya
+            {/* <ArrowRight size={14} aria-hidden /> */}
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }
