@@ -1,3 +1,5 @@
+import { PerhitunganKarbonOverview } from "@/features/perhitungan-karbon/components/perhitungan-karbon-overview";
+
 export default function PerhitunganKarbonPage() {
-  return <p>this is Perhitungan Karbon</p>;
+  return <PerhitunganKarbonOverview />;
 }

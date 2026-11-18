@@ -233,3 +233,28 @@ test("toast types render decorative status icons, readable content, and dismissa
   assert.match(markup, /Your input is preserved/);
   assert.match(markup, /aria-label="Dismiss notification"/);
 });
+
+test("mangrove feature screens keep demo inputs and unapproved carbon results explicit in both themes", () => {
+  const DataLapangan = load(resolve(root, "src/features/data-lapangan/components/data-lapangan-overview")).DataLapanganOverview as ComponentType;
+  const PerhitunganKarbon = load(resolve(root, "src/features/perhitungan-karbon/components/perhitungan-karbon-overview")).PerhitunganKarbonOverview as ComponentType;
+  const BulkDensitySoc = load(resolve(root, "src/features/bulk-density-soc/components/bulk-density-soc-overview")).BulkDensitySocOverview as ComponentType;
+
+  for (const theme of ["light", "dark"] as const) {
+    const fieldMarkup = render(createElement(DataLapangan), theme);
+    assert.match(fieldMarkup, /VAK-DEMO-01/);
+    assert.match(fieldMarkup, /Pilih contoh spesies/);
+    assert.match(fieldMarkup, /Tambah pohon/);
+    assert.match(fieldMarkup, /Tambah lapisan/);
+    assert.match(fieldMarkup, /bukan hasil pengukuran lapangan/);
+
+    const carbonMarkup = render(createElement(PerhitunganKarbon), theme);
+    assert.match(carbonMarkup, /Metode menunggu persetujuan/);
+    assert.match(carbonMarkup, /Belum tersedia/);
+    assert.doesNotMatch(carbonMarkup, /\d+(?:[,.]\d+)?\s*Mg C\/ha/);
+
+    const soilMarkup = render(createElement(BulkDensitySoc), theme);
+    assert.match(soilMarkup, /Data laboratorium dan metode konversi belum disetujui/);
+    assert.match(soilMarkup, /Nilai SOC tidak dihitung atau diganti dengan nol/);
+    assert.match(soilMarkup, /Belum tersedia/);
+  }
+});
