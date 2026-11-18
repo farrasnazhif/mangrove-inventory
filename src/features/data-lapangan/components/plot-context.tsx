@@ -1,60 +1,35 @@
+import { BadgeCheck } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
-import type { PlotContextSummary } from "../types/data-lapangan";
+import type { PlotInfoCard } from "../types/data-lapangan";
 
-export function PlotContext({ plot }: { plot: PlotContextSummary }) {
+export function PlotContext({ cards }: { cards: PlotInfoCard[] }) {
   return (
-    <Card className="flex flex-col gap-4">
-      <div>
-        <Typography as="h2" variant="t" weight="semibold">
-          Informasi Plot
-        </Typography>
-        <Typography as="p" variant="bs" className="mt-1 text-ink-2">
-          Konteks contoh untuk tampilan pencatatan.
-        </Typography>
-      </div>
-      <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <Typography as="dt" variant="c" weight="medium" className="text-ink-3">
-            Kode plot
-          </Typography>
-          <Typography as="dd" variant="bs" weight="medium" className="mt-1">
-            {plot.code}
-          </Typography>
-        </div>
-        <div>
-          <Typography as="dt" variant="c" weight="medium" className="text-ink-3">
-            Lokasi
-          </Typography>
-          <Typography as="dd" variant="bs" weight="medium" className="mt-1">
-            {plot.location}
-          </Typography>
-        </div>
-        <div>
-          <Typography as="dt" variant="c" weight="medium" className="text-ink-3">
-            Tanggal survei
-          </Typography>
-          <Typography as="dd" variant="bs" weight="medium" className="mt-1">
-            {plot.surveyDate}
-          </Typography>
-        </div>
-        <div>
-          <Typography as="dt" variant="c" weight="medium" className="text-ink-3">
-            Luas plot
-          </Typography>
-          <Typography as="dd" variant="bs" weight="medium" className="mt-1">
-            {plot.plotArea}
-          </Typography>
-        </div>
-        <div>
-          <Typography as="dt" variant="c" weight="medium" className="text-ink-3">
-            Pencatat
-          </Typography>
-          <Typography as="dd" variant="bs" weight="medium" className="mt-1">
-            {plot.surveyor}
-          </Typography>
-        </div>
-      </dl>
-    </Card>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {cards.map((card) => (
+        <Card key={card.id} className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-2">
+            <Typography as="p" variant="c" weight="medium" className="uppercase tracking-wide text-ink-3">
+              {card.label}
+            </Typography>
+            {card.verified && <BadgeCheck size={16} className="text-green" aria-label="Terverifikasi" />}
+            {card.badge && <Badge>{card.badge}</Badge>}
+          </div>
+          <Typography as="p" variant="bm" weight="semibold">{card.value}</Typography>
+          <div className="border-t border-line pt-2">
+            {card.actions ? (
+              <div className="flex justify-between gap-2">
+                {card.actions.map((action) => (
+                  <Typography key={action} as="span" variant="bs" className="text-ink-2">{action}</Typography>
+                ))}
+              </div>
+            ) : (
+              <Typography as="p" variant="bs" className={card.verified ? "text-green" : "text-ink-2"}>{card.detail}</Typography>
+            )}
+          </div>
+        </Card>
+      ))}
+    </div>
   );
 }

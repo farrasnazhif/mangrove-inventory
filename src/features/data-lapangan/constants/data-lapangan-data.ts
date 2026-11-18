@@ -1,42 +1,29 @@
-import type {
-  PlotContextSummary,
-  SedimentLayerRecord,
-  TreeRecord,
-} from "../types/data-lapangan";
-import type { SelectOption } from "@/components/ui/select";
+import type { PlotInfoCard, SedimentLayerRecord, TreeRecord } from "../types/data-lapangan";
 
-// shortcut: dummy sample data, replace after field schema and approved data access are settled.
-export const PLOT_CONTEXT: PlotContextSummary = {
-  code: "VAK-DEMO-01",
-  location: "Contoh lokasi",
-  surveyDate: "Belum diisi",
-  plotArea: "Belum ditentukan",
-  surveyor: "Belum diisi",
-};
+// shortcut: dummy sample data copied from the design mock-up, replace after field schema and approved data access are settled.
+export const PLOT_OPTIONS = [{ value: "PAM-04", label: "PAM-04" }];
 
-export const INITIAL_TREES: TreeRecord[] = [
-  {
-    id: "tree-01",
-    code: "Pohon contoh 01",
-    species: null,
-    dbh: null,
-    height: null,
-  },
+export const PLOT_INFO: PlotInfoCard[] = [
+  { id: "region", label: "Wilayah / Titik Zonasi", value: "Wonorejo Inertidal", detail: "Sektor Mangrove Muara Timur" },
+  { id: "survey", label: "Survey Date & Tim Lapangan", value: "14 Oktober 2026", detail: "Budi Santoso", verified: true },
+  { id: "dimension", label: "Dimensi Plot & Skema Subplot", value: "10m x 10m", detail: "Kuadran Tunggal Standar SNI", verified: true },
+  { id: "coordinate", label: "Koordinat Geografis", value: `7°18'42.14" S 112°49'15.38" E`, detail: "", badge: "INP 78%", actions: ["Perbarui dari GPS", "Input Manual"] },
 ];
 
-export const SPECIES_OPTIONS: SelectOption[] = [
-  { value: "demo-species-a", label: "Contoh spesies A" },
-  { value: "demo-species-b", label: "Contoh spesies B" },
+const emptyTree = (id: string): TreeRecord => ({ id, species: null, dbh: null, height: null, density: null });
+
+export const TREES: TreeRecord[] = [
+  { id: "tree-1", species: "Rhizophora sp.", dbh: "16.2", height: null, density: null },
+  ...["tree-2", "tree-3", "tree-4", "tree-5"].map(emptyTree),
 ];
 
-export const INITIAL_SEDIMENT_LAYERS: SedimentLayerRecord[] = [
-  {
-    id: "layer-01",
-    label: "Lapisan contoh 01",
-    depthStart: null,
-    depthEnd: null,
-    dryMass: null,
-    coreVolume: null,
-    loi: null,
-  },
-];
+export const SEDIMENT_LAYERS: SedimentLayerRecord[] = ["layer-1", "layer-2", "layer-3", "layer-4", "layer-5"].map((id) => ({
+  id,
+  depth: "16",
+  thickness: null,
+  dryMass: null,
+  volume: null,
+  loi: null,
+  bulkDensity: null,
+  soc: null,
+}));

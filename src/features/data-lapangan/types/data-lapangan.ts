@@ -1,25 +1,30 @@
-export type PlotContextSummary = {
-  code: string;
-  location: string;
-  surveyDate: string;
-  plotArea: string;
-  surveyor: string;
+export type PlotInfoCard = {
+  id: string;
+  label: string;
+  value: string;
+  detail: string;
+  verified?: boolean;
+  badge?: string;
+  // coordinate card shows two actions instead of one detail line
+  actions?: [string, string];
 };
 
+// null renders as an em dash
 export type TreeRecord = {
   id: string;
-  code: string;
   species: string | null;
-  dbh: number | null;
-  height: number | null;
+  dbh: string | null;
+  height: string | null;
+  density: string | null;
 };
 
 export type SedimentLayerRecord = {
   id: string;
-  label: string;
-  depthStart: number | null;
-  depthEnd: number | null;
-  dryMass: number | null;
-  coreVolume: number | null;
-  loi: number | null;
+  depth: string;
+  thickness: string | null;
+  dryMass: string | null;
+  volume: string | null;
+  loi: string | null;
+  bulkDensity: string | null;
+  soc: string | null;
 };

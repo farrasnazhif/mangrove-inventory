@@ -1,94 +1,41 @@
-"use client";
-
-import { useState } from "react";
-import { Notice } from "@/components/ui/notice";
-import { Typography } from "@/components/ui/typography";
-import {
-  INITIAL_SEDIMENT_LAYERS,
-  INITIAL_TREES,
-  PLOT_CONTEXT,
-} from "../constants/data-lapangan-data";
-import type {
-  SedimentLayerRecord,
-  TreeRecord,
-} from "../types/data-lapangan";
+import { PLOT_INFO, SEDIMENT_LAYERS, TREES } from "../constants/data-lapangan-data";
+import type { SedimentLayerRecord, TreeRecord } from "../types/data-lapangan";
 import { PlotContext } from "./plot-context";
-import { SedimentLayers } from "./sediment-layers";
-import { TreeMeasurements } from "./tree-measurements";
+import { PlotHeader } from "./plot-header";
+import { RecordSection } from "./record-section";
 
 export function DataLapanganOverview() {
-  const [trees, setTrees] = useState(INITIAL_TREES);
-  const [layers, setLayers] = useState(INITIAL_SEDIMENT_LAYERS);
-
-  function addTree() {
-    setTrees((current) => [
-      ...current,
-      {
-        id: `tree-${current.length + 1}`,
-        code: `Pohon contoh ${String(current.length + 1).padStart(2, "0")}`,
-        species: null,
-        dbh: null,
-        height: null,
-      } satisfies TreeRecord,
-    ]);
-  }
-
-  function addLayer() {
-    setLayers((current) => [
-      ...current,
-      {
-        id: `layer-${current.length + 1}`,
-        label: `Lapisan contoh ${String(current.length + 1).padStart(2, "0")}`,
-        depthStart: null,
-        depthEnd: null,
-        dryMass: null,
-        coreVolume: null,
-        loi: null,
-      } satisfies SedimentLayerRecord,
-    ]);
-  }
-
-  function updateTree(
-    id: string,
-    updates: Partial<Pick<TreeRecord, "species" | "dbh" | "height">>,
-  ) {
-    setTrees((current) =>
-      current.map((tree) => (tree.id === id ? { ...tree, ...updates } : tree)),
-    );
-  }
-
-  function updateLayer(
-    id: string,
-    updates: Partial<
-      Pick<
-        SedimentLayerRecord,
-        "depthStart" | "depthEnd" | "dryMass" | "coreVolume" | "loi"
-      >
-    >,
-  ) {
-    setLayers((current) =>
-      current.map((layer) => (layer.id === id ? { ...layer, ...updates } : layer)),
-    );
-  }
-
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <Typography as="h1" variant="h5" weight="semibold">
-          Data Lapangan
-        </Typography>
-        <Typography as="p" variant="bs" className="mt-1 text-ink-2">
-          Informasi plot, pengukuran pohon, dan sampel sedimen.
-        </Typography>
-      </header>
-      <Notice tone="info">
-        <Typography as="span" variant="bs">
-          Tampilan demo. Data contoh tidak tersimpan dan bukan hasil pengukuran lapangan.
-        </Typography>
-      </Notice>
-      <PlotContext plot={PLOT_CONTEXT} />
-      <TreeMeasurements rows={trees} onAdd={addTree} onChange={updateTree} />
-      <SedimentLayers rows={layers} onAdd={addLayer} onChange={updateLayer} />
+      <PlotHeader />
+      <PlotContext cards={PLOT_INFO} />
+      <RecordSection<TreeRecord>
+        title="Data Tegakan Mangrove"
+        addLabel="Tambah Pohon"
+        caption="Data tegakan mangrove"
+        rows={TREES}
+        columns={[
+          { id: "species", label: "Jenis mangrove", get: (row) => row.species ?? "Jenis belum dipilih" },
+          { id: "dbh", label: "DBH (cm)", get: (row) => row.dbh },
+          { id: "height", label: "Tinggi (m)", get: (row) => row.height },
+          { id: "density", label: "ρ kayu", get: (row) => row.density },
+        ]}
+      />
+      <RecordSection<SedimentLayerRecord>
+        title="Data Inti Sedimen"
+        addLabel="Tambah Sampel"
+        caption="Data inti sedimen"
+        rows={SEDIMENT_LAYERS}
+        columns={[
+          { id: "depth", label: "Kedalaman", get: (row) => row.depth },
+          { id: "thickness", label: "Tebal (cm)", get: (row) => row.thickness },
+          { id: "dry", label: "Massa Kering (g)", get: (row) => row.dryMass },
+          { id: "volume", label: "Volume (cm2)", get: (row) => row.volume },
+          { id: "loi", label: "%LOI", get: (row) => row.loi },
+          { id: "pb", label: "PB (0/cm2)", get: (row) => row.bulkDensity },
+          { id: "soc", label: "SOC (mg/ma)", get: (row) => row.soc },
+        ]}
+      />
     </div>
   );
 }

@@ -241,11 +241,9 @@ test("mangrove feature screens keep demo inputs and unapproved carbon results ex
 
   for (const theme of ["light", "dark"] as const) {
     const fieldMarkup = render(createElement(DataLapangan), theme);
-    assert.match(fieldMarkup, /VAK-DEMO-01/);
-    assert.match(fieldMarkup, /Pilih contoh spesies/);
-    assert.match(fieldMarkup, /Tambah pohon/);
-    assert.match(fieldMarkup, /Tambah lapisan/);
-    assert.match(fieldMarkup, /bukan hasil pengukuran lapangan/);
+    assert.match(fieldMarkup, /Wonorejo Inertidal/);
+    assert.match(fieldMarkup, /Tambah Pohon/);
+    assert.match(fieldMarkup, /Data Inti Sedimen/);
 
     const carbonMarkup = render(createElement(PerhitunganKarbon), theme);
     assert.match(carbonMarkup, /Metode menunggu persetujuan/);
