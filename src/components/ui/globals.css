@@ -15,7 +15,7 @@
  * ────────────────────────────────────────────────────────── */
 :root {
   /* surfaces — cool, blue-tinted neutrals */
-  --page: oklch(0.985 0.001 286.376);
+  --page: #f7f9fb;
   --canvas: oklch(0.961 0.002 247.84);
   --surface: oklch(1 0 0);
   --inset: oklch(0.979 0.002 247.839);

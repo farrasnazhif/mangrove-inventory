@@ -10,10 +10,10 @@ import { CarbonDistribution } from "./carbon-distribution";
 import { PlotPhotos } from "./plot-photos";
 
 // ordinal position in the workbook, since location names are not short codes
-export function PlotNumber({ index, active = false }: { index: number; active?: boolean }) {
+export function PlotNumber({ index }: { index: number }) {
   return (
     <span
-      className={`flex size-10 shrink-0 items-center justify-center rounded-control text-[14px] font-semibold ${active ? "bg-ink text-surface" : "bg-field text-ink-2"}`}
+      className={`flex size-10 shrink-0 items-center justify-center rounded-control text-[14px] font-semibold bg-field text-ink-2`}
     >
       {index + 1}
     </span>
@@ -27,7 +27,7 @@ export function PlotDetail({ stats }: { stats: PlotStats }) {
     <Card className="flex flex-col gap-6" aria-live="polite">
       <div className="flex items-center justify-between gap-4 border-b border-line pb-4">
         <div className="flex min-w-0 items-center gap-3">
-          <PlotNumber index={all.indexOf(stats)} active />
+          <PlotNumber index={all.indexOf(stats)} />
           <div className="min-w-0">
             <Typography as="h2" variant="t" weight="semibold">{stats.plot.label}</Typography>
             <Typography as="p" variant="bs" className="truncate text-ink-2">

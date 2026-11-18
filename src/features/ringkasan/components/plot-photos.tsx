@@ -7,7 +7,7 @@ export function PlotPhotos() {
   return (
     <section aria-label="Dokumentasi visual plot">
       <Typography as="h3" variant="t" weight="semibold">Dokumentasi Visual Plot</Typography>
-      <div className="mt-3 flex h-24 items-center justify-center gap-2 rounded-card bg-inset text-ink-3 shadow-hairline">
+      <div className="mt-3 flex h-44 shrink-0 items-center justify-center gap-2 rounded-card bg-inset text-ink-3 shadow-hairline">
         <ImageIcon size={20} aria-hidden />
         <Typography as="p" variant="bs">Foto lapangan: {UNAVAILABLE.toLowerCase()}</Typography>
       </div>

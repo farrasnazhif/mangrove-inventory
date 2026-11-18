@@ -19,7 +19,9 @@ export function PlotList() {
   return (
     <Card className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <Typography as="h2" variant="t" weight="semibold">Daftar Plot Inventarisasi</Typography>
+        <Typography as="h2" variant="t" weight="semibold">
+          Daftar Plot Inventarisasi
+        </Typography>
         <ValuePill>{all.length} PLOT</ValuePill>
       </div>
       <ul aria-label="Daftar plot" className="flex flex-col gap-1">
@@ -31,21 +33,48 @@ export function PlotList() {
                 type="button"
                 aria-pressed={active}
                 onClick={() => select(stats.plot.key)}
-                className={`flex w-full items-center gap-3 rounded-card p-3 text-left transition-[background-color,transform] duration-150 active:scale-[0.99] ${active ? "bg-hover-2 shadow-hairline" : "hover:bg-hover-2"}`}
+                className={`flex w-full items-center gap-3 rounded-card p-3 text-left transition-[background-color,transform] duration-150 active:scale-[0.99] ${active ? "bg-[#F7F8F9] shadow-hairline dark:bg-hover-2" : "hover:bg-[#F7F8F9] dark:hover:bg-hover-2"}`}
               >
-                <PlotNumber index={all.indexOf(stats)} active={active} />
+                <PlotNumber index={all.indexOf(stats)} />
                 <span className="min-w-0 flex-1">
-                  <Typography as="span" variant="bl" weight="semibold" className="block truncate">{stats.plot.label}</Typography>
-                  <Typography as="span" variant="bs" className="block truncate text-ink-2">
-                    {stats.treeCount ? `${stats.speciesCount} jenis` : UNAVAILABLE}
+                  <Typography
+                    as="span"
+                    variant="bl"
+                    weight="semibold"
+                    className="block truncate"
+                  >
+                    {stats.plot.label}
+                  </Typography>
+                  <Typography
+                    as="span"
+                    variant="bs"
+                    className="block truncate text-ink-2"
+                  >
+                    {stats.treeCount
+                      ? `${stats.speciesCount} jenis`
+                      : UNAVAILABLE}
                   </Typography>
                 </span>
                 <span className="shrink-0 text-right">
-                  <Typography as="span" variant="bl" weight="semibold" className="block">
+                  <Typography
+                    as="span"
+                    variant="bl"
+                    weight="semibold"
+                    className="block"
+                  >
                     {stats.treeCount ? formatNumber(stats.carbon, 1) : "-"}{" "}
-                    <Typography as="span" variant="c" className="text-ink-3">ton C</Typography>
+                    <Typography as="span" variant="c" className="text-ink-3">
+                      ton C
+                    </Typography>
                   </Typography>
-                  <Typography as="span" variant="bs" weight="medium" className="block text-green">{stats.treeCount} Pohon</Typography>
+                  <Typography
+                    as="span"
+                    variant="bs"
+                    weight="medium"
+                    className="block text-green"
+                  >
+                    {stats.treeCount} Pohon
+                  </Typography>
                 </span>
               </button>
             </li>

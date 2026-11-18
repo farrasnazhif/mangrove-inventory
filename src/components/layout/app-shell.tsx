@@ -116,7 +116,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {sidebar}
       </div>
       <main id="main-content" className="min-w-0 flex-1">
-        <header className="flex h-14 items-center justify-between gap-3 border-b border-line px-6 lg:justify-end lg:px-10">
+        <header className="flex h-14 items-center justify-between gap-3 border-b border-line bg-page px-6 lg:justify-end lg:px-10">
           <div className="lg:hidden">
             <Dialog
               title="Navigation"

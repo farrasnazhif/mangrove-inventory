@@ -16,7 +16,7 @@ export function SpatialMap() {
           Peta Penuh
         </Link>
       </div>
-      <div className="h-72 overflow-hidden rounded-card shadow-hairline">
+      <div className="h-[44rem] overflow-hidden rounded-card shadow-hairline">
         <PlotMap selectedZones={selectedZones} onSelectZone={onSelectZone} />
       </div>
       {missingZone && (

@@ -16,7 +16,7 @@
   --success-soft: var(--green-tint);
   --info: var(--accent-ink);
   --info-soft: var(--accent-tint);
-  --radius: 10px;
+  --radius: 8px;
   --font-ui: "Inter", sans-serif;
 }
 :root[data-theme="dark"] {
@@ -553,8 +553,9 @@
 @layer components {
   .ui-card {
     @apply bg-surface p-5;
+    border: 1px solid var(--line);
     border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
+    /* box-shadow: var(--shadow-card); */
   }
   .ui-positioner {
     z-index: 60;
