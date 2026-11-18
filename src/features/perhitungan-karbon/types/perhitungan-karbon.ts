@@ -1,18 +1,8 @@
-export type CarbonMethod = {
+export type CarbonFormula = {
   id: string;
-  name: string;
-  compartment: string;
-  status: string;
-  reference: string;
-};
-
-export type CarbonTreeRow = {
-  id: string;
-  tree: string;
-  agb: string;
-  agc: string;
-  bgb: string;
-  bgc: string;
+  title: string;
+  equation: string;
+  note: string;
 };
 
 export type CarbonResult = {
@@ -20,4 +10,29 @@ export type CarbonResult = {
   label: string;
   value: string;
   unit: string;
+  verified?: boolean;
+  // dashed green outline marks the totals
+  total?: boolean;
+};
+
+// null renders as an em dash
+export type CarbonTreeRow = {
+  id: string;
+  species: string;
+  density: string | null;
+  dbh: string | null;
+  agb: string | null;
+  agc: string | null;
+  bgb: string | null;
+  bgc: string | null;
+};
+
+export type CarbonTotalRow = {
+  id: string;
+  plot: string;
+  agc: string | null;
+  bgc: string | null;
+  soc: string | null;
+  total: string | null;
+  co2e: string | null;
 };

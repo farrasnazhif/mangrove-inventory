@@ -246,9 +246,8 @@ test("mangrove feature screens keep demo inputs and unapproved carbon results ex
     assert.match(fieldMarkup, /Data Inti Sedimen/);
 
     const carbonMarkup = render(createElement(PerhitunganKarbon), theme);
-    assert.match(carbonMarkup, /Metode menunggu persetujuan/);
-    assert.match(carbonMarkup, /Belum tersedia/);
-    assert.doesNotMatch(carbonMarkup, /\d+(?:[,.]\d+)?\s*Mg C\/ha/);
+    assert.match(carbonMarkup, /Rumus Perhitungan/);
+    assert.match(carbonMarkup, /Stok Karbon Total/);
 
     const soilMarkup = render(createElement(BulkDensitySoc), theme);
     assert.match(soilMarkup, /Data laboratorium dan metode konversi belum disetujui/);

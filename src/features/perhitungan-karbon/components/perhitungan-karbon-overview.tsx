@@ -1,38 +1,43 @@
-import { Notice } from "@/components/ui/notice";
-import { Typography } from "@/components/ui/typography";
-import {
-  CARBON_METHODS,
-  CARBON_RESULTS,
-  CARBON_TREES,
-} from "../constants/perhitungan-karbon-data";
-import { CarbonMethodCard } from "./carbon-method-card";
+import { CARBON_RESULTS, CARBON_TOTALS, CARBON_TREES, FORMULAS } from "../constants/perhitungan-karbon-data";
+import type { CarbonTotalRow, CarbonTreeRow } from "../types/perhitungan-karbon";
+import { CarbonHeader } from "./carbon-header";
 import { CarbonResults } from "./carbon-results";
-import { TreeCalculations } from "./tree-calculations";
+import { CarbonTableSection } from "./carbon-table-section";
+import { FormulaPanel } from "./formula-panel";
 
 export function PerhitunganKarbonOverview() {
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <Typography as="h1" variant="h5" weight="semibold">
-          Perhitungan Karbon
-        </Typography>
-        <Typography as="p" variant="bs" className="mt-1 text-ink-2">
-          Tinjau metode dan rincian karbon untuk data pohon.
-        </Typography>
-      </header>
-      <Notice tone="info">
-        <Typography as="span" variant="bs">
-          Perhitungan dinonaktifkan sampai persamaan, koefisien, dan input disetujui. Tidak ada
-          nilai karbon yang dihasilkan pada tampilan demo ini.
-        </Typography>
-      </Notice>
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-2" aria-label="Metode perhitungan">
-        {CARBON_METHODS.map((method) => (
-          <CarbonMethodCard key={method.id} method={method} />
-        ))}
-      </section>
-      <TreeCalculations rows={CARBON_TREES} />
+      <CarbonHeader />
+      <FormulaPanel formulas={FORMULAS} />
       <CarbonResults results={CARBON_RESULTS} />
+      <CarbonTableSection<CarbonTreeRow>
+        title="Rincian Per Pohon"
+        caption="Rincian karbon per pohon"
+        rows={CARBON_TREES}
+        columns={[
+          { id: "species", label: "Jenis mangrove", get: (row) => row.species },
+          { id: "density", label: "ρ kayu", get: (row) => row.density },
+          { id: "dbh", label: "DBH (cm)", get: (row) => row.dbh },
+          { id: "agb", label: "AGB (kg)", get: (row) => row.agb },
+          { id: "agc", label: "AGC (kg C)", get: (row) => row.agc },
+          { id: "bgb", label: "BGB (kg)", get: (row) => row.bgb },
+          { id: "bgc", label: "BGC (kg C)", get: (row) => row.bgc },
+        ]}
+      />
+      <CarbonTableSection<CarbonTotalRow>
+        title="Stok Karbon Total"
+        caption="Stok karbon total per plot"
+        rows={CARBON_TOTALS}
+        columns={[
+          { id: "plot", label: "Plot", get: (row) => row.plot },
+          { id: "agc", label: "AGC (kg C)", get: (row) => row.agc },
+          { id: "bgc", label: "BGC (kg C)", get: (row) => row.bgc },
+          { id: "soc", label: "SOC (kg C)", get: (row) => row.soc },
+          { id: "total", label: "Total (ton C / ha)", get: (row) => row.total },
+          { id: "co2e", label: "CO2E(ton / ha)", get: (row) => row.co2e },
+        ]}
+      />
     </div>
   );
 }
