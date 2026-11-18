@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { BotMessageSquare, X } from "lucide-react";
 import { MotionConfig, motion } from "motion/react";
+import { useRole } from "@/features/access/components/role-provider";
 import { ChatbotOverview } from "./chatbot-overview";
 
 // open: a soft spring so the panel settles instead of stopping; close: a short ease-in so it gets out of the way
@@ -23,6 +24,7 @@ const CLOSE = {
 export function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const launcher = useRef<HTMLButtonElement>(null);
+  const { role } = useRole();
 
   return (
     <MotionConfig reducedMotion="user">
@@ -98,7 +100,8 @@ export function ChatbotWidget() {
           style={{ transformOrigin: "bottom right" }}
           className="order-1 h-[min(580px,calc(100dvh-3.5rem-6.5rem))] w-[min(380px,calc(100vw-2rem))] rounded-[14px] shadow-overlay"
         >
-          <ChatbotOverview />
+          {/* a visitor gets the public chatbot only; the key restarts the chat when the role changes */}
+          <ChatbotOverview key={role} roleTabs={role === "manager"} />
         </motion.section>
       </div>
     </MotionConfig>

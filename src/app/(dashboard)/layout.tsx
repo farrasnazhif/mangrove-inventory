@@ -1,4 +1,6 @@
 import { AppShell } from "@/components/layout/app-shell";
+import { RoleProvider } from "@/features/access/components/role-provider";
+import { RouteGuard } from "@/features/access/components/route-guard";
 import { PlotProvider } from "@/features/inventory/components/plot-provider";
 
 export default function DashboardLayout({
@@ -7,8 +9,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <PlotProvider>
-      <AppShell>{children}</AppShell>
-    </PlotProvider>
+    <RoleProvider>
+      <RouteGuard>
+        <PlotProvider>
+          <AppShell>{children}</AppShell>
+        </PlotProvider>
+      </RouteGuard>
+    </RoleProvider>
   );
 }

@@ -33,9 +33,10 @@ export function ChatPanel({
   onSend: (text: string) => void;
   placeholder: string;
   emptyState: ReactNode;
-  historyOpen: boolean;
-  historyPanel: ReactNode;
-  onHistory: () => void;
+  historyOpen?: boolean;
+  historyPanel?: ReactNode;
+  /** omit for no history button and no header row (the visitor chatbot has no history) */
+  onHistory?: () => void;
 }) {
   const [draft, setDraft] = useState("");
   const input = useRef<HTMLTextAreaElement>(null);
@@ -73,6 +74,7 @@ export function ChatPanel({
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden rounded-[14px] bg-surface shadow-card">
+      {(tabs.length > 0 || onHistory) && (
       <div className="flex shrink-0 items-center justify-between border-b border-line p-1.5">
         <div className="flex items-center">
           {tabs.map((tab) => (
@@ -87,6 +89,7 @@ export function ChatPanel({
             </button>
           ))}
         </div>
+        {onHistory && (
         <button
           type="button"
           aria-label="Riwayat percakapan"
@@ -96,7 +99,9 @@ export function ChatPanel({
         >
           <Clock size={15} />
         </button>
+        )}
       </div>
+      )}
       <div
         ref={scroller}
         role="log"

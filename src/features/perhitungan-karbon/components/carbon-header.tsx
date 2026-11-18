@@ -10,7 +10,7 @@ export function CarbonHeader({ formulas }: { formulas: CarbonFormula[] }) {
         <Typography as="h1" variant="h5" weight="semibold">
           Perhitungan Karbon
         </Typography>
-        {/* <Typography as="p" variant="bs" className="mt-1 text-ink-2">AGB, BGB, dan Stok Karbon Total</Typography> */}
+        {/* <Typography as="p" variant="bs" className="mt-1 text-ink-2">{subtitle}</Typography> */}
       </div>
       <div className="flex items-center gap-2">
         <FormulaDialog formulas={formulas} />
