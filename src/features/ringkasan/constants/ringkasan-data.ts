@@ -19,27 +19,45 @@ const PHOTOS: PlotPhoto[] = [
   { label: "Sedimen inti", caption: "Core 0-50cm", note: "C-Org 4.82%" },
 ];
 
+const dms = (value: number, positive: string, negative: string) => {
+  const abs = Math.abs(value);
+  const deg = Math.floor(abs);
+  const min = Math.floor((abs - deg) * 60);
+  const sec = Math.floor(((abs - deg) * 60 - min) * 60);
+  return `${deg}°${min}'${sec}"${value >= 0 ? positive : negative}`;
+};
+
+// shortcut: dummy 4 x 3 grid of plot centres near Wonorejo, replace with surveyed plot positions.
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+const gridPosition = (code: string): [number, number] => {
+  const index = ROMAN.indexOf(code.replace("Vak ", ""));
+  return [-7.33083 + (1 - Math.floor(index / 4)) * 0.00068, 112.81778 + ((index % 4) - 1.5) * 0.00078];
+};
+
 const plot = (
   code: string,
   site: string,
-  coordinates: string,
   agb: number,
   bgb: number,
   soc: number,
   trees: number,
-): PlotSummary => ({ id: code, code, site, coordinates, agb, bgb, soc, trees, photos: PHOTOS });
+): PlotSummary => {
+  const position = gridPosition(code);
+  const coordinates = `${dms(position[0], "N", "S")}, ${dms(position[1], "E", "W")}`;
+  return { id: code, code, site, coordinates, position, agb, bgb, soc, trees, photos: PHOTOS };
+};
 
 export const PLOTS: PlotSummary[] = [
-  plot("VAK-04", "Estuari Wonorejo", `7°18'42"S, 112°49'15"E`, 84.2, 28.6, 69.6, 5),
-  plot("VAK-01", "Wonorejo Rivermouth", `7°18'40"S, 112°49'02"E`, 71.5, 24.1, 58.6, 8),
-  plot("VAK-02", "Wonorejo Tambak B", `7°18'51"S, 112°49'20"E`, 66.3, 22.0, 61.9, 8),
-  plot("VAK-03", "Gunung Anyar Pesisir", `7°20'05"S, 112°49'48"E`, 70.8, 23.9, 59.5, 8),
-  plot("VAK-05", "Gunung Anyar Tambak", `7°20'12"S, 112°50'01"E`, 62.4, 20.7, 55.1, 8),
-  plot("VAK-06", "Gunung Anyar Tambak", `7°20'18"S, 112°50'09"E`, 59.9, 19.8, 52.3, 7),
-  plot("VAK-07", "Wonorejo Muara", `7°18'33"S, 112°49'30"E`, 77.1, 25.6, 63.0, 6),
-  plot("VAK-08", "Wonorejo Muara", `7°18'29"S, 112°49'41"E`, 73.4, 24.8, 60.2, 6),
-  plot("VAK-09", "Gunung Anyar Barat", `7°19'58"S, 112°49'33"E`, 64.0, 21.3, 54.8, 7),
-  plot("VAK-10", "Gunung Anyar Barat", `7°19'52"S, 112°49'25"E`, 68.7, 22.9, 57.7, 9),
-  plot("VAK-11", "Wonorejo Utara", `7°18'20"S, 112°49'10"E`, 80.6, 27.2, 66.4, 5),
-  plot("VAK-12", "Wonorejo Utara", `7°18'15"S, 112°49'22"E`, 75.9, 25.1, 62.3, 6),
+  plot("Vak IV", "Estuari Wonorejo", 84.2, 28.6, 69.6, 5),
+  plot("Vak I", "Wonorejo Rivermouth", 71.5, 24.1, 58.6, 8),
+  plot("Vak II", "Wonorejo Tambak B", 66.3, 22.0, 61.9, 8),
+  plot("Vak III", "Gunung Anyar Pesisir", 70.8, 23.9, 59.5, 8),
+  plot("Vak V", "Gunung Anyar Tambak", 62.4, 20.7, 55.1, 8),
+  plot("Vak VI", "Gunung Anyar Tambak", 59.9, 19.8, 52.3, 7),
+  plot("Vak VII", "Wonorejo Muara", 77.1, 25.6, 63.0, 6),
+  plot("Vak VIII", "Wonorejo Muara", 73.4, 24.8, 60.2, 6),
+  plot("Vak IX", "Gunung Anyar Barat", 64.0, 21.3, 54.8, 7),
+  plot("Vak X", "Gunung Anyar Barat", 68.7, 22.9, 57.7, 9),
+  plot("Vak XI", "Wonorejo Utara", 80.6, 27.2, 66.4, 5),
+  plot("Vak XII", "Wonorejo Utara", 75.9, 25.1, 62.3, 6),
 ];
