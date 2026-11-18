@@ -94,8 +94,9 @@ export function ChatbotOverview({ roleTabs = true }: { roleTabs?: boolean }) {
       }
       onSend={send}
       placeholder={PLACEHOLDERS[role]}
-      onHistory={() => setHistoryOpen((open) => !open)}
-      historyOpen={historyOpen}
+      // history is a manager feature: visitors get a single anonymous conversation
+      onHistory={roleTabs ? () => setHistoryOpen((open) => !open) : undefined}
+      historyOpen={roleTabs && historyOpen}
       historyPanel={
         <ChatHistory
           conversations={history}

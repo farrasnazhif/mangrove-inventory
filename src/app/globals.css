@@ -950,3 +950,180 @@
     opacity: 0.45;
   }
 }
+
+/* ── Public landing page ──────────────────────────────────────────────
+ * Layout and type modelled on relae.co (serif display face, pill buttons, hairline-joined card grids),
+ * painted with the dashboard's own theme tokens so light and dark mode match the app.
+ * Newsreader (loaded with next/font in the root layout) stands in for the licensed Season Serif. */
+.landing {
+  --l-bg: var(--page);
+  --l-shell: var(--canvas);
+  --l-card: var(--surface);
+  --l-text: var(--ink-2);
+  --l-head: var(--ink);
+  --l-accent: var(--ink);
+  --l-border: var(--line);
+  --l-border-strong: var(--line-strong);
+  --l-eyebrow: var(--ink-3);
+  background: var(--l-bg);
+  color: var(--l-text);
+}
+.l-serif {
+  font-family: var(--font-newsreader), Georgia, serif;
+}
+.l-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+.l-section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+.l-band {
+  background: var(--l-shell);
+  border-block: 1px solid var(--l-border-strong);
+}
+.l-cta {
+  background: var(--l-shell);
+  border-top: 1px solid var(--l-border-strong);
+}
+.l-eyebrow {
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--l-eyebrow);
+}
+.l-h1,
+.l-h2,
+.l-stat {
+  font-family: var(--font-newsreader), Georgia, serif;
+  color: var(--l-head);
+}
+.l-h1 {
+  font-size: clamp(2.625rem, 6vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.l-h2 {
+  font-size: clamp(2.125rem, 4.5vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.l-stat {
+  font-size: clamp(2.25rem, 4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--l-accent);
+}
+.l-h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--l-head);
+}
+.l-lead {
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.5;
+}
+.l-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.077em;
+  text-transform: uppercase;
+  color: var(--l-accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.l-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.l-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-block: 16px;
+  background: var(--l-bg);
+  border-bottom: 1px solid var(--l-border);
+}
+.l-nav nav a {
+  font-size: 0.9375rem;
+  color: var(--l-text);
+}
+.l-nav nav a:hover {
+  color: var(--l-accent);
+}
+/* cards joined by hairlines: the grid draws the top/left edge, every cell the right/bottom edge */
+.l-grid {
+  display: grid;
+  border-top: 1px solid var(--l-border-strong);
+  border-left: 1px solid var(--l-border-strong);
+  background: var(--l-card);
+}
+.l-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1.5rem;
+  border-right: 1px solid var(--l-border-strong);
+  border-bottom: 1px solid var(--l-border-strong);
+  transition: background-color 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.l-cell:hover {
+  background: var(--l-shell);
+}
+.l-icon {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--l-border-strong);
+  color: var(--l-accent);
+}
+.l-banner {
+  background: var(--l-shell);
+  color: var(--l-head);
+  border-bottom: 1px solid var(--l-border-strong);
+}
+.landing-marquee {
+  display: flex;
+  width: max-content;
+  gap: 3rem;
+  animation: landing-marquee 60s linear infinite;
+}
+@keyframes landing-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.landing-lines path {
+  stroke-dasharray: 8 14;
+  animation: landing-flow 30s linear infinite;
+}
+@keyframes landing-flow {
+  to {
+    stroke-dashoffset: -440;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-marquee,
+  .landing-lines path {
+    animation: none;
+  }
+  .landing-marquee {
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+  }
+}

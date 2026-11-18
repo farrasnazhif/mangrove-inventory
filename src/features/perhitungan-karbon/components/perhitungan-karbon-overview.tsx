@@ -1,59 +1,21 @@
 "use client";
 
 import { treeCarbon } from "@/features/inventory/api/inventory";
-import { UNAVAILABLE, formatNumber } from "@/features/inventory/api/format";
+import { formatNumber } from "@/features/inventory/api/format";
 import { FORMULAS } from "@/features/inventory/constants/method";
 import { usePlotSelection } from "@/features/inventory/components/plot-provider";
 import type { PlotStats, Tree } from "@/features/inventory/types/inventory";
-import type { CarbonResult } from "../types/perhitungan-karbon";
+import { carbonResults } from "../api/carbon-results";
 import { CarbonHeader } from "./carbon-header";
 import { CarbonResults } from "./carbon-results";
 import { CarbonTableSection } from "./carbon-table-section";
-
-const results = (stats: PlotStats): CarbonResult[] => [
-  {
-    id: "agc",
-    label: "Stok Karbon Tegakan (AGC)",
-    value: formatNumber(stats.agc, 2),
-    unit: "ton C",
-  },
-  {
-    id: "bgc",
-    label: "Stok Karbon Akar (BGC)",
-    value: formatNumber(stats.bgc, 2),
-    unit: "ton C",
-  },
-  {
-    id: "biomass",
-    label: "Total Biomassa Karbon",
-    value: formatNumber(stats.carbon, 2),
-    unit:
-      stats.carbonPerHa === null
-        ? "ton C (AGC + BGC)"
-        : `ton C (AGC + BGC) · ${formatNumber(stats.carbonPerHa, 2)} ton C/ha`,
-    total: true,
-  },
-  {
-    id: "ecosystem",
-    label: "Total Stok Karbon Ekosistem",
-    value:
-      stats.ecosystemPerHa === null
-        ? UNAVAILABLE
-        : formatNumber(stats.ecosystemPerHa, 2),
-    unit: "ton C/ha (AGC + BGC + SOC)",
-    total: true,
-  },
-];
 
 export function PerhitunganKarbonOverview() {
   const { stats, all } = usePlotSelection();
   return (
     <div className="flex flex-col gap-4">
       <CarbonHeader formulas={FORMULAS} />
-      <CarbonResults
-        results={results(stats)}
-        areaMissing={stats.area === null}
-      />
+      <CarbonResults results={carbonResults(stats)} areaMissing={stats.area === null} />
       {/* key resets the page number when another plot is chosen */}
       <CarbonTableSection<Tree>
         key={stats.plot.key}

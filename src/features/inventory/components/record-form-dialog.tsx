@@ -12,7 +12,7 @@ import { Typography } from "@/components/ui/typography";
 export type FormField = {
   name: string;
   label: string;
-  kind: "text" | "date" | "number" | "select";
+  kind: "text" | "date" | "password" | "number" | "select";
   required?: boolean;
   /** number fields: inclusive bounds */
   min?: number;
@@ -55,6 +55,7 @@ function FormBody({ fields, initial, submitLabel, onSubmit, onCancel }: {
       setErrors(Object.fromEntries(parsed.error.issues.map((issue) => [String(issue.path[0]), issue.message])));
       return;
     }
+    setErrors({});
     const error = onSubmit(parsed.data as FormValues);
     if (error) setFormError(error);
   }
@@ -70,7 +71,7 @@ function FormBody({ fields, initial, submitLabel, onSubmit, onCancel }: {
             <Typography as="label" variant="bs" weight="medium" htmlFor={id}>
               {field.label}{field.required ? "" : " (opsional)"}
             </Typography>
-            {(field.kind === "text" || field.kind === "date") && <Input id={id} type={field.kind === "date" ? "date" : "text"} value={String(value ?? "")} onChange={(event) => set(event.target.value)} />}
+            {(field.kind === "text" || field.kind === "date" || field.kind === "password") && <Input id={id} type={field.kind === "text" ? "text" : field.kind} value={String(value ?? "")} onChange={(event) => set(event.target.value)} />}
             {field.kind === "number" && (
               <NumberInput value={typeof value === "number" ? value : null} onValueChange={set} min={field.min} max={field.max} inputProps={{ id }} />
             )}

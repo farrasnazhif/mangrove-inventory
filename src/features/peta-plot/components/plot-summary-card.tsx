@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Collapsible } from "@base-ui/react/collapsible";
 import { ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useRole } from "@/features/access/components/role-provider";
 import { Typography } from "@/components/ui/typography";
 import { UNAVAILABLE, formatNumber } from "@/features/inventory/api/format";
 import type { PlotStats } from "@/features/inventory/types/inventory";
@@ -18,6 +19,8 @@ export function PlotSummaryCard({
   stats: PlotStats;
   missingZone: string | null;
 }) {
+  // visitors see counts only: carbon values and the Data Lapangan link are manager-only
+  const { isManager } = useRole();
   return (
     <Card
       className="pointer-events-auto absolute right-3 top-3 z-10 w-44 max-w-[calc(100%-1.5rem)] p-0"
@@ -47,16 +50,22 @@ export function PlotSummaryCard({
                 ? `${stats.treeCount} pohon · ${stats.speciesCount} jenis`
                 : "Data pohon tidak tersedia"}
             </Typography>
-            <Typography as="p" variant="c" className="text-ink-2">
-              {stats.treeCount
-                ? `${formatNumber(stats.carbon, 2)} ton C`
-                : UNAVAILABLE}
-            </Typography>
+            {isManager && (
+              <Typography as="p" variant="c" className="text-ink-2">
+                {stats.treeCount
+                  ? `${formatNumber(stats.carbon, 2)} ton C`
+                  : UNAVAILABLE}
+              </Typography>
+            )}
             <div className="flex justify-end gap-2 border-t border-line pt-2">
-              <Link href="/data-lapangan" className={LINK}>
-                Data
-              </Link>
-              /
+              {isManager && (
+                <>
+                  <Link href="/data-lapangan" className={LINK}>
+                    Data
+                  </Link>
+                  /
+                </>
+              )}
               <Link href="/perhitungan-karbon" className={LINK}>
                 Perhitungan
               </Link>

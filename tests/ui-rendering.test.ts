@@ -236,7 +236,9 @@ test("toast types render decorative status icons, readable content, and dismissa
 
 test("mangrove feature screens show the tagged plot data and mark missing sediment data in both themes", () => {
   const PlotProvider = load(resolve(root, "src/features/inventory/components/plot-provider")).PlotProvider as ComponentType<{ children?: ReactNode }>;
-  const inPlot = (component: ComponentType, theme: "light" | "dark") => render(createElement(PlotProvider, null, createElement(component)), theme);
+  const RoleProvider = load(resolve(root, "src/features/access/components/role-provider")).RoleProvider as ComponentType<{ children?: ReactNode }>;
+  // server render has no saved session, so these screens render as a visitor would first see them
+  const inPlot = (component: ComponentType, theme: "light" | "dark") => render(createElement(RoleProvider, null, createElement(PlotProvider, null, createElement(component))), theme);
   const DataLapangan = load(resolve(root, "src/features/data-lapangan/components/data-lapangan-overview")).DataLapanganOverview as ComponentType;
   const PerhitunganKarbon = load(resolve(root, "src/features/perhitungan-karbon/components/perhitungan-karbon-overview")).PerhitunganKarbonOverview as ComponentType;
   const BulkDensitySoc = load(resolve(root, "src/features/bulk-density-soc/components/bulk-density-soc-overview")).BulkDensitySocOverview as ComponentType;

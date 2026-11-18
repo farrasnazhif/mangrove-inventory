@@ -10,7 +10,6 @@ import {
   LogOut,
   Map,
   Menu,
-  User,
   Inbox,
   FolderOpen,
   Calculator,
@@ -22,8 +21,8 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import SidebarNav from "@/components/ui/sidebar-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
-
-const DUMMY_USER = { name: "Dummy User", email: "user@example.com" };
+import { ROLE_LABELS } from "@/features/access/constants/access";
+import { useRole } from "@/features/access/components/role-provider";
 
 const PRODUCT_NAV = [
   { key: "/ringkasan", label: "Ringkasan", icon: <Inbox size={18} /> },
@@ -49,6 +48,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { userName, logout } = useRole();
+  const displayName = userName;
 
   function go(href: string) {
     setMenuOpen(false);
@@ -77,34 +78,19 @@ export function AppShell({ children }: { children: ReactNode }) {
               type="button"
               className="flex h-10 w-full items-center gap-2 rounded-control px-2 text-left transition-[background-color,transform] duration-150 hover:bg-hover-2 active:scale-[0.98]"
             >
-              <Avatar name={DUMMY_USER.name} size="sm" />
+              <Avatar name={displayName} size="sm" />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-[13px] font-medium text-ink">
-                  {DUMMY_USER.name}
+                  {displayName}
                 </span>
                 <span className="block truncate text-[11.5px] text-ink-3">
-                  {DUMMY_USER.email}
+                  {ROLE_LABELS.manager}
                 </span>
               </span>
               <ChevronsUpDown size={14} className="shrink-0 text-ink-3" />
             </button>
           }
-          items={[
-            // inert for now: dummy user, no profile page or auth yet
-            {
-              id: "profile",
-              label: "Profile",
-              icon: <User size={14} />,
-              onSelect: () => {},
-            },
-            {
-              id: "sign-out",
-              label: "Sign out",
-              icon: <LogOut size={14} />,
-              danger: true,
-              onSelect: () => {},
-            },
-          ]}
+          items={[{ id: "sign-out", label: "Keluar", icon: <LogOut size={14} />, danger: true, onSelect: logout }]}
         />
       }
     />
