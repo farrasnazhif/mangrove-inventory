@@ -322,9 +322,10 @@
     background: color-mix(in srgb, var(--danger) 15%, var(--surface));
   }
   .input {
-    @apply block w-full border border-line-strong bg-inset px-3 py-2 text-sm transition-colors;
+    @apply block h-8 w-full border-0 bg-surface px-3 text-[12.5px] text-foreground transition-colors;
+    /* same ring as the secondary button so inputs and buttons read as one family */
+    box-shadow: var(--shadow-btn);
     border-radius: calc(var(--radius) - 2px);
-    min-height: 38px;
   }
   .input::placeholder {
     color: var(--muted);
@@ -665,7 +666,8 @@
     animation: ui-indeterminate 1.4s ease-in-out infinite alternate;
   }
   .ui-number-group {
-    @apply flex items-center gap-1 rounded-control border border-line-strong bg-inset p-1;
+    @apply flex h-8 items-center gap-1 rounded-control bg-surface px-1;
+    box-shadow: var(--shadow-btn);
   }
   .ui-number-input {
     @apply min-w-0 flex-1 bg-transparent text-center text-sm outline-none;

@@ -1,13 +1,13 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pagination } from "@/components/ui/pagination";
 import { Table, type TableColumn } from "@/components/ui/table";
 import { Typography } from "@/components/ui/typography";
-import { TableButtons, TableFilter, useTableTools } from "@/features/inventory/components/table-tools";
+import { ExportButton, TableActiveFilters, TableFilters, useTableTools } from "@/features/inventory/components/table-tools";
 
 export function RecordSection<T extends { id: string }>({ title, addLabel, columns, rows, caption, empty, filename, onAdd, onEdit, onDelete }: {
   title: string;
@@ -42,13 +42,17 @@ export function RecordSection<T extends { id: string }>({ title, addLabel, colum
     <Card className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Typography as="h2" variant="t" weight="semibold">{title}</Typography>
-        <div className="flex gap-2">
-          <TableButtons tools={tools} />
-          <Button variant="primary" onClick={onAdd}>{addLabel}</Button>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <ExportButton tools={tools} />
+          <TableFilters tools={tools} />
+          <Button variant="primary" onClick={onAdd}>
+            <Plus size={14} aria-hidden />
+            {addLabel}
+          </Button>
         </div>
       </div>
-      <TableFilter tools={tools} />
-      <Table rows={tools.visible} columns={tableColumns} getRowId={(row) => row.id} caption={caption} empty={tools.query ? "Tidak ada baris yang cocok." : empty} />
+      <TableActiveFilters tools={tools} />
+      <Table rows={tools.visible} columns={tableColumns} getRowId={(row) => row.id} caption={caption} empty={tools.activeCount ? "Tidak ada baris yang cocok dengan filter." : empty} />
       {tools.pageCount > 1 && <Pagination page={tools.page} pageCount={tools.pageCount} onPageChange={tools.setPage} />}
     </Card>
   );

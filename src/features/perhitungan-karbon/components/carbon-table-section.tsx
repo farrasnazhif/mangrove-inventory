@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Pagination } from "@/components/ui/pagination";
 import { Table, type TableColumn } from "@/components/ui/table";
 import { Typography } from "@/components/ui/typography";
-import { TableButtons, TableFilter, useTableTools } from "@/features/inventory/components/table-tools";
+import { ExportButton, TableActiveFilters, TableFilters, useTableTools } from "@/features/inventory/components/table-tools";
 
 // shortcut: also reused by bulk-density-soc, move to ui/ if a third feature needs it.
 export function CarbonTableSection<T extends { id: string }>({ title, caption, rows, columns, footer, empty, filename }: {
@@ -26,12 +26,13 @@ export function CarbonTableSection<T extends { id: string }>({ title, caption, r
     <Card className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Typography as="h2" variant="t" weight="semibold">{title}</Typography>
-        <div className="flex gap-2">
-          <TableButtons tools={tools} />
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <ExportButton tools={tools} />
+          <TableFilters tools={tools} />
         </div>
       </div>
-      <TableFilter tools={tools} />
-      <Table rows={tools.visible} columns={tableColumns} getRowId={(row) => row.id} caption={caption} empty={tools.query ? "Tidak ada baris yang cocok." : empty} />
+      <TableActiveFilters tools={tools} />
+      <Table rows={tools.visible} columns={tableColumns} getRowId={(row) => row.id} caption={caption} empty={tools.activeCount ? "Tidak ada baris yang cocok dengan filter." : empty} />
       {footer && (
         <div className="flex justify-between rounded-control bg-inset px-3 py-3">
           <Typography as="span" variant="bs" className="text-ink-2">{footer.label}</Typography>
