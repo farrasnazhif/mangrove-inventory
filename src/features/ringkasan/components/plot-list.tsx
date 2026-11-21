@@ -20,11 +20,11 @@ export function PlotList() {
     <Card className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <Typography as="h2" variant="t" weight="semibold">
-          Daftar Plot Inventarisasi
+          Daftar Vak Inventarisasi
         </Typography>
-        <ValuePill>{all.length} PLOT</ValuePill>
+        <ValuePill>{all.length} VAK</ValuePill>
       </div>
-      <ul aria-label="Daftar plot" className="flex flex-col gap-1">
+      <ul aria-label="Daftar vak" className="flex flex-col gap-1">
         {visible.map((stats) => {
           const active = stats === selected;
           return (

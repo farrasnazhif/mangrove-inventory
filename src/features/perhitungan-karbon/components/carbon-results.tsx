@@ -40,7 +40,7 @@ export function CarbonResults({
       </div>
       {areaMissing && (
         <Typography as="p" variant="bs" className="text-red-300 text-center">
-          Nilai per hektar (ton C/ha) tidak tersedia: luas plot belum diisi.
+          Nilai per hektar (ton C/ha) tidak tersedia: luas vak belum diisi.
         </Typography>
       )}
     </section>

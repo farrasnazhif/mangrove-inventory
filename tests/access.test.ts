@@ -3,7 +3,7 @@ import test from "node:test";
 import { DEMO_MANAGER, canAccess, safeNext } from "../src/features/access/constants/access.ts";
 
 test("visitors only get the landing page, the map, login and the sandbox", () => {
-  for (const path of ["/", "/peta-plot", "/login", "/sandbox"]) assert.equal(canAccess("visitor", path), true, path);
+  for (const path of ["/", "/peta-vak", "/login", "/sandbox"]) assert.equal(canAccess("visitor", path), true, path);
 });
 
 test("every dashboard page is manager-only", () => {

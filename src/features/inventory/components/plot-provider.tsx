@@ -30,7 +30,7 @@ export function PlotProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<PlotSelection>(() => {
     const all = plots.map(statsOf);
-    const total = statsOf({ key: "all", label: "Semua plot", zones: [], area: null, surveyDate: null, team: null, center: null, cores: [], trees: plots.flatMap((plot) => plot.trees) });
+    const total = statsOf({ key: "all", label: "Semua vak", zones: [], area: null, surveyDate: null, team: null, center: null, cores: [], trees: plots.flatMap((plot) => plot.trees) });
     const edit = (change: (plot: Plot) => Plot) => setPlots((current) => current.map((plot) => (plot.key === key ? change(plot) : plot)));
     return {
       stats: all.find((item) => item.plot.key === key) ?? all[0],

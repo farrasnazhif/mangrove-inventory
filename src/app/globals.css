@@ -27,7 +27,7 @@
   animation-duration: 350ms;
   animation-timing-function: ease-in-out;
 }
-/* Peta Plot: the map is a fixed "paper over satellite" palette, same in both themes. */
+/* Peta Vak: the map is a fixed "paper over satellite" palette, same in both themes. */
 .leaflet-container {
   --map-paper: oklch(100% 0.00011 271.152);
   --map-paper-ink: oklch(0.3 0.03 80);

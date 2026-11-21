@@ -95,14 +95,14 @@ export function PlotContext() {
         detail={plot.team ?? `Tim lapangan: ${UNAVAILABLE.toLowerCase()}`}
       />
       <InfoCard
-        label="Dimensi Plot & Skema Subplot"
+        label="Dimensi Vak & Skema Subplot"
         value={
           stats.area === null
             ? UNAVAILABLE
             : `${formatNumber(stats.area, 2)} ha`
         }
         detail={
-          stats.area === null ? "Luas plot (ha) belum diisi" : "Dari input plot"
+          stats.area === null ? "Luas vak (ha) belum diisi" : "Dari input vak"
         }
       />
       <InfoCard

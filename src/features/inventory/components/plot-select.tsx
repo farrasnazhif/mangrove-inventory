@@ -11,7 +11,7 @@ export function PlotSelect() {
       options={options}
       value={stats.plot.key}
       onValueChange={(key) => key && select(key)}
-      triggerProps={{ "aria-label": "Pilih plot" }}
+      triggerProps={{ "aria-label": "Pilih vak" }}
     />
   );
 }

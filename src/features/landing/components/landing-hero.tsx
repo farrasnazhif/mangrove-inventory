@@ -45,7 +45,7 @@ export function LandingHero() {
             variant="primary"
             nativeButton={false}
             role="link"
-            render={<Link href="/peta-plot" />}
+            render={<Link href="/peta-vak" />}
           >
             Jelajahi peta
           </Button>

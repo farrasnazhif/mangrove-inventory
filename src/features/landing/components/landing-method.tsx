@@ -13,7 +13,7 @@ export function LandingMethod() {
       link: <FormulaDialog formulas={FORMULAS} trigger={(open) => <button type="button" onClick={open} className="l-link">Lihat rumusnya →</button>} />,
     },
     { icon: <Leaf size={20} />, title: "Ubah jadi karbon", body: "Sekitar separuh biomassa adalah karbon. Hasilnya dijumlahkan menjadi stok karbon seluruh area.", link: <a href="#angka" className="l-link">Lihat hasilnya →</a> },
-    { icon: <Map size={20} />, title: "Petakan hasilnya", body: "Setiap titik jenis tumbuhan ditampilkan di atas citra satelit, per zona.", link: <Link href="/peta-plot" className="l-link">Buka peta →</Link> },
+    { icon: <Map size={20} />, title: "Petakan hasilnya", body: "Setiap titik jenis tumbuhan ditampilkan di atas citra satelit, per zona.", link: <Link href="/peta-vak" className="l-link">Buka peta →</Link> },
   ];
   return (
     <section id="cara-kerja" className="l-section scroll-mt-16">
@@ -21,10 +21,10 @@ export function LandingMethod() {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <p className="l-eyebrow">cara kerja</p>
-            <h2 className="l-h2">Dari Pohon Menjadi Angka Karbon</h2>
-            <p className="l-lead mt-4">Empat langkah yang sama untuk setiap plot, dari pengukuran sampai peta.</p>
+            <h2 className="l-h2">Empat Langkah dari Pengukuran Lapangan hingga Pemetaan Stok Karbon</h2>
+            <p className="l-lead mt-4">Langkah yang sama dilakukan di setiap vak, dari ukur pohon sampai peta.</p>
           </div>
-          <Link href="/peta-plot" className="l-link">Jelajahi peta →</Link>
+          <Link href="/peta-vak" className="l-link">Jelajahi peta →</Link>
         </div>
         <div className="l-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {cells.map((cell) => (

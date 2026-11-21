@@ -124,7 +124,7 @@ export function DataLapanganOverview() {
         caption={`Data tegakan mangrove ${stats.plot.label}`}
         filename={`tegakan-${stats.plot.label}.csv`}
         rows={stats.plot.trees}
-        empty="Data pohon tidak tersedia untuk plot ini."
+        empty="Data pohon tidak tersedia untuk vak ini."
         onAdd={() => open({ kind: "tree" })}
         onEdit={(row) => open({ kind: "tree", row })}
         onDelete={(row) =>
@@ -217,7 +217,7 @@ export function DataLapanganOverview() {
         open={formOpen && dialog?.kind === "tree"}
         onOpenChange={setFormOpen}
         title={dialog?.row ? "Ubah Pohon" : "Tambah Pohon"}
-        description={`Plot ${stats.plot.label}. Tinggi hanya dicatat; persamaan Komiyama memakai DBH dan ρ.`}
+        description={`${stats.plot.label}. Tinggi hanya dicatat; persamaan Komiyama memakai DBH dan ρ.`}
         fields={TREE_FIELDS}
         initial={
           dialog?.kind === "tree" && dialog.row
@@ -246,7 +246,7 @@ export function DataLapanganOverview() {
         open={formOpen && dialog?.kind === "core"}
         onOpenChange={setFormOpen}
         title={dialog?.row ? "Ubah Lapisan Sedimen" : "Tambah Lapisan Sedimen"}
-        description={`Plot ${stats.plot.label}. PB, %C dan SOC dihitung otomatis dari isian ini.`}
+        description={`${stats.plot.label}. PB, %C dan SOC dihitung otomatis dari isian ini.`}
         fields={CORE_FIELDS}
         initial={
           dialog?.kind === "core" && dialog.row
@@ -274,7 +274,7 @@ export function DataLapanganOverview() {
         open={removal !== null}
         onOpenChange={(next) => !next && setRemoval(null)}
         title="Hapus data?"
-        description={`Hapus ${removal?.label ?? ""} dari plot ${stats.plot.label}? Perubahan hanya berlaku selama halaman terbuka.`}
+        description={`Hapus ${removal?.label ?? ""} dari ${stats.plot.label}? Perubahan hanya berlaku selama halaman terbuka.`}
       >
         <Button
           variant="danger"

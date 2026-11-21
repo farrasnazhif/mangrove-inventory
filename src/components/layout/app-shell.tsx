@@ -41,7 +41,7 @@ const PRODUCT_NAV = [
     label: "Bulk density & SOC",
     icon: <FlaskConical size={18} />,
   },
-  { key: "/peta-plot", label: "Peta Plot", icon: <Map size={18} /> },
+  { key: "/peta-vak", label: "Peta Vak", icon: <Map size={18} /> },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -62,7 +62,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       className="py-4"
       header={
         <Link href="/ringkasan" className="truncate">
-          Mangrove inventory
+          MangroLens
         </Link>
       }
       newChatLabel={null}
@@ -127,7 +127,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
         {/* the map page fills the whole area under the top bar */}
-        {pathname.startsWith("/peta-plot") ? (
+        {pathname.startsWith("/peta-vak") ? (
           children
         ) : (
           <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10 lg:py-10">

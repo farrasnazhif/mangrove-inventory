@@ -58,9 +58,9 @@ export function SummaryMetrics() {
         <Stat value={formatNumber(total.co2e, 1)} unit="ton CO₂e" />
         <Footnote label="Per hektar" value={UNAVAILABLE} />
       </MetricCard>
-      <MetricCard label="Cakupan plot">
-        <Stat value={String(measured)} unit={`/ ${all.length} Plot`} />
-        <ProgressBar label="Plot dengan data pohon" value={percent} aria-label="Cakupan plot" />
+      <MetricCard label="Cakupan vak">
+        <Stat value={String(measured)} unit={`/ ${all.length} Vak`} />
+        <ProgressBar label="Vak dengan data pohon" value={percent} aria-label="Cakupan vak" />
       </MetricCard>
       <MetricCard label="Spesies dominan" aside={dominant && <ValuePill>{formatNumber((dominant.count / total.treeCount) * 100)}%</ValuePill>}>
         <Typography as="p" variant="t" weight="semibold" className="italic">{dominant?.name ?? UNAVAILABLE}</Typography>

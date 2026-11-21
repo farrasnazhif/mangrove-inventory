@@ -16,15 +16,15 @@ export const THINKING_ROWS = [
 ];
 
 export const PLACEHOLDERS: Record<ChatRole, string> = {
-  manager: "Tanya data plot, analisis stok karbon, dan data lainnya",
+  manager: "Tanya data vak, analisis stok karbon, dan data lainnya",
   visitor: "Tanya tentang mangrove dan stok karbon",
 };
 
 export const SUGGESTIONS: Record<ChatRole, string[]> = {
   manager: [
     "Berapa total stok karbon Vak 4?",
-    "Plot mana yang stok karbonnya tertinggi?",
-    "Berapa rata-rata stok karbon semua plot?",
+    "Vak mana yang stok karbonnya tertinggi?",
+    "Berapa rata-rata stok karbon semua vak?",
     "Berapa jumlah pohon di Vak 1?",
   ],
   visitor: [
@@ -39,7 +39,7 @@ export const SEED_CONVERSATIONS: Conversation[] = [
     id: "seed-1",
     role: "manager",
     turns: [
-      { id: "seed-1-q", role: "user", text: "Berapa rata-rata stok karbon semua plot?" },
+      { id: "seed-1-q", role: "user", text: "Berapa rata-rata stok karbon semua vak?" },
       { id: "seed-1-a", role: "assistant", text: "Contoh riwayat percakapan. Tanyakan lagi untuk jawaban terbaru." },
     ],
   },
@@ -61,7 +61,7 @@ export const SEED_CONVERSATIONS: Conversation[] = [
   },
 ];
 
-/** the one source inventory answers cite: the Ringkasan page that summarises the tagged plots */
+/** the one source inventory answers cite: the Ringkasan page that summarises the tagged vaks */
 export const INVENTORY_SOURCE: StreamingSource = {
   name: "Data inventarisasi",
   domain: "Ringkasan",

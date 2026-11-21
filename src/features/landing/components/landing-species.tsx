@@ -6,7 +6,7 @@ import { usePlotSelection } from "@/features/inventory/components/plot-provider"
 
 const TOP = 6;
 
-/** the most common species across all plots: aggregate counts only, no plot-level data */
+/** the most common species across all vaks: aggregate counts only, no vak-level data */
 export function LandingSpecies() {
   const { all, total } = usePlotSelection();
   const top = useMemo(() => {
@@ -23,8 +23,8 @@ export function LandingSpecies() {
     <section id="penghuni" className="l-section scroll-mt-16">
       <div className="l-container flex flex-col gap-10">
         <div className="max-w-2xl">
-          <p className="l-eyebrow">penghuni</p>
-          <h2 className="l-h2">Siapa Saja yang Tumbuh di Sini?</h2>
+          <p className="l-eyebrow">jenis mangrove</p>
+          <h2 className="l-h2">Jenis Mangrove yang Paling Banyak Tumbuh</h2>
           {/* <p className="l-lead mt-4">Enam jenis yang paling banyak tercatat di lokasi pengukuran.</p> */}
         </div>
         <ol className="l-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

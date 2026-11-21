@@ -6,8 +6,8 @@ import { useRole } from "@/features/access/components/role-provider";
 
 const LINKS = [
   { href: "#cara-kerja", label: "Cara kerja" },
-  { href: "#angka", label: "Angka kunci" },
-  { href: "#penghuni", label: "Penghuni" },
+  { href: "#angka", label: "Hasil ukur" },
+  { href: "#penghuni", label: "Jenis mangrove" },
 ];
 
 export function LandingHeader() {
@@ -19,7 +19,7 @@ export function LandingHeader() {
           href="/"
           className="l-serif text-[22px] font-semibold text-[var(--l-head)]"
         >
-          Mangrove Inventory
+          MangroLens
         </Link>
         {/* the nav and the manager button share the right side, so the logo and the nav sit at opposite ends */}
         <div className="flex items-center gap-8">
@@ -32,7 +32,7 @@ export function LandingHeader() {
                 {link.label}
               </a>
             ))}
-            <Link href="/peta-plot">Peta Plot</Link>
+            <Link href="/peta-vak">Peta Vak</Link>
           </nav>
           {/* only a signed-in manager sees this; visitors are never pointed at the login page */}
           {isManager && (

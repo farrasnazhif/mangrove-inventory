@@ -5,15 +5,15 @@ import { PLOT_STATS } from "../src/features/inventory/api/inventory.ts";
 
 test("manager gets the per-plot carbon breakdown from the workbook data", () => {
   const answer = dummyAnswer("manager", "Berapa total stok karbon Vak 1?", PLOT_STATS).text;
-  assert.match(answer, /plot VAK 1 memiliki 306 pohon dari 3 jenis/);
+  assert.match(answer, /VAK 1 memiliki 306 pohon dari 3 jenis/);
   assert.match(answer, /85,7 ton C/);
   assert.match(answer, /314,2 ton CO₂e/);
   assert.match(answer, /SOC\): data tidak tersedia/);
 });
 
 test("plot names accept digits, roman numerals and the Zona alias", () => {
-  assert.match(dummyAnswer("manager", "stok karbon vak 4", PLOT_STATS).text, /plot VAK 4/);
-  assert.match(dummyAnswer("manager", "stok karbon Vak IV", PLOT_STATS).text, /plot VAK 4/);
+  assert.match(dummyAnswer("manager", "stok karbon vak 4", PLOT_STATS).text, /VAK 4/);
+  assert.match(dummyAnswer("manager", "stok karbon Vak IV", PLOT_STATS).text, /VAK 4/);
   assert.match(dummyAnswer("manager", "stok karbon Vak XIII", PLOT_STATS).text, /Zona 5 MA = VAK 13/);
 });
 
@@ -23,7 +23,7 @@ test("plots without tree data say so instead of inventing numbers", () => {
 });
 
 test("highest plot comes from plots that have data", () => {
-  assert.match(dummyAnswer("manager", "plot mana yang tertinggi?", PLOT_STATS).text, /VAK 10 Lorong Casuarina sebesar 620,1 ton C/);
+  assert.match(dummyAnswer("manager", "Vak mana yang tertinggi?", PLOT_STATS).text, /VAK 10 Lorong Casuarina sebesar 620,1 ton C/);
 });
 
 test("visitor never receives plot-level numbers", () => {

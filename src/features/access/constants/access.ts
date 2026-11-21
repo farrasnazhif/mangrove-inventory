@@ -2,7 +2,7 @@ import type { Role } from "../types/access";
 
 // shortcut: dummy frontend RBAC, the role lives in this browser only and nothing here is a real authorization check; replace with server-side roles and RLS (FR-01, Q-02/Q-03).
 // Visitors get the landing page and the full-screen map; every dashboard page is manager-only.
-const PUBLIC_ROUTES = ["/peta-plot", "/login", "/sandbox"];
+const PUBLIC_ROUTES = ["/peta-vak", "/login", "/sandbox"];
 
 export const canAccess = (role: Role, pathname: string) =>
   role === "manager" || pathname === "/" || PUBLIC_ROUTES.some((route) => pathname.startsWith(route));

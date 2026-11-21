@@ -25,7 +25,7 @@ function Screen() {
   );
 }
 
-/** /peta-plot is public, so it sits outside the dashboard layout and picks its own frame by role */
+/** /peta-vak is public, so it sits outside the dashboard layout and picks its own frame by role */
 export function PetaPlotScreen() {
   return (
     <RoleProvider>

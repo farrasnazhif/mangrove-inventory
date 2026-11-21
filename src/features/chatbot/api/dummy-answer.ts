@@ -23,7 +23,7 @@ function findPlot(question: string, plots: PlotStats[]) {
 function plotBreakdown({ plot, treeCount, speciesCount, agc, bgc, carbon, co2e, soc, area, carbonPerHa }: PlotStats) {
   const agcShare = Math.round((agc / carbon) * 1000) / 10;
   return [
-    `Berdasarkan data tagging pohon 2026, plot ${plot.label} memiliki ${treeCount} pohon dari ${speciesCount} jenis dengan total stok karbon biomassa ${fmt(carbon)} ton C.`,
+    `Berdasarkan data tagging pohon 2026, ${plot.label} memiliki ${treeCount} pohon dari ${speciesCount} jenis dengan total stok karbon biomassa ${fmt(carbon)} ton C.`,
     "",
     "Berikut rinciannya:",
     `- Aboveground Carbon (AGC): ${fmt(agc)} ton C (${fmt(agcShare)}%)`,
@@ -41,37 +41,37 @@ const GENERAL: [RegExp, string][] = [
   [/mangrove/i, "Mangrove adalah hutan pesisir yang tumbuh di zona pasang surut. Di kawasan Pamurbaya, Surabaya, jenis yang umum antara lain Avicennia marina (api-api) dan Rhizophora mucronata (bakau)."],
 ];
 
-const HELP = "Maaf, saya belum paham pertanyaannya. Coba pilih salah satu contoh pertanyaan, atau sebutkan plot, misalnya “Berapa total stok karbon Vak IV?”.";
+const HELP = "Maaf, saya belum paham pertanyaannya. Coba pilih salah satu contoh pertanyaan, atau sebutkan vak, misalnya “Berapa total stok karbon Vak IV?”.";
 
 export type DummyAnswer = { text: string; sourced: boolean };
 
 export function dummyAnswer(role: ChatRole, question: string, allPlots: PlotStats[]): DummyAnswer {
   const q = question.toLowerCase();
   const named = findPlot(question, allPlots);
-  const wantsData = named || /rata|rerata|tertinggi|terendah|terbesar|terkecil|semua plot|jumlah plot|daftar plot/.test(q);
+  const wantsData = named || /rata|rerata|tertinggi|terendah|terbesar|terkecil|semua (?:plot|vak)|jumlah (?:plot|vak)|daftar (?:plot|vak)/.test(q);
   const plain = (text: string) => ({ text, sourced: false });
   const sourced = (text: string) => ({ text, sourced: true });
 
   if (wantsData) {
     if (role === "visitor") {
-      return plain("Data stok karbon per plot belum dipublikasikan untuk pengunjung. Saya bisa menjawab pertanyaan umum tentang mangrove dan stok karbon.");
+      return plain("Data stok karbon per vak belum dipublikasikan untuk pengunjung. Saya bisa menjawab pertanyaan umum tentang mangrove dan stok karbon.");
     }
     if (named) {
       if (!named.stats?.treeCount) return plain(`Data pohon untuk ${named.name} tidak tersedia dalam inventarisasi saat ini.`);
-      if (/pohon|jumlah/.test(q)) return sourced(`Plot ${named.stats.plot.label} tercatat memiliki ${named.stats.treeCount} pohon dari ${named.stats.speciesCount} jenis.`);
+      if (/pohon|jumlah/.test(q)) return sourced(`${named.stats.plot.label} tercatat memiliki ${named.stats.treeCount} pohon dari ${named.stats.speciesCount} jenis.`);
       return sourced(plotBreakdown(named.stats));
     }
     const plots = allPlots.filter((item) => item.treeCount > 0);
     const sorted = [...plots].sort((a, b) => b.carbon - a.carbon);
     const high = sorted[0];
     const low = sorted[sorted.length - 1];
-    if (/terendah|terkecil/.test(q)) return sourced(`Stok karbon terendah ada di plot ${low.plot.label} sebesar ${fmt(low.carbon)} ton C.`);
-    if (/tertinggi|terbesar/.test(q)) return sourced(`Stok karbon tertinggi ada di plot ${high.plot.label} sebesar ${fmt(high.carbon)} ton C.`);
+    if (/terendah|terkecil/.test(q)) return sourced(`Stok karbon terendah ada di ${low.plot.label} sebesar ${fmt(low.carbon)} ton C.`);
+    if (/tertinggi|terbesar/.test(q)) return sourced(`Stok karbon tertinggi ada di ${high.plot.label} sebesar ${fmt(high.carbon)} ton C.`);
     if (/rata|rerata/.test(q)) {
       const mean = plots.reduce((sum, item) => sum + item.carbon, 0) / plots.length;
-      return sourced(`Rata-rata stok karbon biomassa dari ${plots.length} plot yang memiliki data pohon adalah ${fmt(mean)} ton C per plot. Nilai per hektar tidak tersedia karena luas plot belum diisi.`);
+      return sourced(`Rata-rata stok karbon biomassa dari ${plots.length} vak yang memiliki data pohon adalah ${fmt(mean)} ton C per vak. Nilai per hektar tidak tersedia karena luas plot belum diisi.`);
     }
-    return sourced(`Saat ini ada ${plots.length} plot dengan data pohon: ${plots.map((item) => item.plot.label).join(", ")}.`);
+    return sourced(`Saat ini ada ${plots.length} vak dengan data pohon: ${plots.map((item) => item.plot.label).join(", ")}.`);
   }
   return plain(GENERAL.find(([pattern]) => pattern.test(q))?.[1] ?? HELP);
 }

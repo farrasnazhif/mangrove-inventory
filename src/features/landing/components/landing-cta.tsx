@@ -10,8 +10,8 @@ export function LandingCta() {
         <p className="l-lead mt-5 max-w-xl">
           Buka peta satelit dan klik titik untuk mengenal jenis tumbuhannya. Ada pertanyaan? Tanyakan pada asisten di pojok kanan bawah.
         </p>
-        <Button size="lg" variant="primary" nativeButton={false} role="link" render={<Link href="/peta-plot" />} className="mt-8">
-          Buka peta plot
+        <Button size="lg" variant="primary" nativeButton={false} role="link" render={<Link href="/peta-vak" />} className="mt-8">
+          Buka peta vak
         </Button>
       </div>
     </section>

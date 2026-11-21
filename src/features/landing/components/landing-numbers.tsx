@@ -23,8 +23,8 @@ export function LandingNumbers() {
     <section id="angka" className="l-band l-section scroll-mt-16">
       <div className="l-container">
         <div className="mb-10 max-w-2xl">
-          <p className="l-eyebrow">angka kunci</p>
-          <h2 className="l-h2">Hasil Pengukuran Seluruh Plot</h2>
+          <p className="l-eyebrow">hasil ukur</p>
+          <h2 className="l-h2">Hasil Pengukuran Seluruh Vak</h2>
         </div>
         <div className="l-grid grid-cols-1 md:grid-cols-3">
           {stats.map((stat) => (

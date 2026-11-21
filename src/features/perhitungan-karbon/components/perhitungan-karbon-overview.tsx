@@ -23,7 +23,7 @@ export function PerhitunganKarbonOverview() {
         caption={`Rincian karbon per pohon ${stats.plot.label}`}
         filename={`karbon-pohon-${stats.plot.label}.csv`}
         rows={stats.plot.trees}
-        empty="Data pohon tidak tersedia untuk plot ini."
+        empty="Data pohon tidak tersedia untuk vak ini."
         columns={[
           { id: "species", label: "Jenis mangrove", get: (row) => row.species },
           {
@@ -56,11 +56,11 @@ export function PerhitunganKarbonOverview() {
       />
       <CarbonTableSection<PlotStats & { id: string }>
         title="Stok Karbon Total"
-        caption="Stok karbon total per plot"
+        caption="Stok karbon total per vak"
         filename="stok-karbon-total.csv"
         rows={all.map((item) => ({ ...item, id: item.plot.key }))}
         columns={[
-          { id: "plot", label: "Plot", get: (row) => row.plot.label },
+          { id: "plot", label: "Vak", get: (row) => row.plot.label },
           { id: "trees", label: "Pohon", get: (row) => String(row.treeCount) },
           {
             id: "agc",

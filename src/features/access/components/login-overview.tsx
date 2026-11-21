@@ -62,7 +62,7 @@ function LoginForm({ next }: { next?: string }) {
     <Card className="flex w-full max-w-sm flex-col gap-5 p-6">
       <div>
         <Typography as="h1" variant="t" weight="semibold">Masuk sebagai Manager</Typography>
-        <Typography as="p" variant="bs" className="mt-1 text-ink-2">Mangrove Inventory</Typography>
+        <Typography as="p" variant="bs" className="mt-1 text-ink-2">MangroLens</Typography>
       </div>
       <Notice tone="info">
         <Typography as="p" variant="bs" weight="medium">Akun demo</Typography>

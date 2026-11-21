@@ -45,7 +45,7 @@ export function CarbonDistribution({ stats }: { stats: PlotStats }) {
           </dl>
         </>
       ) : (
-        <Typography as="p" variant="bs" className="mt-4 text-ink">{UNAVAILABLE}: plot ini belum memiliki data pohon.</Typography>
+        <Typography as="p" variant="bs" className="mt-4 text-ink">{UNAVAILABLE}: vak ini belum memiliki data pohon.</Typography>
       )}
     </section>
   );

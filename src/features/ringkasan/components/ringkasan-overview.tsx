@@ -16,9 +16,9 @@ export function RingkasanOverview() {
 
   const download = () =>
     downloadCsv(
-      "rekap-plot.csv",
+      "rekap-vak.csv",
       [
-        "Plot",
+        "Vak",
         "Pohon",
         "Jenis",
         "Luas (ha)",

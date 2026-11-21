@@ -12,7 +12,7 @@ export function SpatialMap() {
     <Card className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <Typography as="h2" variant="t" weight="semibold">Sebaran Spasial</Typography>
-        <Link href="/peta-plot" className="text-[14px] font-medium text-ink underline underline-offset-4">
+        <Link href="/peta-vak" className="text-[14px] font-medium text-ink underline underline-offset-4">
           Peta Penuh
         </Link>
       </div>

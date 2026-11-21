@@ -11,8 +11,8 @@ const newsreader = Newsreader({ subsets: ["latin"], weight: ["500", "600", "700"
 
 export const metadata: Metadata = {
   title: {
-    default: "Mangrove Inventory",
-    template: "%s · Mangrove Inventory",
+    default: "MangroLens",
+    template: "%s · MangroLens",
   },
   description:
     "Frontend for the Mangrove Carbon Stock Inventory.",
