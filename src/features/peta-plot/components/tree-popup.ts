@@ -5,7 +5,7 @@ const escapeHtml = (value: string) =>
 
 export function speciesPopupHtml(point: SpeciesPoint) {
   return `<div class="tree-card">
-    <div class="tree-card-photo">Foto belum tersedia</div>
+    <div class="tree-card-photo">Foto belum tersedia<img src="/images/species/${point.id}.jpg" alt="Foto ${escapeHtml(point.species)}" loading="lazy" onerror="this.remove()"></div>
     <div class="tree-card-body">
       <p class="tree-card-eyebrow">SPESIMEN NO. ${point.id}</p>
       <p class="tree-card-name">${escapeHtml(point.species)}</p>

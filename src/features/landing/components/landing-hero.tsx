@@ -9,7 +9,7 @@ function Lines() {
       aria-hidden
       viewBox="0 0 1200 520"
       preserveAspectRatio="none"
-      className="landing-lines pointer-events-none absolute inset-0 size-full text-[var(--l-accent)] opacity-25"
+      className="landing-lines pointer-events-none absolute inset-0 size-full text-white opacity-20"
     >
       {[0, 1, 2, 3, 4].map((i) => (
         <path
@@ -26,8 +26,8 @@ function Lines() {
 
 export function LandingHero() {
   return (
-    <section className="relative overflow-hidden">
-      <Lines />
+    <section className="l-hero relative overflow-hidden">
+      {/* <Lines /> */}
       <div className="l-container l-section relative flex flex-col items-center text-center">
         <p className="l-eyebrow">
           Data lapangan. Perhitungan ilmiah. Terbuka untuk semua.
@@ -46,6 +46,7 @@ export function LandingHero() {
             nativeButton={false}
             role="link"
             render={<Link href="/peta-vak" />}
+            className="bg-white text-neutral-900 hover:bg-white/90"
           >
             Jelajahi peta
           </Button>
@@ -55,6 +56,7 @@ export function LandingHero() {
             nativeButton={false}
             role="link"
             render={<a href="#cara-kerja" />}
+            className="border-white/40 bg-white/10 text-white hover:bg-white/20"
           >
             Lihat cara kerjanya
             {/* <ArrowRight size={14} aria-hidden /> */}

@@ -24,6 +24,9 @@ export function LandingFooter() {
           </a>
         </nav>
       </div>
+      {/* <p className="l-container mt-8 text-[12px] text-[var(--l-eyebrow)]">
+        Foto: Tom Fisk, Vilmos Vagyoczki, Larry Hyler dan fotografer lain di Pexels. Foto jenis mangrove: Atlas Spesies Kebun Raya Mangrove.
+      </p> */}
       {/* <p className="l-container mt-8 text-[12px] text-[var(--l-eyebrow)]">Data tagging pohon 2026 · Demo, bukan publikasi resmi.</p> */}
     </footer>
   );
